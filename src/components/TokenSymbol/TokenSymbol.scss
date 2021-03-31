@@ -1,0 +1,12 @@
+
+.token-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+
+  .token-icon {
+    width: 20px;
+    margin-right: 8px;
+  }
+}

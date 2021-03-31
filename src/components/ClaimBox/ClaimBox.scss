@@ -1,0 +1,31 @@
+@import "css/vars";
+
+.App .top-section.claim {
+  .claim-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+
+    .claim-row {
+      margin-bottom: 15px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .claim-amount {
+      margin-left: 10px;
+      font-size: 1.2em;
+    }
+
+    .button {
+      font-size: 1.1em;
+      padding: 12px 42px;
+      font-weight: bold;
+    }
+  }
+}

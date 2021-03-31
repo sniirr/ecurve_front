@@ -1,0 +1,16 @@
+{
+  "name": "storeoffchaindata",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "eosjs": "^21.0.3",
+    "lodash": "^4.17.21",
+    "node-fetch": "^2.6.1"
+  }
+}

@@ -1,0 +1,48 @@
+@import "css/vars";
+
+.menu {
+  display: flex;
+  justify-content: space-between;
+  width: $content-width;
+  margin: 40px auto;
+  font-size: 1.1em;
+
+  .menu-left, .menu-right {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .menu-item {
+    cursor: pointer;
+    text-align: center;
+    padding: 0 12px;
+
+    a {
+      text-decoration: none;
+
+      &.active {
+        color: $brand-mid;
+        text-decoration: underline;
+        font-weight: bold;
+        cursor: default;
+      }
+    }
+  }
+
+  .menu-left {
+    .menu-item {
+      margin-right: 15px;
+    }
+  }
+
+  .menu-right {
+    .menu-item {
+      margin-left: 15px;
+    }
+  }
+
+  .menu-item.get-dad {
+    padding-right: 0;
+  }
+}

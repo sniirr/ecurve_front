@@ -1,0 +1,91 @@
+@import "css/vars";
+
+.footer {
+  text-align: right;
+  margin-top: 80px;
+  border-top: solid 1px $gray;
+  height: 50px;
+  min-height: 50px;
+  padding: 0 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+
+  a {
+    color: $brand-light;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .left, .right {
+    width: 350px;
+  }
+
+  .left {
+    text-align: left;
+  }
+
+  .center {
+    display: flex;
+    align-items: center;
+
+    a {
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+      color: $brand-dark;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    svg {
+      margin-right: 5px;
+    }
+  }
+
+  svg {
+    height: 1.5em;
+    width: unset;
+
+    &.fa-wifi {
+      height: 1.2em;
+    }
+  }
+
+  .node-conn {
+    color: $success;
+    font-weight: bold;
+
+    svg {
+      path {
+        fill: $success;
+      }
+    }
+
+    &.mid {
+      color: orange;
+
+      svg {
+        path {
+          fill: orange;
+        }
+      }
+    }
+
+    &.bad {
+      color: $error;
+
+      svg {
+        path {
+          fill: $error;
+        }
+      }
+    }
+  }
+}

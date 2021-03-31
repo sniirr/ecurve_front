@@ -1,0 +1,42 @@
+@import "css/vars";
+
+header {
+  height: 80px;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 80px;
+  background-color: $brand-dark;
+  color: white;
+
+  .logo {
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 40px;
+      margin-right: 10px;
+    }
+  }
+
+  .account {
+    display: flex;
+    align-items: center;
+
+    div {
+      margin-left: 40px;
+    }
+
+    .net-marker {
+      background-color: $brand-mid;
+      color: white;
+      padding: 10px;
+    }
+
+    .login, .logout {
+      cursor: pointer;
+    }
+  }
+}
