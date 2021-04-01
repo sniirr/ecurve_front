@@ -78,7 +78,7 @@ export const fetchRewards = (activeUser) => async dispatch => {
                 type: 'claimable',
                 balances: _.zipObject(
                     [MAIN_TOKEN, DAD_TOKEN, ...LP_TOKENS],
-                    _.map(data, ({issuedamt}) => parseFloat(issuedamt) || 0),
+                    _.map(data, res => !_.isNil(res) ? parseFloat(res.issuedamt) : 0),
                 )
             }
         })

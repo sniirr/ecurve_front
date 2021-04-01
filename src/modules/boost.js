@@ -38,7 +38,6 @@ export const boostSelector = (poolId, overrides = {}) => {
         (ecrvStats, poolWeights, locked, unlockedBalance) => {
             const hasTempLockedBalance = overrides.lockedBalance > 0
             const hasTempLockPeriod = overrides.lockTimeInHours > 0
-            // const hasTempLock = overrides.lockedBalance > 0 && overrides.lockTimeInHours > 0
             const hasLocked = !_.isEmpty(locked) && locked.balance > 0
 
             // validate all data is ready
@@ -73,17 +72,16 @@ export const boostSelector = (poolId, overrides = {}) => {
             }
 
             // resolve total_veCRV, user_veCRV & user_weight according to current/temp stake
+            const currentTimeInSecond = dayJS.utc().unix()
+            const lastUpdateInSeconds = dayJS.utc(lastupdate).unix()
 
-            // const currentTimeInSecond = dayJS.utc().unix()
-            // const lastUpdateInSeconds = dayJS.utc(lastupdate).unix()
-            // let total_veCRV2 = totalvcrv - oldtotamt * (currentTimeInSecond - lastUpdateInSeconds) + newuserwt
-
-            let total_veCRV = totalvcrv
+            let total_veCRV = totalvcrv - oldtotamt * (currentTimeInSecond - lastUpdateInSeconds) + newuserwt
+            // let total_veCRV = totalvcrv
             const user_veCRV = lockedamt * lockTimeInSeconds
 
-            if (hasTempLockedBalance || hasTempLockPeriod) {
-                total_veCRV += user_veCRV
-            }
+            // if (hasTempLockedBalance || hasTempLockPeriod) {
+            //     total_veCRV += user_veCRV
+            // }
 
             if (!_.isNaN(overrides.stakedAmount) && overrides.stakedAmount !== 0) {
                 // subtract previous user_weight
@@ -100,19 +98,16 @@ export const boostSelector = (poolId, overrides = {}) => {
             console.log('boostSelector', {lockedamt, lockTimeInSeconds, total_veCRV, user_veCRV, total_weight, user_weight})
 
             const b = (0.4 * user_weight + (0.6 * total_weight * user_veCRV / total_veCRV)) / (0.4 * user_weight)
-            // const b = _.min([0.4 * user_weight + (0.6 * total_weight * user_veCRV / total_veCRV)]) / (0.4 * user_weight)
             const boost = toFloat(b, 2)
 
             console.log('calculated boost', boost, b)
 
-            // const min_veCRV = user_weight * total_veCRV / total_weight
             const min_veCRV = user_weight * totalvcrv / total_weight / 1000000
 
             const ecrv_for_max_boost = min_veCRV / lockTimeInSeconds
 
             return {
-                boost,
-                // boost: boost < 2.5 ? boost : 2.5,
+                boost: boost < 2.5 ? boost : 2.5,
                 min_veCRV,
                 ecrv_for_max_boost,
             }
