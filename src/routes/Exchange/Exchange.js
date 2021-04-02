@@ -12,6 +12,7 @@ import TokenRadioButtons from "components/Inputs/TokenRadioButtons";
 import {amountToAsset, toFloat} from "utils";
 import Button from "components/Inputs/Button";
 import {balancesSelector} from 'modules/balances'
+import {poolInfoSelector} from 'modules/pools'
 import './Exchange.scss'
 import config from 'config'
 import classNames from "classnames";
@@ -58,7 +59,8 @@ function Exchange() {
 
     const activeUser = useSelector(state => _.get(state, 'activeUser'))
     const balances = useSelector(balancesSelector('current'))
-    const fee = useSelector(state => _.get(state, ['token', 'fee'], {total: 0, lpPart: 0, adminPart: 0}))
+    const poolStats = useSelector(poolInfoSelector(poolId, 'stats'))
+    const fee = _.get(poolStats, 'fee', {total: 0, lpPart: 0, adminPart: 0})
 
     const calc = useFormulas(poolId)
     const isCalcReady = calc.isReady

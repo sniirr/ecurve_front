@@ -75,7 +75,8 @@ const StakeLPToken = ({poolId}) => {
             <div className="section-header">
                 <h3>{symbol} Liquidity Gauge</h3>
                 <div className="apy success">
-                    Liquidity Mining APY {poolEcrvApy.toFixed(2)}% + Fees APY {feesApy.toFixed(2)}%
+                    Liquidity Mining APY {poolEcrvApy.toFixed(2)}%
+                    {/*Liquidity Mining APY {poolEcrvApy.toFixed(2)}% + Fees APY {feesApy.toFixed(2)}%*/}
                 </div>
             </div>
             <div className="boost-section">

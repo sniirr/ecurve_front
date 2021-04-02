@@ -41,7 +41,7 @@ const PoolInfo = ({poolId}) => {
                 </div>
                 <div className="pool-apy">
                     <div className="apy">Liquidity Mining APY <span>{poolEcrvApy.toFixed(2)}%</span></div>
-                    <div className="apy">Admin Fees APY <span>{feesApy.toFixed(2)}%</span></div>
+                    {/*<div className="apy">Admin Fees APY <span>{feesApy.toFixed(2)}%</span></div>*/}
                 </div>
             </div>
         </div>
