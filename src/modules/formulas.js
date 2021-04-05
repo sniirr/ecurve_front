@@ -109,15 +109,16 @@ const calcLPTokenOnDeposit = common => (amounts, slippage) => {
     const D1 = calcD(newBalances, common)
     // console.log('calcLPTokenOnDeposit D1', D1)
 
-    const min_mint_amount = (1 - slippage / 100) * Math.abs(D0 - D1) * total_supply / D0
+    const withoutSlippage = Math.abs(D0 - D1) * total_supply / D0
+    const withSlippage = (1 - slippage / 100) * withoutSlippage
     // console.log('calcLPTokenOnDeposit min_mint_amount', min_mint_amount)
 
-    return min_mint_amount
+    return {withSlippage, withoutSlippage}
 }
 
 const calcDeposit = common => (amounts, slippage) => {
     // console.log('-------------- START DEPOSIT LOG -----------------')
-    const lpTokenAmount = calcLPTokenOnDeposit(common)(amounts, slippage)
+    const {withSlippage, withoutSlippage} = calcLPTokenOnDeposit(common)(amounts, slippage)
 
     const {xp} = common
     const {tokens} = POOLS["3POOL"]
@@ -126,14 +127,15 @@ const calcDeposit = common => (amounts, slippage) => {
     const sumInPool = _.sum(xp)
     const ifWasBalanced =_.map(tokens, (s, i) => sumDeposited * xp[i] / sumInPool)
 
-    const lpTokenIfBalanced = calcLPTokenOnDeposit(common)(ifWasBalanced, 0)
+    const {withSlippage: lpTokenIfBalanced} = calcLPTokenOnDeposit(common)(ifWasBalanced, 0)
 
-    const bonusAmount = 100 * (lpTokenAmount - lpTokenIfBalanced) / lpTokenIfBalanced
+    const bonusAmount = 100 * (withoutSlippage - lpTokenIfBalanced) / lpTokenIfBalanced
 
     // console.log('--------------- END DEPOSIT LOG ------------------')
 
     return {
-        lpTokenAmount,
+        lpTokenAmount: withSlippage,
+        withoutSlippage,
         bonusAmount,
         price: common.price,
     }

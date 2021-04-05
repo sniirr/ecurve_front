@@ -37,6 +37,7 @@ function Deposit() {
     const calc = useFormulas(poolId)
 
     const [receiveAmount, setReceiveAmount] = useState(0)
+    const [receiveAmountWithoutSlippage, setReceiveAmountWithoutSlippage] = useState(0)
 
     const {register, handleSubmit, watch, errors, setValue} = useForm({
         mode: 'onChange',
@@ -81,22 +82,24 @@ function Deposit() {
         if (sumAmount === 0) {
             // all 0's, no need to calc
             setReceiveAmount(0)
+            setReceiveAmountWithoutSlippage(0)
             return
         }
 
         // valid amounts - calculate received LP token and bonus
         const depositAmounts = _.map(tokens, (symbol, i) => amounts[symbol] * 1000000)
-        const {lpTokenAmount, bonusAmount} = calc.lpTokenOnDeposit(depositAmounts, toFloat(slippage))
+        const {lpTokenAmount, withoutSlippage, bonusAmount} = calc.lpTokenOnDeposit(depositAmounts, toFloat(slippage))
 
-        // console.log('deposit receive amount', {lpTokenAmount, bonusAmount})
+        console.log('deposit receive amount', {lpTokenAmount, bonusAmount})
 
         setReceiveAmount(lpTokenAmount / 1000000)
+        setReceiveAmountWithoutSlippage(withoutSlippage / 1000000)
         setBonus(bonusAmount > 0 ? bonusAmount : 0)
     }, [sumAmount, slippage])
 
     usePoolLoader(poolId)
 
-    const isValidDeposit = receiveAmount > 0 && _.isEmpty(errors)
+    const bonusText = !isDepositBalanced && toFloat(bonus, 3) > 0 ? ` | ${bonus.toFixed(3)}% Bonus` : ''
 
     return (
         <div className="section deposit">
@@ -119,17 +122,17 @@ function Deposit() {
                 <SlippageInput options={['0.5', '1']} slippage={slippage} setSlippage={setSlippage}/>
                 <div className="submit-container">
                     <span className="receive-message">
-                        {isValidDeposit && (
+                        {receiveAmount > 0 && (
                             <>
-                                Receive at
-                                least {amountToAsset(receiveAmount, lpTokenSymbol)} {toFloat(bonus, 3) > 0 ? ` (${bonus.toFixed(3)}% Bonus)` : ''}
+                                <div style={{marginBottom: 8}}>You will receive {amountToAsset(receiveAmountWithoutSlippage, lpTokenSymbol)} {bonusText}</div>
+                                <div className="text-small">(At least {amountToAsset(receiveAmount, lpTokenSymbol)} with {slippage}% max slippage)</div>
                             </>
                         )}
                     </span>
                     <Button apiKey={apiKey} onClick={handleSubmit(onSubmit)}>Deposit</Button>
                 </div>
-                {isValidDeposit && (
-                    <div className="lp-price">1 {lpTokenSymbol} = {parseFloat(price || '0').toFixed(6)} USD</div>
+                {receiveAmount > 0 && (
+                    <div className="lp-price text-small">1 {lpTokenSymbol} = {parseFloat(price || '0').toFixed(6)} USD</div>
                 )}
             </form>
         </div>
