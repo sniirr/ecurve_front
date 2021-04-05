@@ -88,7 +88,7 @@ export const StakeAndLockDAD = () => {
                 <div className="section-header">
                     <h3>Lock staked DAD to receive {MAIN_TOKEN} rewards</h3>
                     <div className="apy success">
-                        Max DAD Locking APY {dadMaxApy.toFixed(2)}%
+                        DAD Locking Max APY {dadMaxApy.toFixed(2)}%
                     </div>
                 </div>
                 {renderTopContent()}

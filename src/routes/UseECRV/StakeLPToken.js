@@ -30,7 +30,7 @@ const StakeLPToken = ({poolId}) => {
     const overrides = useSelector(getTempLockArgs)
     const {boost, ecrv_for_max_boost} = useSelector(boostSelector(poolId, {...overrides, stakedAmount: poolTempStake}))
     const feesApy = useSelector(poolFeesApySelector(poolId))
-    const poolEcrvApy = useSelector(poolECRVApySelector(poolId))
+    const {basePoolApy, maxPoolApy} = useSelector(poolECRVApySelector(poolId))
     const stakedBalance = useSelector(balanceSelector('staked', symbol))
     const {hasLocked, lockedBalance} = useLocking(MAIN_TOKEN)
 
@@ -75,8 +75,11 @@ const StakeLPToken = ({poolId}) => {
             <div className="section-header">
                 <h3>{symbol} Liquidity Gauge</h3>
                 <div className="apy success">
-                    Liquidity Mining APY {poolEcrvApy.toFixed(2)}%
-                    {/*Liquidity Mining APY {poolEcrvApy.toFixed(2)}% + Fees APY {feesApy.toFixed(2)}%*/}
+                    {!_.isEmpty(activeUser) ? (
+                        <>Your APY {(basePoolApy * boost).toFixed(2)}% | Max APY {maxPoolApy.toFixed(2)}%</>
+                    ) : (
+                        <>Max Liquidity Mining APY {maxPoolApy.toFixed(2)}%</>
+                    )}
                 </div>
             </div>
             <div className="boost-section">
@@ -86,7 +89,7 @@ const StakeLPToken = ({poolId}) => {
                     {hasStaked && hasTempLock && (
                         <div className="info">
                             <FontAwesomeIcon icon={faClock} />
-                            Boost is calculated with pending {hasTempStaked ? `Stake and ` : ''}Timelock
+                            Boost & "Your APY" are calculated with pending {hasTempStaked ? `Stake and ` : ''}Timelock
                         </div>
                     )}
                     {renderMaxBoostText()}

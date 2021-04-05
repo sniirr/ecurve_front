@@ -7,6 +7,7 @@ import TokenSymbol from "components/TokenSymbol";
 import config from 'config'
 import {poolECRVApySelector, poolFeesApySelector, poolInfoSelector} from 'modules/pools'
 import './PoolInfo.scss'
+import {maxDADApySelector} from "modules/ecrv";
 
 const {POOLS} = config
 
@@ -14,7 +15,8 @@ const PoolInfo = ({poolId}) => {
 
     const poolBalances = useSelector(poolInfoSelector(poolId, 'balances'))
     const feesApy = useSelector(poolFeesApySelector(poolId))
-    const poolEcrvApy = useSelector(poolECRVApySelector(poolId))
+    const {basePoolApy, maxPoolApy} = useSelector(poolECRVApySelector(poolId))
+    const dadMaxApy = useSelector(maxDADApySelector)
 
     const sumBalances = !_.isEmpty(poolBalances) && _.sum(_.map(_.values(poolBalances), parseFloat))
 
@@ -40,8 +42,20 @@ const PoolInfo = ({poolId}) => {
                     </div>
                 </div>
                 <div className="pool-apy">
-                    <div className="apy">Liquidity Mining APY <span>{poolEcrvApy.toFixed(2)}%</span></div>
-                    {/*<div className="apy">Admin Fees APY <span>{feesApy.toFixed(2)}%</span></div>*/}
+                    <div>
+                        <div>Liquidity Mining APY</div>
+                        <div className="apys">
+                            <div className="apy-sbs">
+                                <div className="text">Base</div>
+                                <div className="num">{basePoolApy.toFixed(2)}%</div>
+                            </div>
+                            <div className="apy-sbs">
+                                <div className="text">Max</div>
+                                <div className="num">{maxPoolApy.toFixed(2)}%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="apy">DAD Locking Max APY {dadMaxApy.toFixed(2)}%</div>
                 </div>
             </div>
         </div>

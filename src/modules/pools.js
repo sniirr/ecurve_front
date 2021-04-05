@@ -165,11 +165,15 @@ export const poolECRVApySelector = poolId => createSelector(
     nextRoundEcrvInUsdtSelector,
     poolInfoSelector(poolId, 'stats'),
     (next_round_ecrv_in_usdt, {price: lpTokenPrice, totalStake}) => {
-        if (!(next_round_ecrv_in_usdt > 0 && lpTokenPrice > 0)) return 0
+        if (!(next_round_ecrv_in_usdt > 0 && lpTokenPrice > 0)) return {basePoolApy: 0, maxPoolApy: 0}
 
         const total_stake_in_usdt = totalStake * lpTokenPrice
 
-        return 365 * 100 * 0.4 * 24 * 0.7 * next_round_ecrv_in_usdt / total_stake_in_usdt
+        const maxPoolApy = 365 * 100 * 24 * 0.7 * next_round_ecrv_in_usdt / total_stake_in_usdt
+        return {
+            basePoolApy: maxPoolApy * 0.4,
+            maxPoolApy
+        }
     }
 )
 

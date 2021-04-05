@@ -88,6 +88,8 @@ function Deposit() {
         const depositAmounts = _.map(tokens, (symbol, i) => amounts[symbol] * 1000000)
         const {lpTokenAmount, bonusAmount} = calc.lpTokenOnDeposit(depositAmounts, toFloat(slippage))
 
+        // console.log('deposit receive amount', {lpTokenAmount, bonusAmount})
+
         setReceiveAmount(lpTokenAmount / 1000000)
         setBonus(bonusAmount > 0 ? bonusAmount : 0)
     }, [sumAmount, slippage])
