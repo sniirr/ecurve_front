@@ -71,6 +71,14 @@ body {
         }
       }
     }
+
+    &.pool, &.dad {
+      .section-header {
+        h3 {
+          margin: 0;
+        }
+      }
+    }
   }
 
   .max-amount {

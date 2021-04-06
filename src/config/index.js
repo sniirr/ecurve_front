@@ -1,5 +1,5 @@
 let config
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' || true) {
     config = require('./config.prod')
 }
 else {

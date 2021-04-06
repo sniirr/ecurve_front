@@ -71,7 +71,7 @@ const StakeLPToken = ({poolId}) => {
     }
 
     return (
-        <div className="section stake-and-lock">
+        <div className="section stake-and-lock pool">
             <div className="section-header">
                 <h3>{symbol} Liquidity Gauge</h3>
                 <div className="apy success">
