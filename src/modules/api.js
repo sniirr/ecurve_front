@@ -28,7 +28,6 @@ export const fetchOneByPk = async (opts, pkFieldName, pk) => {
     const res = await fetchTableData({...opts, lower_bound: pk, limit: 1})
 
     let processedData = res
-    // const {lower_bound: pk} = opts
     const row = _.get(res, ['rows', 0])
     if (!_.isNil(row) && !_.isEmpty(pkFieldName)) {
         if (row[pkFieldName] !== pk) {
@@ -93,6 +92,8 @@ export const fetchCurrencyBalance = async (accountName, {contract, symbol}) => {
 }
 
 export const requestEcurveApi = endpoint => axios(`${ECURVE_API_URL}${endpoint}`)
+
+export const requestDefiboxPair = pairId => axios.post(`https://defibox.io/api/swap/getMarket`, {pairId})
 
 // transact
 export const createTransferAction = (from, quantity, {contract, symbol}, to) => {

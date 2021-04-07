@@ -20,7 +20,7 @@ const {MAIN_TOKEN, TOKENS, POOLS} = config
 
 const StakeLPToken = ({poolId}) => {
 
-    const {lpTokenSymbol: symbol} = POOLS[poolId]
+    const {lpTokenSymbol: symbol, name: poolName} = POOLS[poolId]
 
     const dispatch = useDispatch()
     const activeUser = useSelector(state => _.get(state, 'activeUser'))
@@ -51,8 +51,11 @@ const StakeLPToken = ({poolId}) => {
         setTimeout(() => setShouldReset(''), 0)
     }
 
+    console.log('poolTempStake', poolTempStake, 'stakedBalance', stakedBalance, 'stakedBalance + poolTempStake', stakedBalance + poolTempStake)
     const hasTempStaked = poolTempStake !== 0
-    const hasStaked = hasTempStaked || stakedBalance > 0
+
+    const pendingStakedBalance = hasTempStaked ? (stakedBalance + poolTempStake) : stakedBalance
+    const hasStaked = (hasTempStaked && stakedBalance + poolTempStake !== 0) || pendingStakedBalance > 0
 
     const hasTempLock = overrides.lockedBalance > 0 || overrides.lockTimeInHours > 0
 
@@ -73,10 +76,10 @@ const StakeLPToken = ({poolId}) => {
     return (
         <div className="section stake-and-lock pool">
             <div className="section-header">
-                <h3>{symbol} Liquidity Gauge</h3>
+                <h3>{poolName} Gauge</h3>
                 <div className="apy success">
                     {!_.isEmpty(activeUser) ? (
-                        <>Your APY {(basePoolApy * boost).toFixed(2)}% | Max APY {maxPoolApy.toFixed(2)}%</>
+                        <>{hasStaked ? 'Your' : 'Base'} APY {(basePoolApy * boost).toFixed(2)}% | Max APY {maxPoolApy.toFixed(2)}%</>
                     ) : (
                         <>Max Liquidity Mining APY {maxPoolApy.toFixed(2)}%</>
                     )}

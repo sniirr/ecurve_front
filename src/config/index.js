@@ -1,5 +1,7 @@
+const FORCE_PROD = false
+
 let config
-if (process.env.NODE_ENV === 'production' || true) {
+if (process.env.NODE_ENV === 'production' || FORCE_PROD) {
     config = require('./config.prod')
 }
 else {

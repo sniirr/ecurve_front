@@ -4,7 +4,7 @@ import {
     fetchOne,
     fetchOneByPk,
     fetchTokenStats,
-    getTableData, requestEcurveApi
+    getTableData, requestEcurveApi, requestDefiboxPair
 } from "modules/api"
 import _ from "lodash";
 import config from 'config'
@@ -36,14 +36,14 @@ export const fetchPoolBalances = poolId => dispatch => {
     }))
 }
 
-const fetchPoolUserWeight = (activeUser, scope) => fetchOneByPk({
-    code: CONTRACTS.LPDeposit,
+const fetchPoolUserWeight = (activeUser, code, scope) => fetchOneByPk({
+    code,
     scope,
     table: 'userweight',
 }, 'account', activeUser.accountName)
 
-const fetchPoolTotalWeight = (scope) => fetchOne({
-    code: CONTRACTS.LPDeposit,
+const fetchPoolTotalWeight = (code, scope) => fetchOne({
+    code,
     scope,
     table: 'totwght',
 })
@@ -55,9 +55,10 @@ export const fetchPoolWeights = (activeUser, poolId, scope) => async dispatch =>
     dispatch(setStatus(apiKey, {status: 'pending'}))
 
     try {
+        const {depositContract} = POOLS[poolId]
         const data = await Promise.all([
-            fetchPoolUserWeight(activeUser, scope),
-            fetchPoolTotalWeight(scope),
+            fetchPoolUserWeight(activeUser, depositContract, scope),
+            fetchPoolTotalWeight(depositContract, scope),
         ])
 
         dispatch({
@@ -86,6 +87,40 @@ export const fetchPoolFeeStats = poolId => async dispatch => {
                 poolId,
                 ..._.get(data, ['data', 0], {})
             },
+        })
+    } catch (e) {
+
+    }
+}
+
+export const fetchDefiboxPoolData = poolId => async dispatch => {
+    const {pairId, poolContract, name} = POOLS[poolId]
+
+    try {
+        const data = await Promise.all([
+            requestDefiboxPair(pairId),
+            fetchOne({code: poolContract, scope: poolContract, table: 'totalstake'})
+        ])
+
+        const {liquidity_token, count0, count1, symbol0} = _.get(data, [0, 'data', 'data', 0], {})
+        const {balance: totalStake} = _.get(data, [1], {})
+
+        const balances = [count0, count1]
+        const stableIdx = symbol0 === 'USDC' || symbol0 === 'DAI' ? 0 : 1
+
+        const stableBalance = balances[stableIdx]
+        const sumPoolUsd = stableBalance * 2
+
+        console.log(name, {balances, stableIdx, stableBalance, sumPoolUsd})
+
+        dispatch({
+            type: 'SET_POOL_STATS',
+            payload: {
+                poolId,
+                totalSupply: liquidity_token,
+                totalStake: parseFloat(totalStake),
+                price: sumPoolUsd / liquidity_token,
+            }
         })
     } catch (e) {
 
@@ -169,7 +204,9 @@ export const poolECRVApySelector = poolId => createSelector(
 
         const total_stake_in_usdt = totalStake * lpTokenPrice
 
-        const maxPoolApy = 365 * 100 * 24 * 0.7 * next_round_ecrv_in_usdt / total_stake_in_usdt
+        const {poolMiningWeight} = POOLS[poolId]
+
+        const maxPoolApy = 365 * 100 * 24 * poolMiningWeight * next_round_ecrv_in_usdt / total_stake_in_usdt
         return {
             basePoolApy: maxPoolApy * 0.4,
             maxPoolApy

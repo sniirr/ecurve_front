@@ -2,8 +2,11 @@ import {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import _ from 'lodash'
 import {fetchAccountPoolBalances} from "modules/balances";
-import {fetchPoolData} from "modules/pools";
+import {fetchDefiboxPoolData, fetchPoolData} from "modules/pools";
 import useOnLogin from "./useOnLogin";
+import config from 'config'
+
+const {POOLS} = config
 
 function usePoolLoader(poolId) {
 
@@ -13,12 +16,16 @@ function usePoolLoader(poolId) {
 
     const accountName = activeUser?.accountName
 
+    const is3rdPartyPool = !_.isNil(_.get(POOLS, [poolId, 'operator']))
+
     useEffect(() => {
-        dispatch(fetchPoolData(poolId))
+        dispatch(is3rdPartyPool ? fetchDefiboxPoolData(poolId) : fetchPoolData(poolId))
     }, [])
 
     useOnLogin(() => {
-        dispatch(fetchAccountPoolBalances(accountName, poolId))
+        if (!is3rdPartyPool) {
+            dispatch(fetchAccountPoolBalances(accountName, poolId))
+        }
     })
 }
 

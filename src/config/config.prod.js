@@ -37,17 +37,84 @@ export const CONTRACTS = {
 }
 
 export const POOLS = {
-    "3POOL": {
-        name: "3Pool",
+    '3POOL': {
+        name: '3Pool',
         poolContract: CONTRACTS.curve3Pool,
+        depositContract: CONTRACTS.LPDeposit,
         tokens: ["USDC", "DAI", "USDT"],
         lpTokenSymbol: 'TRIPOOL', // TRIPOOL
-    }
+        poolMiningWeight: 0.7,
+    },
+    'BOXAVG': {
+        name: 'Defibox EOS/USDC',
+        operator: 'defibox',
+        poolContract: 'dpositboxavg',
+        depositContract: 'dpositboxavg',
+        lpTokenSymbol: 'BOXAVG', // TRIPOOL
+        pairId: '1255',
+        poolMiningWeight: 0.01,
+    },
+    'BOXAUQ': {
+        name: 'Defibox EOS/DAI',
+        operator: 'defibox',
+        poolContract: 'dpositboxauq',
+        depositContract: 'dpositboxauq',
+        lpTokenSymbol: 'BOXAUQ', // TRIPOOL
+        pairId: '1239',
+        poolMiningWeight: 0.01,
+    },
+    'BOXAYO': {
+        name: 'Defibox ECRV/USDC',
+        operator: 'defibox',
+        poolContract: 'dpositboxayo',
+        depositContract: 'dpositboxayo',
+        lpTokenSymbol: 'BOXAYO', // TRIPOOL
+        pairId: '1341',
+        poolMiningWeight: 0.005,
+    },
+    'BOXAYP': {
+        name: 'Defibox ECRV/DAI',
+        operator: 'defibox',
+        poolContract: 'dpositboxayp',
+        depositContract: 'dpositboxayp',
+        lpTokenSymbol: 'BOXAYP', // TRIPOOL
+        pairId: '1342',
+        poolMiningWeight: 0.005,
+    },
 }
 
-export const LP_TOKENS = _.map(POOLS, 'lpTokenSymbol')
+export const LP_TOKENS = ['TRIPOOL']
+// export const LP_TOKENS = _.map(POOLS, 'lpTokenSymbol')
 
 export const TOKENS = {
+    BOXAVG: {
+        symbol: 'BOXAVG',
+        contract: 'lptoken.defi',
+        precision: 0,
+        stakeContract: 'dpositboxavg',
+        stakeTable: 'stake',
+    },
+    BOXAUQ: {
+        symbol: 'BOXAUQ',
+        contract: 'lptoken.defi',
+        precision: 0,
+        stakeContract: 'dpositboxauq',
+        stakeTable: 'stake',
+    },
+    BOXAYO: {
+        symbol: 'BOXAYO',
+        contract: 'lptoken.defi',
+        precision: 0,
+        stakeContract: 'dpositboxayo',
+        stakeTable: 'stake',
+    },
+    BOXAYP: {
+        symbol: 'BOXAYP',
+        contract: 'lptoken.defi',
+        precision: 0,
+        stakeContract: 'dpositboxayp',
+        stakeTable: 'stake',
+    },
     USDC: {
         symbol: 'USDC',
         contract: CONTRACTS.dadUsdTokens,
