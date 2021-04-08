@@ -39,6 +39,7 @@ export const fetchTokenPrices = () => async dispatch => {
     }
 }
 
+export const pricesSelector = state => _.get(state, 'prices')
 export const tokenPriceSelector = symbol => state => _.get(state, ['prices', symbol])
 
 const INITIAL_STATE = {}

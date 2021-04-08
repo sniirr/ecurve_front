@@ -81,7 +81,9 @@ const StakeAndLockECRV = () => {
     return (
         <div className="section stake-and-lock boost">
             <ApiSuspense apiKey={[`fetch-lock-${symbol}`, `fetch-unlock-${symbol}`]}>
-                <h3>Lock {MAIN_TOKEN} to boost LP mining</h3>
+                <div className="section-header">
+                    <h3>Lock {MAIN_TOKEN} to boost LP mining</h3>
+                </div>
                 {hasLocked && (
                     <div className="section-top">
                         <UnlockForm symbol={symbol}/>

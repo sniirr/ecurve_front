@@ -40,7 +40,7 @@ const ClaimBox = () => {
             <div className="top-section-title">{MAIN_TOKEN}</div>
             <div className="top-section-content">
                 <div className="claim-box">
-                    <div>
+                    <div className="claim-rows">
                         <div className="claim-row">
                             Liquidity Mining Rewards:
                             <span className="claim-amount">{claimable.fromLP}</span> {MAIN_TOKEN}

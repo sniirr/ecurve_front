@@ -86,11 +86,6 @@ export const toFloat = (input, decimal = 6) => {
 export const getMinLockHours = intervals => !_.isEmpty(intervals) ? getTimePeriodHoursValue(_.head(intervals).interval) : -1
 export const getMaxLockHours = intervals => !_.isEmpty(intervals) ? getTimePeriodHoursValue(_.takeRight(intervals)[0].interval) : -1
 
-export const getVCRVString = (balance, lockHours) => {
-    const maxLockHours = getMaxLockHours(LOCK_INTERVALS[MAIN_TOKEN])
-    return `${(balance * lockHours / maxLockHours).toFixed(4)} ${WEIGHT_TOKEN}`
-}
-
 export const balanceToFloat = b => {
     const fb = parseFloat(b)
     return !_.isNaN(fb) ? fb : 0
@@ -107,7 +102,7 @@ const precisions = _.uniq(_.map(TOKENS, t => t.precision))
 const PRECISION_FORMAT = _.zipObject(
     precisions,
     _.map(precisions, p => {
-        let ps = '0.'
+        let ps = '0,0.'
         for (let i = 0; i < p; i++) {
             ps += '0'
         }
@@ -117,7 +112,6 @@ const PRECISION_FORMAT = _.zipObject(
 
 export const amountToAsset = (amount, symbol, withSymbol = true) => {
     const precision = _.get(TOKENS, [symbol, 'precision'], 6)
-    // console.log('format=' + numeral(100).format('0.0000'))
     return `${numeral(_.isString(amount) ? parseFloat(amount) : amount).format(PRECISION_FORMAT[precision])}${withSymbol ? (' ' + symbol) : ''}`
 }
 
@@ -129,4 +123,10 @@ export const parseAmount = (amount, symbol) => {
 export const getTimePeriodHoursValue = ({unit, value, offsetHours = 0}) => {
     const target = dayJS().add(value, unit)
     return  target.diff(dayJS(), 'hour') + offsetHours
+}
+
+// custom strings
+export const getVCRVString = (balance, lockHours) => {
+    const maxLockHours = getMaxLockHours(LOCK_INTERVALS[MAIN_TOKEN])
+    return `${(balance * lockHours / maxLockHours).toFixed(4)} ${WEIGHT_TOKEN}`
 }

@@ -9,6 +9,13 @@
     height: 100%;
     text-align: left;
 
+    .claim-rows {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: space-evenly;
+    }
+
     .claim-row {
       margin-bottom: 15px;
 

@@ -111,7 +111,7 @@ export const fetchDefiboxPoolData = poolId => async dispatch => {
         const stableBalance = balances[stableIdx]
         const sumPoolUsd = stableBalance * 2
 
-        console.log(name, {balances, stableIdx, stableBalance, sumPoolUsd})
+        // console.log(name, {balances, stableIdx, stableBalance, sumPoolUsd})
 
         dispatch({
             type: 'SET_POOL_STATS',
@@ -180,6 +180,11 @@ export const poolInfoSelector = (poolId, key) => state => {
     }
     return _.get(state, path, {})
 }
+
+export const poolTVLSelector = poolId => createSelector(
+    poolInfoSelector(poolId, 'balances'),
+    poolBalances => !_.isEmpty(poolBalances) && _.sum(_.map(_.values(poolBalances), parseFloat))
+)
 
 const SECONDS_IN_YEAR = 31556952
 

@@ -51,7 +51,6 @@ const StakeLPToken = ({poolId}) => {
         setTimeout(() => setShouldReset(''), 0)
     }
 
-    console.log('poolTempStake', poolTempStake, 'stakedBalance', stakedBalance, 'stakedBalance + poolTempStake', stakedBalance + poolTempStake)
     const hasTempStaked = poolTempStake !== 0
 
     const pendingStakedBalance = hasTempStaked ? (stakedBalance + poolTempStake) : stakedBalance
@@ -74,7 +73,7 @@ const StakeLPToken = ({poolId}) => {
     }
 
     return (
-        <div className="section stake-and-lock pool">
+        <div id={`pool-${poolId}`} className="section stake-and-lock pool">
             <div className="section-header">
                 <h3>{poolName} Gauge</h3>
                 <div className="apy success">

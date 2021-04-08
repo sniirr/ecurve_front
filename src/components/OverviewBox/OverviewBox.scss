@@ -1,0 +1,53 @@
+@import "css/vars";
+
+.App .top-section.overview {
+
+  .top-section-content {
+    background-image: linear-gradient(to left top, $error -550px, #0c123a) !important;
+  }
+
+  .overview-box {
+
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    width: 100%;
+
+    .left, .right {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .sbs {
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+
+      & > div:first-child {
+        margin-right: 40px;
+      }
+    }
+
+    .text-small {
+      font-size: .8em !important;
+      margin-bottom: 2px;
+    }
+
+    .num {
+      font-size: 1.1em;
+    }
+
+    .right {
+      .sbs {
+        & > div:first-child {
+          .text-small {
+            width: 72px;
+          }
+        }
+      }
+    }
+  }
+}

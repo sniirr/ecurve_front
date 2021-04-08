@@ -38,6 +38,7 @@ export const CONTRACTS = {
 
 export const POOLS = {
     '3POOL': {
+        id: '3POOL',
         name: '3Pool',
         poolContract: CONTRACTS.curve3Pool,
         depositContract: CONTRACTS.LPDeposit,
@@ -45,9 +46,20 @@ export const POOLS = {
         lpTokenSymbol: 'TRIPOOL', // TRIPOOL
         poolMiningWeight: 0.7,
     },
+    'DADGOV': {
+        id: 'DADGOV',
+        name: 'DAD Governance',
+        operator: 'DAD',
+        poolContract: CONTRACTS.dadLock,
+        depositContract: CONTRACTS.dadLock,
+        lpTokenSymbol: 'DAD',
+        pairId: '588',
+        poolMiningWeight: 0.15,
+    },
     'BOXAVG': {
-        name: 'Defibox EOS/USDC',
-        operator: 'defibox',
+        id: 'BOXAVG',
+        name: 'EOS/USDC',
+        operator: 'Defibox',
         poolContract: 'dpositboxavg',
         depositContract: 'dpositboxavg',
         lpTokenSymbol: 'BOXAVG', // TRIPOOL
@@ -55,8 +67,9 @@ export const POOLS = {
         poolMiningWeight: 0.01,
     },
     'BOXAUQ': {
-        name: 'Defibox EOS/DAI',
-        operator: 'defibox',
+        id: 'BOXAUQ',
+        name: 'EOS/DAI',
+        operator: 'Defibox',
         poolContract: 'dpositboxauq',
         depositContract: 'dpositboxauq',
         lpTokenSymbol: 'BOXAUQ', // TRIPOOL
@@ -64,8 +77,9 @@ export const POOLS = {
         poolMiningWeight: 0.01,
     },
     'BOXAYO': {
-        name: 'Defibox ECRV/USDC',
-        operator: 'defibox',
+        id: 'BOXAYO',
+        name: 'ECRV/USDC',
+        operator: 'Defibox',
         poolContract: 'dpositboxayo',
         depositContract: 'dpositboxayo',
         lpTokenSymbol: 'BOXAYO', // TRIPOOL
@@ -73,8 +87,9 @@ export const POOLS = {
         poolMiningWeight: 0.005,
     },
     'BOXAYP': {
-        name: 'Defibox ECRV/DAI',
-        operator: 'defibox',
+        id: 'BOXAYP',
+        name: 'ECRV/DAI',
+        operator: 'Defibox',
         poolContract: 'dpositboxayp',
         depositContract: 'dpositboxayp',
         lpTokenSymbol: 'BOXAYP', // TRIPOOL

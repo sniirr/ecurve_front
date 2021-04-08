@@ -1,0 +1,101 @@
+@import "css/vars";
+
+.App .section.pools {
+
+  a {
+    text-decoration: none;
+  }
+
+  .section-header {
+    justify-content: flex-start;
+    align-items: center;
+
+    &:not(:first-child) {
+      margin-top: 80px;
+    }
+
+    img {
+      width: 30px;
+      margin-right: 15px;
+    }
+
+    h3 {
+      border: none;
+      font-size: 1.3em;
+    }
+
+  }
+
+  .group-header {
+    font-weight: bold;
+    font-size: .8em;
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 10px;
+
+    .column .header-text {
+      border-bottom: solid 1px white;
+    }
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+    &.col-info {
+      width: 170px;
+    }
+
+    &.col-apy {
+      width: 210px;
+
+      .apy-sbs:first-child {
+        margin-right: 20px;
+      }
+    }
+
+    &.col-actions {
+      flex-grow: 2;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+
+      .button {
+        font-size: .75em;
+        padding: 6px 10px;
+        text-align: center;
+        display: block;
+        margin-left: 10px;
+      }
+    }
+
+    .pool-name {
+      font-weight: bold;
+    }
+  }
+
+  .pool-list-item {
+    display: flex;
+    align-items: center;
+    justify-self: flex-start;
+
+    &:not(:last-child) {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: solid 1px white;
+    }
+
+    &.internal-pool {
+      cursor: pointer;
+    }
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-self: flex-start;
+      width: 100%;
+    }
+  }
+}

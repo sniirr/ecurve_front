@@ -1,12 +1,12 @@
 import {makeReducer, reduceUpdateFull} from "utils";
-import {fetchOne, fetchOneByPk} from "modules/api"
+import {fetchOne, fetchOneByPk, fetchTokenStats} from "modules/api"
 import _ from "lodash";
 import config from 'config'
 import {createSelector} from "reselect";
 import {tokenPriceSelector} from "./prices";
 import {DADStatsSelector} from './dad'
 
-const {CONTRACTS, LP_TOKENS, MAIN_TOKEN, DAD_TOKEN} = config
+const {CONTRACTS, LP_TOKENS, MAIN_TOKEN, DAD_TOKEN, TOKENS} = config
 
 export const fetchCurrentRound = () => fetchOne({
     code: CONTRACTS.curveToken,
@@ -25,6 +25,34 @@ export const fetchTotalECRVLocked = () => fetchOne({
     scope: CONTRACTS.curveLock,
     table: 'totallock1',
 })
+
+export const fetchEcrvStats = () => async dispatch => {
+    try {
+        const data = await Promise.all([
+            fetchCurrentRound(),
+            fetchTokenStats(TOKENS[MAIN_TOKEN]),
+        ])
+
+        const {currround, currround_amount} = _.get(data, [0], {currround: 0, currround_amount: 0})
+        if (currround === 0) return
+
+        dispatch(fetchVeCRVStats(currround, currround_amount))
+
+        const {supply: totalSupply} = _.get(data, [1, MAIN_TOKEN], {supply: 0})
+
+        dispatch({
+            type: 'SET_TOKEN_STATS',
+            payload: {
+                currround,
+                currround_amount: parseFloat(currround_amount),
+                totalSupply
+            }
+        })
+    }
+    catch (e) {
+
+    }
+}
 
 export const fetchVeCRVStats = (currround, currround_amount) => async dispatch =>{
     try {

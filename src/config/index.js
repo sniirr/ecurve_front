@@ -1,4 +1,4 @@
-const FORCE_PROD = false
+const FORCE_PROD = true
 
 let config
 if (process.env.NODE_ENV === 'production' || FORCE_PROD) {

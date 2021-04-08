@@ -10,7 +10,8 @@ import config from 'config'
 const {MAIN_TOKEN, DAD_TOKEN} = config
 
 const MENU_ITEMS = [
-    {text: 'Exchange', path: '/'},
+    {text: 'Root', path: '/'},
+    {text: 'Exchange', path: '/exchange'},
     {text: 'Deposit', path: '/deposit'},
     {text: 'Withdraw', path: '/withdraw'},
     {text: `Use ${MAIN_TOKEN}`, path: '/use-ecrv'},
@@ -20,7 +21,7 @@ const MENU_ITEMS = [
 const Menu = () => (
     <div className="menu">
         <div className="menu-left">
-            {_.map(_.take(MENU_ITEMS, 3), ({text, path}, i) => (
+            {_.map(_.take(MENU_ITEMS, 4), ({text, path}, i) => (
                 <div key={`menu-item-${_.kebabCase(text)}`} className="menu-item">
                     <NavLink to={path} exact>{text}</NavLink>
                 </div>
@@ -34,7 +35,7 @@ const Menu = () => (
             ))}
             <div className="menu-item get-dad">
                 <div className="button fancy">
-                    <a target="_blank" rel="noopener noreferrer" href="https://defibox.io/pool-market-details/588">Get DAD</a>
+                    <a target="_blank" rel="noopener noreferrer" href="https://defibox.io/pool-market-details/588">Buy DAD</a>
                 </div>
             </div>
         </div>

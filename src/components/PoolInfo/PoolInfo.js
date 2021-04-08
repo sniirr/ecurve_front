@@ -5,9 +5,9 @@ import numeral from 'numeral'
 import classNames from 'classnames'
 import TokenSymbol from "components/TokenSymbol";
 import config from 'config'
-import {poolECRVApySelector, poolFeesApySelector, poolInfoSelector} from 'modules/pools'
+import {poolFeesApySelector, poolInfoSelector, poolTVLSelector} from 'modules/pools'
 import './PoolInfo.scss'
-import {maxDADApySelector} from "modules/ecrv";
+import PoolAPY from 'components/PoolAPY'
 
 const {POOLS} = config
 
@@ -15,10 +15,7 @@ const PoolInfo = ({poolId}) => {
 
     const poolBalances = useSelector(poolInfoSelector(poolId, 'balances'))
     const feesApy = useSelector(poolFeesApySelector(poolId))
-    const {basePoolApy, maxPoolApy} = useSelector(poolECRVApySelector(poolId))
-    const dadMaxApy = useSelector(maxDADApySelector)
-
-    const sumBalances = !_.isEmpty(poolBalances) && _.sum(_.map(_.values(poolBalances), parseFloat))
+    const tvl = useSelector(poolTVLSelector(poolId))
 
     return (
         <div className={classNames("top-section pool-info")}>
@@ -27,7 +24,7 @@ const PoolInfo = ({poolId}) => {
                 <div className="pool-tokens">
                     {_.map(POOLS[poolId].tokens, symbol => {
                         const tokenAmount = _.get(poolBalances, symbol, 0)
-                        const percentage = tokenAmount * 100 / sumBalances
+                        const percentage = tokenAmount * 100 / tvl
                         return (
                             <div key={`pool-info-token-${symbol}`} className="token-info">
                                 <TokenSymbol symbol={symbol}/>
@@ -38,24 +35,14 @@ const PoolInfo = ({poolId}) => {
                     })}
                     <div className="token-info">
                         <div>TVL (USDC + DAI + USDT)</div>
-                        <div className="tvl">{numeral(sumBalances).format('0,0.[000000]')}</div>
+                        <div className="tvl">{numeral(tvl).format('0,0.[000000]')}</div>
                     </div>
                 </div>
                 <div className="pool-apy">
                     <div>
                         <div>Liquidity Mining APY</div>
-                        <div className="apys">
-                            <div className="apy-sbs">
-                                <div className="text">Base</div>
-                                <div className="num">{basePoolApy.toFixed(2)}%</div>
-                            </div>
-                            <div className="apy-sbs">
-                                <div className="text">Max</div>
-                                <div className="num">{maxPoolApy.toFixed(2)}%</div>
-                            </div>
-                        </div>
+                        <PoolAPY poolId={poolId}/>
                     </div>
-                    <div className="apy">DAD Locking Max APY {dadMaxApy.toFixed(2)}%</div>
                 </div>
             </div>
         </div>
