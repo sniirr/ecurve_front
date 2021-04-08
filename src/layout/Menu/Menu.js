@@ -10,7 +10,7 @@ import config from 'config'
 const {MAIN_TOKEN, DAD_TOKEN} = config
 
 const MENU_ITEMS = [
-    {text: 'Root', path: '/'},
+    {text: 'Dashboard', path: '/'},
     {text: 'Exchange', path: '/exchange'},
     {text: 'Deposit', path: '/deposit'},
     {text: 'Withdraw', path: '/withdraw'},
