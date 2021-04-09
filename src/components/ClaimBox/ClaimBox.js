@@ -7,6 +7,7 @@ import {balancesSelector} from "modules/balances"
 import config from "config"
 import classNames from "classnames";
 import './ClaimBox.scss'
+import {amountToAsset} from "utils";
 
 const { MAIN_TOKEN, DAD_TOKEN } = config
 
@@ -43,16 +44,16 @@ const ClaimBox = () => {
                     <div className="claim-rows">
                         <div className="claim-row">
                             Liquidity Mining Rewards:
-                            <span className="claim-amount">{claimable.fromLP}</span> {MAIN_TOKEN}
+                            <span className="claim-amount">{amountToAsset(claimable.fromLP, MAIN_TOKEN, false, true)}</span> {MAIN_TOKEN}
                         </div>
                         <div className="claim-row">
                             DAD Locking Rewards:
-                            <span className="claim-amount">{claimable.fromDAD}</span> {MAIN_TOKEN}
+                            <span className="claim-amount">{amountToAsset(claimable.fromDAD, MAIN_TOKEN, false, true)}</span> {MAIN_TOKEN}
                         </div>
                         <div className="claim-row">
                             Admin Fees:
                             {_.size(claimable.adminFees) > 0 ? _.map(claimable.adminFees, (value, sym) => (
-                                <><span className="claim-amount">{value}</span> {sym}</>
+                                <><span className="claim-amount">{amountToAsset(value, sym, false, true)}</span> {sym}</>
                             )) : (
                                 <><span className="claim-amount">0</span> LP Tokens</>
                             )}

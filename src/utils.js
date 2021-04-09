@@ -102,7 +102,8 @@ const precisions = _.uniq(_.map(TOKENS, t => t.precision))
 const PRECISION_FORMAT = _.zipObject(
     precisions,
     _.map(precisions, p => {
-        let ps = '0,0.'
+        if (p === 0) return '0'
+        let ps = '0.'
         for (let i = 0; i < p; i++) {
             ps += '0'
         }
@@ -110,9 +111,10 @@ const PRECISION_FORMAT = _.zipObject(
     })
 )
 
-export const amountToAsset = (amount, symbol, withSymbol = true) => {
+export const amountToAsset = (amount, symbol, withSymbol = true, prettify = false) => {
     const precision = _.get(TOKENS, [symbol, 'precision'], 6)
-    return `${numeral(_.isString(amount) ? parseFloat(amount) : amount).format(PRECISION_FORMAT[precision])}${withSymbol ? (' ' + symbol) : ''}`
+    const format = prettify ? '0,' + PRECISION_FORMAT[precision] : PRECISION_FORMAT[precision]
+    return `${numeral(_.isString(amount) ? parseFloat(amount) : amount).format(format)}${withSymbol ? (' ' + symbol) : ''}`
 }
 
 export const parseAmount = (amount, symbol) => {

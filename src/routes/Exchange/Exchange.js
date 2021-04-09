@@ -137,7 +137,7 @@ function Exchange() {
                     <span className={classNames("receive-message")}>
                         {minReceiveAmount > 0 && (
                             <>
-                                Receive at least {amountToAsset(minReceiveAmount, toSymbol)}
+                                Receive at least {amountToAsset(minReceiveAmount, toSymbol, true, true)}
                             </>
                         )}
                     </span>

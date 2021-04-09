@@ -126,7 +126,7 @@ function Withdraw() {
             <span className="error">Burn amount exceeding {lpTokenSymbol} balance ({toBeBurned} {lpTokenSymbol})</span>
         )
 
-        return `${!isBalanced && !isWithdrawOne ? 'Max. ' : ''}${amountToAsset(toBeBurned, lpTokenSymbol)} will be burned`
+        return `${!isBalanced && !isWithdrawOne ? 'Max. ' : ''}${amountToAsset(toBeBurned, lpTokenSymbol, true, true)} will be burned`
     }
 
     return (
@@ -136,7 +136,7 @@ function Withdraw() {
                     <div className="left-side">
                         <div className="title">Withdraw {lpTokenSymbol}</div>
                         <div className="max-amount"
-                             onClick={() => onSliderChange(100)}>max: {amountToAsset(balances[lpTokenSymbol], lpTokenSymbol, true)}</div>
+                             onClick={() => onSliderChange(100)}>max: {amountToAsset(balances[lpTokenSymbol], lpTokenSymbol, true, true)}</div>
                         <div className="input slider">
                             <Slider marks={{0: '0%', 25: '25%', 50: '50%', 75: '75%', 100: '100%'}}
                                     value={shareOfLiquidity >= 0 ? shareOfLiquidity : 0}

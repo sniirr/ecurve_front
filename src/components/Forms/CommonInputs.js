@@ -39,7 +39,7 @@ export const AssetInput = ({symbol, name = "amount", label, apiKey, maxAmount, w
                 )}
                 <div className="max-amount">
                     {withMax && (
-                        <span onClick={_onMaxClick}>max: {amountToAsset(maxAmount, symbol, false)}</span>
+                        <span onClick={_onMaxClick}>max: {amountToAsset(maxAmount, symbol, false, true)}</span>
                     )}
                 </div>
             </div>

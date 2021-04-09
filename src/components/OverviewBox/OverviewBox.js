@@ -64,7 +64,7 @@ const OverviewBox = () => {
                         </div>
                         <div>
                             <div className="text-small">Round Distribution</div>
-                            <div className="num">{amountToAsset(currround_amount, MAIN_TOKEN)}</div>
+                            <div className="num">{amountToAsset(currround_amount, MAIN_TOKEN, true, true)}</div>
                         </div>
                     </div>
                     <div className="right">
@@ -76,7 +76,7 @@ const OverviewBox = () => {
                             </div>
                             <div>
                                 <div className="text-small">Circulating Supply</div>
-                                <div className="num">{amountToAsset(totalSupply, MAIN_TOKEN)}</div>
+                                <div className="num">{amountToAsset(totalSupply, MAIN_TOKEN, true, true)}</div>
                             </div>
                         </div>
                         <div className="sbs">

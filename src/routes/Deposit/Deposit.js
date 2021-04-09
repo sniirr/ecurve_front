@@ -124,8 +124,8 @@ function Deposit() {
                     <span className="receive-message">
                         {receiveAmount > 0 && (
                             <>
-                                <div style={{marginBottom: 8}}>You will receive {amountToAsset(receiveAmountWithoutSlippage, lpTokenSymbol)} {bonusText}</div>
-                                <div className="text-small">(At least {amountToAsset(receiveAmount, lpTokenSymbol)} with {slippage}% max slippage)</div>
+                                <div style={{marginBottom: 8}}>You will receive {amountToAsset(receiveAmountWithoutSlippage, lpTokenSymbol, true, true)} {bonusText}</div>
+                                <div className="text-small">(At least {amountToAsset(receiveAmount, lpTokenSymbol, true, true)} with {slippage}% max slippage)</div>
                             </>
                         )}
                     </span>

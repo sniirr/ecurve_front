@@ -15,6 +15,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faClock} from "@fortawesome/free-regular-svg-icons";
 import useLocking from "hooks/useLocking";
 import usePoolLoader from "hooks/usePoolLoader";
+import {amountToAsset} from "../../utils";
 
 const {MAIN_TOKEN, TOKENS, POOLS} = config
 
@@ -62,8 +63,8 @@ const StakeLPToken = ({poolId}) => {
         if (!hasStaked || ecrv_for_max_boost <= 0) return null
 
         const text = lockedBalance > 0 && ecrv_for_max_boost > lockedBalance
-            ? `Lock additional ${(ecrv_for_max_boost - lockedBalance).toFixed(6)}`
-            : `Lock total of ${ecrv_for_max_boost.toFixed(6)}`
+            ? `Lock additional ${(amountToAsset(ecrv_for_max_boost - lockedBalance, MAIN_TOKEN, false, true))}`
+            : `Lock total of ${amountToAsset(ecrv_for_max_boost, MAIN_TOKEN, false, true)}`
 
         return (
             <div className="info">
