@@ -1,8 +1,3 @@
-import daiImg from 'images/dai.png'
-import usdcImg from 'images/usdc.svg'
-import usdtImg from 'images/usdt.svg'
-import _ from "lodash";
-
 export const ENVIRONMENT = 'development'
 
 export const CHAIN = {
@@ -45,26 +40,23 @@ export const POOLS = {
     }
 }
 
-export const LP_TOKENS = _.map(POOLS, 'lpTokenSymbol')
+export const LP_TOKENS = ['TRIPOOL']
 
 export const TOKENS = {
     USDC: {
         symbol: 'USDC',
         contract: CONTRACTS.LPTokens,
         precision: 6,
-        icon: usdcImg,
     },
     DAI: {
         symbol: 'DAI',
         contract: CONTRACTS.LPTokens,
         precision: 6,
-        icon: daiImg,
     },
     USDT: {
         symbol: 'USDT',
         contract: 'curvetoken33',
         precision: 4,
-        icon: usdtImg,
     },
     EPOOL: {
         symbol: 'EPOOL',

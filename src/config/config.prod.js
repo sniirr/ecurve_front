@@ -1,9 +1,3 @@
-import daiImg from 'images/dai.png'
-import usdcImg from 'images/usdc.svg'
-import usdtImg from 'images/usdt.svg'
-import usnImg from 'images/usn.png'
-import eCurveLogo from 'images/ecurve-logo.png'
-
 export const ENVIRONMENT = 'production'
 
 export const CHAIN = {
@@ -149,19 +143,16 @@ export const TOKENS = {
         symbol: 'USDC',
         contract: CONTRACTS.dadUsdTokens,
         precision: 6,
-        icon: usdcImg,
     },
     DAI: {
         symbol: 'DAI',
         contract: CONTRACTS.dadUsdTokens,
         precision: 6,
-        icon: daiImg,
     },
     USDT: {
         symbol: 'USDT',
         contract: 'tethertether',
         precision: 4,
-        icon: usdtImg,
     },
     TRIPOOL: {
         symbol: 'TRIPOOL',
@@ -169,14 +160,12 @@ export const TOKENS = {
         stakeContract: CONTRACTS.LPDeposit,
         stakeTable: 'stake',
         precision: 6,
-        icon: eCurveLogo
     },
 
     USN: {
         symbol: 'USN',
         contract: 'danchortoken',
         precision: 4,
-        icon: usnImg,
     },
     USNPOOL: {
         symbol: 'USNPOOL',
