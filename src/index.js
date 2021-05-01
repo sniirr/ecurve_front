@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import App from 'layout/App';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from 'react-redux';
-import {makeStore} from './store';
+import {makeStore} from 'store';
 import {UALProvider, withUAL} from 'ual-reactjs-renderer'
 import {Scatter} from 'ual-scatter'
 import {Anchor} from 'ual-anchor'

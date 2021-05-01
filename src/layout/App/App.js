@@ -3,6 +3,7 @@ import _ from 'lodash'
 import {useDispatch, useSelector} from "react-redux";
 import {ToastContainer} from 'react-toastify';
 import {BrowserRouter as Router} from "react-router-dom"
+import {selectedPoolSelector} from "store/uiReducer";
 import Header from 'layout/Header'
 import Main from 'layout/Main'
 import Footer from 'layout/Footer'
@@ -11,7 +12,6 @@ import 'react-toastify/dist/ReactToastify.css'
 import 'css/common.scss';
 import 'components/Forms/Forms.scss';
 import './App.scss';
-import {selectedPoolSelector} from "store/uiReducer";
 
 function App({ual}) {
 
