@@ -3,7 +3,7 @@ import {increaseLockPeriod} from "modules/wallet";
 import {useDispatch, useSelector} from "react-redux";
 import {useForm} from "react-hook-form";
 import _ from 'lodash'
-import {LockPeriodInput} from "./CommonInputs";
+import LockPeriodInput from "components/Inputs/LockPeriodInput";
 import useLocking from "hooks/useLocking";
 import {getMinLockHours, getVCRVString} from "utils";
 import Button from "../Inputs/Button";

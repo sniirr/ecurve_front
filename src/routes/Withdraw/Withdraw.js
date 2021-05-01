@@ -6,7 +6,7 @@ import {toFloat, amountToAsset} from "utils";
 import _ from 'lodash'
 import Slider from 'rc-slider';
 import TokenRadioButtons from 'components/Inputs/TokenRadioButtons'
-import {AssetInput} from "components/Forms/CommonInputs";
+import AssetInput from "components/Inputs/AssetInput"
 import useFormulas from "hooks/useFormulas";
 import useApiStatus from "hooks/useApiStatus";
 import SlippageInput from "components/Inputs/SlippageInput";

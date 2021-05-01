@@ -1,0 +1,13 @@
+.input.asset-input {
+
+  .label-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin-bottom: 3px;
+
+    &.with-symbol {
+      justify-content: space-between;
+    }
+  }
+}

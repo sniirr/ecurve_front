@@ -1,10 +1,11 @@
 import React from 'react'
 import classNames from "classnames";
+import './Checkbox.scss'
 
 function Checkbox({className, name, checked, onChange, children}) {
 
     return (
-        <div className={classNames("input checkbox", className)}>
+        <div className={classNames("checkbox", className)}>
             <input type="checkbox" name={name} />
             <div className={classNames("cbx", {checked})} onClick={onChange}>
                 <div className="cbx-left"/>

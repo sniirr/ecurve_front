@@ -4,6 +4,7 @@ import StakeAndLockECRV from "./StakeAndLockECRV"
 import StakeLPToken from "./StakeLPToken"
 import config from 'config'
 import {useLocation} from "react-router-dom"
+import './StakeAndLock.scss'
 
 const {POOLS, DAD_TOKEN} = config
 

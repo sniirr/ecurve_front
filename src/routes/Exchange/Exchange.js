@@ -3,7 +3,7 @@ import {exchange} from "modules/ecrv.txs";
 import {useDispatch, useSelector} from "react-redux";
 import {useForm} from "react-hook-form";
 import _ from 'lodash'
-import {AssetInput} from "components/Forms/CommonInputs";
+import AssetInput from "components/Inputs/AssetInput"
 import useFormulas from "hooks/useFormulas";
 import useApiStatus from "hooks/useApiStatus";
 import usePoolLoader from 'hooks/usePoolLoader'

@@ -2,7 +2,8 @@ import React from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {useForm} from "react-hook-form";
 import _ from 'lodash'
-import {AssetInput, LockPeriodInput} from "./CommonInputs";
+import LockPeriodInput from "components/Inputs/LockPeriodInput";
+import AssetInput from "components/Inputs/AssetInput"
 import {getMinLockHours, getVCRVString} from "utils";
 import Button from "../Inputs/Button";
 import classNames from 'classnames'

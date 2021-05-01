@@ -92,7 +92,7 @@ export const StakeAndLockDAD = () => {
                     </div>
                 </div>
                 {renderTopContent()}
-                <div className={classNames("stake-unstake", {'wide-right': true, 'with-columns': true})}>
+                <div className={classNames("stake-unstake", {'wide-right': true})}>
                     {renderContent()}
                 </div>
                 {renderWarningMessage()}

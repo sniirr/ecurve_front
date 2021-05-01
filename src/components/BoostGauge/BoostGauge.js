@@ -1,6 +1,6 @@
 import React from 'react'
 import GaugeChart from 'react-gauge-chart'
-import './Gauge.scss'
+import './BoostGauge.scss'
 
 const colors = ['#dc6868', '#dcb668', '#74a274']
 const disabledColors = ['#464a4f', '#464a4f', '#464a4f']

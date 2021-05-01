@@ -1,0 +1,57 @@
+@import "css/vars";
+
+.input.lock-period {
+  margin: 20px 0 0;
+
+  .input-row {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .react-datepicker-wrapper {
+      margin: 0 10px;
+      width: 155px;
+    }
+  }
+
+  .intervals {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: -11px;
+
+    .interval {
+      background-color: $success;
+      color: white;
+      padding: 10px 15px;
+      margin: 0 0 11px 0;
+      cursor: pointer;
+      text-align: center;
+      width: 106px;
+
+      &.selected {
+        border-color: white;
+        cursor: default;
+      }
+
+      &.disabled {
+        background-color: $gray;
+        cursor: default;
+      }
+    }
+  }
+}
+
+form.full-width {
+  .input.lock-period {
+    .intervals {
+      justify-content: flex-start;
+
+      .interval {
+        margin: 0 14px 15px 0;
+      }
+    }
+  }
+}

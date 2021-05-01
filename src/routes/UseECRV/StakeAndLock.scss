@@ -1,0 +1,116 @@
+@import "css/vars";
+
+.section.stake-and-lock {
+
+  &.boost {
+    min-height: 420px;
+  }
+
+  h4 {
+    margin-top: 0;
+  }
+
+  .claim-box {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .unlock-time {
+    .weight {
+      margin-top: 30px;
+      color: $success;
+    }
+  }
+
+  .boost-section {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    margin-bottom: 30px;
+
+    .boost-info {
+
+      .info:not(:last-child) {
+        margin-bottom: 25px;
+      }
+
+      svg {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .stake-unstake {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+
+    form {
+      width: 314px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+
+      input[type=submit] {
+        float: right;
+      }
+
+      .form-inputs {
+        flex-grow: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+    }
+
+    &.wide-right {
+      form:nth-child(1) {
+        width: 276px
+      }
+
+      form:nth-child(2) {
+        width: 352px
+      }
+
+      .submit-container {
+        margin-top: 30px;
+        flex-direction: column;
+        align-items: flex-end;
+
+        .receive-message {
+          height: 20px;
+          font-size: .8em;
+          text-align: right;
+        }
+      }
+    }
+
+    .form {
+      width: 45%;
+
+      form {
+        width: 100%;
+        margin-top: 30px;
+        padding-top: 30px;
+        border-top: solid 1px #ccc;
+
+        &:first-child {
+          margin-top: 0;
+          padding-top: 0;
+          border: none;
+        }
+      }
+    }
+
+    .inc-lock-form {
+      margin-top: 30px;
+    }
+
+    form.full-width {
+      width: 100% !important;
+    }
+  }
+}

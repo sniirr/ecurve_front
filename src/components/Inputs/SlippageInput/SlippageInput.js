@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
 import _ from 'lodash'
-import Checkbox from "components/Inputs/Checkbox";
+import Checkbox from "components/Inputs/Checkbox"
+import './SlippageInput.scss'
 
-function SlippageInput({slippage, setSlippage, options = ['0.1', '1']}) {
+const SlippageInput = ({slippage, setSlippage, options = ['0.1', '1']}) => {
 
     const [customSlippage, setCustomSlippage] = useState(false)
 

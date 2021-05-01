@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import _ from "lodash";
 import useOnLogin from "hooks/useOnLogin";
 import {boostSelector} from "modules/boost";
-import BoostGauge from 'components/Gauge/BoostGauge'
+import BoostGauge from 'components/BoostGauge'
 import {getTempLockArgs} from "routes/UseECRV/UseECRV.reducer";
 import {poolFeesApySelector, poolECRVApySelector} from 'modules/pools'
 import config from 'config'
@@ -15,7 +15,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faClock} from "@fortawesome/free-regular-svg-icons";
 import useLocking from "hooks/useLocking";
 import usePoolLoader from "hooks/usePoolLoader";
-import {amountToAsset} from "../../utils";
+import {amountToAsset} from "utils";
 
 const {MAIN_TOKEN, TOKENS, POOLS} = config
 

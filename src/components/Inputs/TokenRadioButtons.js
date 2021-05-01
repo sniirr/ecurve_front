@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import TokenSymbol from "components/TokenSymbol"
-import Checkbox from './Checkbox'
+import Checkbox from 'components/Inputs/Checkbox'
 
 function TokenRadioButtons({tokens, name, selected, onChange, required}) {
 

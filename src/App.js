@@ -9,6 +9,7 @@ import Footer from 'layout/Footer'
 import 'rc-slider/assets/index.css';
 import 'react-toastify/dist/ReactToastify.css'
 import 'css/common.scss';
+import 'components/Forms/Forms.scss';
 import './App.scss';
 import {selectedPoolSelector} from "store/uiReducer";
 

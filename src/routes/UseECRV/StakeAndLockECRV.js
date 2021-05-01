@@ -42,7 +42,7 @@ const LockToken = ({symbol}) => {
 
     return (
         <div
-            className={classNames("stake-unstake", {'wide-right': !displayLockForm, 'with-columns': !displayLockForm})}>
+            className={classNames("stake-unstake", {'wide-right': !displayLockForm})}>
             {displayLockForm ? (
                 <LockForm lock={lock} symbol={symbol} intervals={LOCK_INTERVALS[symbol]}/>
             ) : (

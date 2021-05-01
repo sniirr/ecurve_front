@@ -92,6 +92,16 @@ input {
   margin: 0 14px 0 7px;
 }
 
+.max-amount {
+  text-align: right;
+  font-size: 0.9em;
+  cursor: pointer;
+
+  span {
+    cursor: pointer;
+  }
+}
+
 .disable-cover {
   position: absolute;
   top: -20px;
@@ -140,6 +150,39 @@ input {
   justify-content: center;
 }
 
+.slider {
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
+  margin-bottom: 0;
+
+  .rc-slider {
+    .rc-slider-rail {
+      background-color: $gray;
+    }
+
+    .rc-slider-track {
+      background-color: $brand-mid;
+    }
+
+    .rc-slider-dot {
+      border-color: $brand-mid;
+    }
+
+    .rc-slider-handle {
+      border-color: $brand-mid;
+    }
+
+    .rc-slider-mark-text {
+      color: $mid-gray;
+    }
+
+    .rc-slider-mark-text-active {
+      color: white;
+    }
+  }
+}
+
 .Toastify__toast-container--top-right {
   top: 85px;
   right: 80px;
@@ -152,85 +195,4 @@ input {
 
 .Toastify__toast--error {
   background-color: $error;
-}
-
-input[type=checkbox] {
-  visibility: hidden;
-}
-
-.cbx {
-  width: 16px;
-  height: 16px;
-  position: absolute;
-  margin: 3px;
-  cursor: pointer;
-
-  .cbx-left {
-    height: 100%;
-    width: 25%;
-    position: absolute;
-    content: '';
-
-    &:before {
-      height: 25%;
-      width: 100%;
-      position: absolute;
-      content: '';
-      border-left: solid 1px;
-      border-top: solid 1px;
-    }
-
-    &:after {
-      height: 25%;
-      width: 100%;
-      position: absolute;
-      bottom: 0;
-      content: '';
-      border-left: solid 1px;
-      border-bottom: solid 1px;
-    }
-  }
-
-  .cbx-right {
-    height: 100%;
-    width: 25%;
-    position: absolute;
-    content: '';
-    right: 0;
-
-    &:before {
-      height: 25%;
-      width: 100%;
-      position: absolute;
-      content: '';
-      border-right: solid 1px;
-      border-top: solid 1px;
-    }
-
-    &:after {
-      height: 25%;
-      width: 100%;
-      position: absolute;
-      bottom: 0;
-      content: '';
-      border-right: solid 1px;
-      border-bottom: solid 1px;
-    }
-  }
-
-  .cbx-checked {
-    width: 6px;
-    height: 6px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-left: 1px;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    border-radius: 50%;
-  }
-
-  &.checked {
-    cursor: default;
-  }
 }

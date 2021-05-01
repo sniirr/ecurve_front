@@ -3,7 +3,7 @@ import {increaseLockedAmount} from "modules/wallet";
 import {useDispatch, useSelector} from "react-redux";
 import {useForm} from "react-hook-form";
 import _ from 'lodash'
-import {AssetInput} from "./CommonInputs";
+import AssetInput from "components/Inputs/AssetInput"
 import useLocking from "hooks/useLocking";
 import {getVCRVString} from "utils";
 import Button from "../Inputs/Button";

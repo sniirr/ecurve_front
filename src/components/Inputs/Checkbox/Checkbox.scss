@@ -1,0 +1,106 @@
+
+.checkbox {
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+  position: relative;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &.cbx-inline {
+    width: unset;
+    margin: 0 0 0 15px;
+
+    input[type=checkbox] {
+      margin-right: 3px;
+    }
+  }
+
+  input[type=checkbox] {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    visibility: hidden;
+  }
+
+  .cbx {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    margin: 3px;
+    cursor: pointer;
+
+    .cbx-left {
+      height: 100%;
+      width: 25%;
+      position: absolute;
+      content: '';
+
+      &:before {
+        height: 25%;
+        width: 100%;
+        position: absolute;
+        content: '';
+        border-left: solid 1px;
+        border-top: solid 1px;
+      }
+
+      &:after {
+        height: 25%;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        content: '';
+        border-left: solid 1px;
+        border-bottom: solid 1px;
+      }
+    }
+
+    .cbx-right {
+      height: 100%;
+      width: 25%;
+      position: absolute;
+      content: '';
+      right: 0;
+
+      &:before {
+        height: 25%;
+        width: 100%;
+        position: absolute;
+        content: '';
+        border-right: solid 1px;
+        border-top: solid 1px;
+      }
+
+      &:after {
+        height: 25%;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        content: '';
+        border-right: solid 1px;
+        border-bottom: solid 1px;
+      }
+    }
+
+    .cbx-checked {
+      width: 6px;
+      height: 6px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: 1px;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      border-radius: 50%;
+    }
+
+    &.checked {
+      cursor: default;
+    }
+  }
+}

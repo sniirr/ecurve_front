@@ -3,7 +3,7 @@ import {deposit} from "modules/ecrv.txs";
 import {useDispatch, useSelector} from "react-redux";
 import {useForm} from "react-hook-form";
 import _ from 'lodash'
-import {AssetInput} from "components/Forms/CommonInputs";
+import AssetInput from "components/Inputs/AssetInput"
 import useFormulas from "hooks/useFormulas"
 import Checkbox from "components/Inputs/Checkbox";
 import SlippageInput from 'components/Inputs/SlippageInput'
@@ -24,7 +24,6 @@ function Deposit() {
 
     const apiKey = "deposit"
 
-    // const poolId = '3POOL'
     const poolId = useSelector(selectedPoolSelector)
     const {tokens, lpTokenSymbol} = POOLS[poolId]
 

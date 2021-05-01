@@ -1,12 +1,10 @@
 import React from 'react'
-import TokenSymbol from "../TokenSymbol/TokenSymbol";
+import TokenSymbol from "components/TokenSymbol"
 import _ from 'lodash'
 import classNames from 'classnames'
-import {addHours, differenceInHours} from "date-fns"
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import {getMinLockHours, amountToAsset, getMaxLockHours, getTimePeriodHoursValue} from "utils";
-import useApiStatus from "hooks/useApiStatus";
+import {amountToAsset} from "utils";
+import useApiStatus from "hooks/useApiStatus"
+import './AssetInput.scss'
 
 
 export const AssetInput = ({symbol, name = "amount", label, apiKey, maxAmount, withSymbol, register, setValue, onChange, error, disabled, canBeZero, ...inputProps}) => {
@@ -29,7 +27,7 @@ export const AssetInput = ({symbol, name = "amount", label, apiKey, maxAmount, w
     const hasError = !_.isNil(error)
 
     return (
-        <div className={classNames("input", {'with-error': hasError})}>
+        <div className={classNames("input asset-input", {'with-error': hasError})}>
             <div className={classNames("label-row", {'with-symbol': withSymbol || !_.isEmpty(label)})}>
                 {withSymbol && (
                     <TokenSymbol symbol={symbol}/>
@@ -62,38 +60,4 @@ export const AssetInput = ({symbol, name = "amount", label, apiKey, maxAmount, w
     )
 }
 
-export const LockPeriodInput = ({intervals, remainingLock = 0, selected, onChange}) => {
-
-    const now = new Date()
-    const minHours = getMinLockHours(intervals)
-    const maxHours = getMaxLockHours(intervals)
-    const minDate = addHours(now, remainingLock > minHours ? remainingLock : minHours)
-    const maxDate = addHours(now, maxHours)
-    const selection = addHours(now, selected)
-
-    const onCalendarChange = date => {
-        const hourDiff = differenceInHours(date, now) + 1
-        onChange(hourDiff)
-    }
-
-    return (
-        <div className="input lock-period">
-            <div className="input-row">
-                <div>Lock Until:</div>
-                <DatePicker dateFormat="dd MMM yyyy hh:mm" showYearDropdown showMonthDropdown
-                            minDate={minDate} maxDate={maxDate} selected={selection} onChange={onCalendarChange}/>
-            </div>
-            <div className="intervals">
-                {_.map(intervals, ({text, interval}, i) => {
-                    const value = getTimePeriodHoursValue(interval)
-                    const isDisabled =  remainingLock > 0 && value <=  remainingLock
-                    const classes = classNames("interval", {disabled: isDisabled})
-                    return (
-                        <div key={`interval-${i}`} className={classes}
-                             onClick={() => !isDisabled && onChange(value)}>{text}</div>
-                    )
-                })}
-            </div>
-        </div>
-    )
-}
+export default AssetInput
