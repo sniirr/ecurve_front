@@ -9,7 +9,7 @@ import {
 import _ from "lodash";
 import config from 'config'
 import {createSelector} from "reselect";
-import {nextRoundEcrvInUsdtSelector} from './ecrv'
+import {poolConfigSelector, nextRoundEcrvInUsdtSelector} from './ecrv'
 import {tokenPriceSelector} from "./prices";
 
 const {CONTRACTS, POOLS, MAIN_TOKEN} = config
@@ -48,14 +48,14 @@ const fetchPoolTotalWeight = (code, scope) => fetchOne({
     table: 'totwght',
 })
 
-export const fetchPoolWeights = (activeUser, poolId, scope) => async dispatch => {
+export const fetchPoolWeights = (activeUser, poolId, scope) => async (dispatch, getState) => {
 
     const apiKey = `pool-weights-${poolId}`
 
     dispatch(setStatus(apiKey, {status: 'pending'}))
 
     try {
-        const {depositContract} = POOLS[poolId]
+        const {depositContract} = poolConfigSelector(poolId)(getState())
         const data = await Promise.all([
             fetchPoolUserWeight(activeUser, depositContract, scope),
             fetchPoolTotalWeight(depositContract, scope),
@@ -127,14 +127,15 @@ export const fetchDefiboxPoolData = poolId => async dispatch => {
     }
 }
 
-export const fetchPoolData = poolId => async dispatch => {
-
-    const {lpTokenSymbol, poolContract, depositContract} = POOLS[poolId]
-
-    dispatch(fetchPoolBalances(poolId))
-
+export const fetchPoolData = poolId => async (dispatch, getState) => {
     const apiKey = `pool-stats-${poolId}`
+
     try {
+        const {lpTokenSymbol, poolContract} = POOLS[poolId]
+        const {depositContract} = poolConfigSelector(poolId)(getState())
+
+        dispatch(fetchPoolBalances(poolId))
+
         const data = await Promise.all([
             fetchTokenStats({contract: CONTRACTS.LPTokens, symbol: lpTokenSymbol}),
             fetchOne({code: poolContract, scope: poolContract, table: 'priceinfo1'}),
@@ -204,12 +205,11 @@ export const poolFeesApySelector = poolId => state => {
 export const poolECRVApySelector = poolId => createSelector(
     nextRoundEcrvInUsdtSelector,
     poolInfoSelector(poolId, 'stats'),
-    (next_round_ecrv_in_usdt, {price: lpTokenPrice, totalStake}) => {
+    poolConfigSelector(poolId),
+    (next_round_ecrv_in_usdt, {price: lpTokenPrice, totalStake}, {poolMiningWeight}) => {
         if (!(next_round_ecrv_in_usdt > 0 && lpTokenPrice > 0)) return {basePoolApy: 0, maxPoolApy: 0}
 
         const total_stake_in_usdt = totalStake * lpTokenPrice
-
-        const {poolMiningWeight} = POOLS[poolId]
 
         const maxPoolApy = 365 * 100 * 24 * poolMiningWeight * next_round_ecrv_in_usdt / total_stake_in_usdt
         return {

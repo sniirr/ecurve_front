@@ -148,11 +148,12 @@ export const Pools = () => {
                     </div>
                     <div className="column col-actions"/>
                 </div>
-                {_.map(group, ({id: poolId, name}) => {
+                {_.map(group, ({id: poolId}) => {
+                    const key = `pool-item-${poolId}`
                     return poolId === 'DADGOV' ? (
-                        <DADPool poolId={poolId}/>
+                        <DADPool key={key} poolId={poolId}/>
                     ) : (
-                        <Pool key={`pool-list-item-${poolId}`} poolId={poolId} isEcurve={isEcurve}/>
+                        <Pool key={key} poolId={poolId} isEcurve={isEcurve}/>
                     )
                 })}
             </div>

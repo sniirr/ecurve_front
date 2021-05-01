@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {ToastContainer} from 'react-toastify';
 import {BrowserRouter as Router} from "react-router-dom"
 import {selectedPoolSelector} from "store/uiReducer";
+import {fetchPoolsConfig} from 'modules/ecrv'
 import Header from 'layout/Header'
 import Main from 'layout/Main'
 import Footer from 'layout/Footer'
@@ -12,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import 'css/common.scss';
 import 'components/Forms/Forms.scss';
 import './App.scss';
+import ApiSuspense from "components/Inputs/ApiSuspense";
 
 function App({ual}) {
 
@@ -28,6 +30,10 @@ function App({ual}) {
         }
     }, [accountName])
 
+    useEffect(() => {
+        dispatch(fetchPoolsConfig())
+    }, [])
+
     const isLoggedIn = !_.isEmpty(accountName)
 
     return (
@@ -35,9 +41,11 @@ function App({ual}) {
             <Header ual={ual}/>
             <div className="main-scroll">
                 <Router>
-                    <Main ual={ual} poolId={poolId} isLoggedIn={isLoggedIn}/>
+                    <ApiSuspense apiKey="fetch-pools-config" withLoader={false}>
+                        <Main ual={ual} poolId={poolId} isLoggedIn={isLoggedIn}/>
+                        <Footer/>
+                    </ApiSuspense>
                 </Router>
-                <Footer/>
             </div>
             <ToastContainer/>
         </div>

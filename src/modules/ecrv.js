@@ -1,5 +1,5 @@
 import {makeReducer, reduceUpdateFull} from "utils";
-import {fetchOne, fetchOneByPk, fetchTokenStats} from "modules/api"
+import {fetchOne, fetchOneByPk, fetchTokenStats, getTableData} from "modules/api"
 import _ from "lodash";
 import config from 'config'
 import {createSelector} from "reselect";
@@ -25,6 +25,41 @@ export const fetchTotalECRVLocked = () => fetchOne({
     scope: CONTRACTS.curveLock,
     table: 'totallock1',
 })
+
+export const fetchPoolsConfig = () => async dispatch =>{
+    try {
+
+        dispatch(getTableData({
+            code: CONTRACTS.claimCurveLP,
+            scope: CONTRACTS.claimCurveLP,
+            table: 'tokdistr',
+            limit: 20,
+        }, {
+            apiKey: 'fetch-pools-config',
+            callback: res => {
+                console.log(JSON.stringify(res, null, 2))
+                const poolsConfig = _.map(res.rows, ({dtoken, dtokcon, weight}) => {
+                    const [precision, symbol] = _.split(dtoken, ',')
+                    return {
+                        precision: parseInt(precision),
+                        symbol,
+                        poolMiningWeight: weight / 100,
+                        depositContract: dtokcon,
+                    }
+                })
+
+                dispatch({
+                    type: 'SET_TOKEN_STATS',
+                    payload: {
+                        poolsConfig: _.keyBy(poolsConfig, 'symbol')
+                    },
+                })
+            }
+        }))
+    } catch (e) {
+
+    }
+}
 
 export const fetchEcrvStats = () => async dispatch => {
     try {
@@ -138,6 +173,8 @@ export const maxDADApySelector = createSelector(
         return 365 * 100 * 24 * 0.15 * next_round_ecrv_in_usdt / total_stake_in_usdt
     }
 )
+
+export const poolConfigSelector = poolId => state => _.get(state, `ecrv.poolsConfig.${poolId}`, {})
 
 const INITIAL_STATE = {}
 
