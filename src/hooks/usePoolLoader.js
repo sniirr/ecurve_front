@@ -16,11 +16,11 @@ function usePoolLoader(poolId) {
 
     const accountName = activeUser?.accountName
 
-    const is3rdPartyPool = !_.isNil(_.get(POOLS, [poolId, 'operator']))
+    const is3rdPartyPool = _.get(POOLS, [poolId, 'operator']) !== 'eCurve'
 
     useEffect(() => {
         dispatch(is3rdPartyPool ? fetchDefiboxPoolData(poolId) : fetchPoolData(poolId))
-    }, [])
+    }, [poolId])
 
     useOnLogin(() => {
         if (!is3rdPartyPool) {

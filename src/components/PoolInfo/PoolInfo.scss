@@ -2,6 +2,42 @@
 
 .App .top-section.pool-info {
 
+  .top-section-title {
+    .pool-title {
+      position: relative;
+      cursor: pointer;
+
+      .pool-name {
+        margin-right: 5px;
+      }
+
+      .pool-select {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: $brand-dark;
+        padding-top: 10px;
+
+        .item {
+          font-size: .8em;
+          padding: 12px 36px;
+
+          &:not(:last-child) {
+            border-bottom: solid 1px white;
+          }
+        }
+      }
+
+      &.menu-visible {
+        .pool-select {
+          display: block;
+        }
+      }
+    }
+  }
+
   .top-section-content {
     background-image: linear-gradient(to left top, $brand-dark -40px, $brand-mid 60px, $brand-dark) !important;
   }

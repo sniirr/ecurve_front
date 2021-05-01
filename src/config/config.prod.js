@@ -3,7 +3,6 @@ import usdcImg from 'images/usdc.svg'
 import usdtImg from 'images/usdt.svg'
 import usnImg from 'images/usn.png'
 import eCurveLogo from 'images/ecurve-logo.png'
-import _ from "lodash";
 
 export const ENVIRONMENT = 'production'
 
@@ -45,6 +44,7 @@ export const POOLS = {
     '3POOL': {
         id: '3POOL',
         name: '3Pool',
+        operator: 'eCurve',
         poolContract: CONTRACTS.curve3Pool,
         depositContract: CONTRACTS.LPDeposit,
         tokens: ["USDC", "DAI", "USDT"],
@@ -54,96 +54,97 @@ export const POOLS = {
     'USNPOOL': {
         id: 'USNPOOL',
         name: 'USNPool',
+        operator: 'eCurve',
         poolContract: CONTRACTS.curveUSNPool,
         depositContract: CONTRACTS.depositUSNLP,
         tokens: ["USN", "TRIPOOL"],
         lpTokenSymbol: 'USNPOOL', // TRIPOOL
         poolMiningWeight: 0.06,
     },
-    // 'DADGOV': {
-    //     id: 'DADGOV',
-    //     name: 'DAD Governance',
-    //     operator: 'DAD',
-    //     poolContract: CONTRACTS.dadLock,
-    //     depositContract: CONTRACTS.dadLock,
-    //     lpTokenSymbol: 'DAD',
-    //     pairId: '588',
-    //     poolMiningWeight: 0.15,
-    // },
-    // 'BOXAVG': {
-    //     id: 'BOXAVG',
-    //     name: 'EOS/USDC',
-    //     operator: 'Defibox',
-    //     poolContract: 'dpositboxavg',
-    //     depositContract: 'dpositboxavg',
-    //     lpTokenSymbol: 'BOXAVG', // TRIPOOL
-    //     pairId: '1255',
-    //     poolMiningWeight: 0.03,
-    // },
-    // 'BOXAUQ': {
-    //     id: 'BOXAUQ',
-    //     name: 'EOS/DAI',
-    //     operator: 'Defibox',
-    //     poolContract: 'dpositboxauq',
-    //     depositContract: 'dpositboxauq',
-    //     lpTokenSymbol: 'BOXAUQ', // TRIPOOL
-    //     pairId: '1239',
-    //     poolMiningWeight: 0.03,
-    // },
-    // 'BOXAYO': {
-    //     id: 'BOXAYO',
-    //     name: 'ECRV/USDC',
-    //     operator: 'Defibox',
-    //     poolContract: 'dpositboxayo',
-    //     depositContract: 'dpositboxayo',
-    //     lpTokenSymbol: 'BOXAYO', // TRIPOOL
-    //     pairId: '1341',
-    //     poolMiningWeight: 0.005,
-    // },
-    // 'BOXAYP': {
-    //     id: 'BOXAYP',
-    //     name: 'ECRV/DAI',
-    //     operator: 'Defibox',
-    //     poolContract: 'dpositboxayp',
-    //     depositContract: 'dpositboxayp',
-    //     lpTokenSymbol: 'BOXAYP', // TRIPOOL
-    //     pairId: '1342',
-    //     poolMiningWeight: 0.005,
-    // },
+    'DADGOV': {
+        id: 'DADGOV',
+        name: 'DAD Governance',
+        operator: 'DAD',
+        poolContract: CONTRACTS.dadLock,
+        depositContract: CONTRACTS.dadLock,
+        lpTokenSymbol: 'DAD',
+        pairId: '588',
+        poolMiningWeight: 0.15,
+    },
+    'BOXAVG': {
+        id: 'BOXAVG',
+        name: 'EOS/USDC',
+        operator: 'Defibox',
+        poolContract: 'dpositboxavg',
+        depositContract: 'dpositboxavg',
+        lpTokenSymbol: 'BOXAVG', // TRIPOOL
+        pairId: '1255',
+        poolMiningWeight: 0.03,
+    },
+    'BOXAUQ': {
+        id: 'BOXAUQ',
+        name: 'EOS/DAI',
+        operator: 'Defibox',
+        poolContract: 'dpositboxauq',
+        depositContract: 'dpositboxauq',
+        lpTokenSymbol: 'BOXAUQ', // TRIPOOL
+        pairId: '1239',
+        poolMiningWeight: 0.03,
+    },
+    'BOXAYO': {
+        id: 'BOXAYO',
+        name: 'ECRV/USDC',
+        operator: 'Defibox',
+        poolContract: 'dpositboxayo',
+        depositContract: 'dpositboxayo',
+        lpTokenSymbol: 'BOXAYO', // TRIPOOL
+        pairId: '1341',
+        poolMiningWeight: 0.005,
+    },
+    'BOXAYP': {
+        id: 'BOXAYP',
+        name: 'ECRV/DAI',
+        operator: 'Defibox',
+        poolContract: 'dpositboxayp',
+        depositContract: 'dpositboxayp',
+        lpTokenSymbol: 'BOXAYP', // TRIPOOL
+        pairId: '1342',
+        poolMiningWeight: 0.005,
+    },
 }
 
-export const LP_TOKENS = ['TRIPOOL']
-// export const LP_TOKENS = _.map(POOLS, 'lpTokenSymbol')
+// export const LP_TOKENS = ['TRIPOOL']
+export const LP_TOKENS = ['TRIPOOL', 'USNPOOL']
 
 export const TOKENS = {
-    // BOXAVG: {
-    //     symbol: 'BOXAVG',
-    //     contract: 'lptoken.defi',
-    //     precision: 0,
-    //     stakeContract: 'dpositboxavg',
-    //     stakeTable: 'stake',
-    // },
-    // BOXAUQ: {
-    //     symbol: 'BOXAUQ',
-    //     contract: 'lptoken.defi',
-    //     precision: 0,
-    //     stakeContract: 'dpositboxauq',
-    //     stakeTable: 'stake',
-    // },
-    // BOXAYO: {
-    //     symbol: 'BOXAYO',
-    //     contract: 'lptoken.defi',
-    //     precision: 0,
-    //     stakeContract: 'dpositboxayo',
-    //     stakeTable: 'stake',
-    // },
-    // BOXAYP: {
-    //     symbol: 'BOXAYP',
-    //     contract: 'lptoken.defi',
-    //     precision: 0,
-    //     stakeContract: 'dpositboxayp',
-    //     stakeTable: 'stake',
-    // },
+    BOXAVG: {
+        symbol: 'BOXAVG',
+        contract: 'lptoken.defi',
+        precision: 0,
+        stakeContract: 'dpositboxavg',
+        stakeTable: 'stake',
+    },
+    BOXAUQ: {
+        symbol: 'BOXAUQ',
+        contract: 'lptoken.defi',
+        precision: 0,
+        stakeContract: 'dpositboxauq',
+        stakeTable: 'stake',
+    },
+    BOXAYO: {
+        symbol: 'BOXAYO',
+        contract: 'lptoken.defi',
+        precision: 0,
+        stakeContract: 'dpositboxayo',
+        stakeTable: 'stake',
+    },
+    BOXAYP: {
+        symbol: 'BOXAYP',
+        contract: 'lptoken.defi',
+        precision: 0,
+        stakeContract: 'dpositboxayp',
+        stakeTable: 'stake',
+    },
     USDC: {
         symbol: 'USDC',
         contract: CONTRACTS.dadUsdTokens,
@@ -167,7 +168,6 @@ export const TOKENS = {
         contract: CONTRACTS.LPTokens,
         stakeContract: CONTRACTS.LPDeposit,
         stakeTable: 'stake',
-        // claimContract: CONTRACTS.claimCurveLP,
         precision: 6,
         icon: eCurveLogo
     },
@@ -183,7 +183,6 @@ export const TOKENS = {
         contract: CONTRACTS.LPTokens,
         stakeContract: CONTRACTS.depositUSNLP,
         stakeTable: 'stake',
-        // claimContract: CONTRACTS.claimCurveLP,
         precision: 6,
     },
 
