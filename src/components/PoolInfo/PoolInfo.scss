@@ -3,25 +3,35 @@
 .App .top-section.pool-info {
 
   .top-section-title {
+    position: relative;
+
     .pool-title {
-      position: relative;
+      position: absolute;
       cursor: pointer;
+      height: 100%;
+      top: 4px;
+      right: 10px;
+      font-size: .6em;
+      display: flex;
+      align-items: center;
 
       .pool-name {
         margin-right: 5px;
       }
 
+      .caret {
+        width: 20px;
+        text-align: center;
+      }
+
       .pool-select {
         display: none;
         position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
+        top: calc(100% - 4px);
+        right: -10px;
         background-color: $brand-dark;
-        padding-top: 10px;
 
         .item {
-          font-size: .8em;
           padding: 12px 36px;
 
           &:not(:last-child) {

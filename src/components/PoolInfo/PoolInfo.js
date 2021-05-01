@@ -9,7 +9,7 @@ import {poolFeesApySelector, poolInfoSelector, poolTVLSelector} from 'modules/po
 import './PoolInfo.scss'
 import PoolAPY from 'components/PoolAPY'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faCaretDown} from '@fortawesome/free-solid-svg-icons'
+import {faCaretDown, faCaretRight} from '@fortawesome/free-solid-svg-icons'
 import {selectPool} from "store/uiReducer";
 import useOnClickOutside from "hooks/useClickOutside";
 
@@ -28,10 +28,13 @@ const PoolSelect = ({poolId}) => {
     const pools = _.filter(POOLS, p => p.operator === 'eCurve' && p.id !== poolId)
 
     return (
-        <div className={classNames("pool-title", {'menu-visible': menuVisible})} onClick={() => setMenuVisible(!menuVisible)}>
-            <span className="pool-name">{poolName}</span>
-            <FontAwesomeIcon icon={faCaretDown}/>
-            <div className="pool-select" ref={ref}>
+        <div ref={ref} className={classNames("pool-title", {'menu-visible': menuVisible})} onClick={() => setMenuVisible(!menuVisible)}>
+            {/*<span className="pool-name">{poolName}</span>*/}
+            <div>More pools</div>
+            <div className="caret">
+                <FontAwesomeIcon icon={menuVisible ? faCaretDown : faCaretRight}/>
+            </div>
+            <div className="pool-select">
                 {_.map(pools, ({id, name}) => (
                     <div key={`pool-select-opt-${id}`} className="item" onClick={() => dispatch(selectPool(id))}>{name}</div>
                 ))}
@@ -42,7 +45,7 @@ const PoolSelect = ({poolId}) => {
 
 const PoolInfo = ({poolId}) => {
 
-    const {tokens} = POOLS[poolId]
+    const {name: poolName, tokens} = POOLS[poolId]
     const poolBalances = useSelector(poolInfoSelector(poolId, 'balances'))
     const feesApy = useSelector(poolFeesApySelector(poolId))
     const tvl = useSelector(poolTVLSelector(poolId))
@@ -50,6 +53,8 @@ const PoolInfo = ({poolId}) => {
     return (
         <div className={classNames("top-section pool-info")}>
             <div className="top-section-title">
+                {/*<div/>*/}
+                <div className="pool-name">{poolName}</div>
                 <PoolSelect poolId={poolId}/>
             </div>
             <div className="top-section-content">
