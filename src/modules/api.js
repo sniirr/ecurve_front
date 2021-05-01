@@ -96,7 +96,7 @@ export const requestEcurveApi = endpoint => axios(`${ECURVE_API_URL}${endpoint}`
 export const requestDefiboxPair = pairId => axios.post(`https://defibox.io/api/swap/getMarket`, {pairId})
 
 // transact
-export const createTransferAction = (from, quantity, {contract, symbol}, to) => {
+export const createTransferAction = (from, quantity, {contract, symbol}, to, memo) => {
     return {
         account: contract,
         name: 'transfer',
@@ -104,7 +104,7 @@ export const createTransferAction = (from, quantity, {contract, symbol}, to) => 
             from,
             to,
             quantity,
-            memo: from,
+            memo: memo || from,
         },
     }
 }

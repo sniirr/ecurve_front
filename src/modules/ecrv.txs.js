@@ -8,26 +8,26 @@ import config from 'config'
 const {CONTRACTS, POOLS, TOKENS} = config
 
 // TXS
-const transferToECurve = (activeUser, amount, symbol) => {
-    return createTransferAction(activeUser.accountName, amountToAsset(amount, symbol), TOKENS[symbol], CONTRACTS.curve3Pool)
+const transferToPool = (activeUser, poolContract, amount, symbol, actionName) => {
+    return createTransferAction(activeUser.accountName, amountToAsset(amount, symbol), TOKENS[symbol], poolContract, `${actionName} ${symbol}`)
 }
 
 // ECURVE INTERACTIONS
-const eCurveTxCallback = activeUser => dispatch => {
-    const poolId = "3POOL"
+const eCurveTxCallback = (activeUser, poolId) => dispatch => {
+    // const poolId = "3POOL"
     dispatch(fetchAccountPoolBalances(activeUser.accountName, poolId))
     dispatch(fetchPoolData(poolId))
 }
 
-export const deposit = (activeUser, amounts, minReceiveAmount) => dispatch => {
+export const deposit = (activeUser, poolId, amounts, minReceiveAmount) => dispatch => {
     if (_.isEmpty(activeUser)) return
 
-    const {tokens: symbols, lpTokenSymbol, poolContract} = POOLS["3POOL"]
+    const {tokens: symbols, lpTokenSymbol, poolContract} = POOLS[poolId]
 
     const {transfers, sAmounts} = _.reduce(symbols, ({transfers, sAmounts}, symbol) => {
         const [fAmount, sAmount] = parseAmount(amounts[symbol], symbol)
         return {
-            transfers: fAmount > 0 ? [...transfers, transferToECurve(activeUser, sAmount, symbol)] : transfers,
+            transfers: fAmount > 0 ? [...transfers, transferToPool(activeUser, poolContract, sAmount, symbol, 'Deposit')] : transfers,
             sAmounts: [...sAmounts, sAmount],
         }
     }, {transfers: [], sAmounts: []})
@@ -45,20 +45,20 @@ export const deposit = (activeUser, amounts, minReceiveAmount) => dispatch => {
         }
     ], {
         apiKey: 'deposit',
-        callback: eCurveTxCallback(activeUser),
+        callback: eCurveTxCallback(activeUser, poolId),
     }))
 }
 
-export const exchange = (activeUser, from, to) => dispatch => {
+export const exchange = (activeUser, poolId, from, to) => dispatch => {
     if (_.isEmpty(activeUser)) return
 
-    const {poolContract} = POOLS["3POOL"]
+    const {poolContract} = POOLS[poolId]
 
     const sInAmount = amountToAsset(from.amount, from.symbol)
     const sOutAmount = amountToAsset(to.amount, to.symbol)
 
     dispatch(transact(activeUser, [
-        transferToECurve(activeUser, sInAmount, from.symbol),
+        transferToPool(activeUser, poolContract, sInAmount, from.symbol, 'Exchange'),
         {
             account: poolContract,
             name: 'exchange',
@@ -70,23 +70,23 @@ export const exchange = (activeUser, from, to) => dispatch => {
         }
     ], {
         apiKey: 'exchange',
-        callback: eCurveTxCallback(activeUser),
+        callback: eCurveTxCallback(activeUser, poolId),
     }))
 }
 
-export const withdraw = (activeUser, sendAmount, receiveAmounts, withdrawOneSymbol, isBalanced) => dispatch => {
+export const withdraw = (activeUser, poolId, sendAmount, receiveAmounts, withdrawOneSymbol, isBalanced) => dispatch => {
     if (_.isEmpty(activeUser)) return
 
-    const {tokens: symbols, poolContract, lpTokenSymbol} = POOLS["3POOL"]
+    const {tokens: symbols, poolContract, lpTokenSymbol} = POOLS[poolId]
 
     const sInAmount = amountToAsset(sendAmount, lpTokenSymbol)
 
     const apiOpts = {
         apiKey: 'withdraw',
-        callback: eCurveTxCallback(activeUser),
+        callback: eCurveTxCallback(activeUser, poolId),
     }
 
-    const transfer = transferToECurve(activeUser, sInAmount, lpTokenSymbol)
+    const transfer = transferToPool(activeUser, poolContract, sInAmount, lpTokenSymbol, 'Withdraw')
     let action = null
 
     if (withdrawOneSymbol) {
@@ -128,7 +128,7 @@ export const withdraw = (activeUser, sendAmount, receiveAmounts, withdrawOneSymb
                 data: {
                     account: activeUser.accountName,
                     maxburnamt: sInAmount,
-                    minamounts: _.map(POOLS["3POOL"].tokens, symbol => {
+                    minamounts: _.map(POOLS[poolId].tokens, symbol => {
                         return amountToAsset(_.get(receiveAmounts, symbol, 0), symbol)
                     }),
                 },

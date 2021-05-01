@@ -10,14 +10,14 @@ import 'rc-slider/assets/index.css';
 import 'react-toastify/dist/ReactToastify.css'
 import 'css/common.scss';
 import './App.scss';
+import {selectedPoolSelector} from "store/uiReducer";
 
 function App({ual}) {
-
-    const poolId = '3POOL'
 
     const dispatch = useDispatch()
 
     const activeUser = useSelector(state => _.get(state, 'activeUser'))
+    const poolId = useSelector(selectedPoolSelector)
 
     const accountName = ual?.activeUser?.accountName
 

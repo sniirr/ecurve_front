@@ -126,7 +126,7 @@ export const stake = (activeUser, amount, symbol) => dispatch => {
     const {stakeContract} = TOKENS[symbol]
 
     dispatch(transact(activeUser, [
-        createTransferAction(activeUser.accountName, amountToAsset(amount, symbol), TOKENS[symbol], stakeContract)
+        createTransferAction(activeUser.accountName, amountToAsset(amount, symbol), TOKENS[symbol], stakeContract, `Stake ${symbol}`)
     ], {
         apiKey: `stake-${symbol}`,
         callback: dispatch => {
@@ -146,7 +146,7 @@ export const unstake = (activeUser, amount, symbol) => dispatch => {
         data: {
             receiver: activeUser.accountName,
             quantity: amountToAsset(amount, symbol),
-            memo: 'unstake',
+            memo: `Unstake ${symbol}`,
         },
     }], {
         apiKey: 'unstake',
@@ -163,7 +163,7 @@ export const lock = (activeUser, amount, symbol, lockPeriod) => dispatch => {
 
     const actions = []
     if (amount > 0) {
-        actions.push(createTransferAction(activeUser.accountName, amountToAsset(amount, symbol), TOKENS[symbol], lockContract))
+        actions.push(createTransferAction(activeUser.accountName, amountToAsset(amount, symbol), TOKENS[symbol], lockContract, `Lock ${symbol}`))
     }
 
     dispatch(transact(activeUser, [
@@ -192,7 +192,7 @@ export const increaseLockedAmount = (activeUser, amount, symbol) => dispatch => 
     if (_.isEmpty(activeUser)) return
     const {lockContract, stakeByTransfer} = TOKENS[symbol]
 
-    const actions = [createTransferAction(activeUser.accountName, amountToAsset(amount, symbol), TOKENS[symbol], lockContract)]
+    const actions = [createTransferAction(activeUser.accountName, amountToAsset(amount, symbol), TOKENS[symbol], lockContract, `Increase ${symbol} lock amount`)]
     if (!stakeByTransfer) {
         actions.push({
             account: lockContract,

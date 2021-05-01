@@ -16,6 +16,7 @@ import {poolInfoSelector} from 'modules/pools'
 import './Exchange.scss'
 import config from 'config'
 import classNames from "classnames";
+import {selectedPoolSelector} from "store/uiReducer";
 
 const {POOLS, TOKENS} = config
 
@@ -23,7 +24,8 @@ function Exchange() {
 
     const dispatch = useDispatch()
 
-    const poolId = "3POOL"
+    // const poolId = "3POOL"
+    const poolId = useSelector(selectedPoolSelector)
     const apiKey = 'exchange'
     const {tokens} = POOLS[poolId]
 
@@ -82,6 +84,7 @@ function Exchange() {
         console.log(data)
         dispatch(exchange(
             activeUser,
+            poolId,
             {amount: inAmount, symbol: fromSymbol},
             {amount: minReceiveAmount, symbol: toSymbol}
         ))

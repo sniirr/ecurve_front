@@ -3,7 +3,7 @@ import {deposit} from "modules/ecrv.txs";
 import {useDispatch, useSelector} from "react-redux";
 import {useForm} from "react-hook-form";
 import _ from 'lodash'
-import {AssetInput} from "../../components/Forms/CommonInputs";
+import {AssetInput} from "components/Forms/CommonInputs";
 import useFormulas from "hooks/useFormulas"
 import Checkbox from "components/Inputs/Checkbox";
 import SlippageInput from 'components/Inputs/SlippageInput'
@@ -14,6 +14,7 @@ import {balancesSelector} from 'modules/balances'
 import config from 'config'
 import usePoolLoader from "hooks/usePoolLoader";
 import {poolInfoSelector} from 'modules/pools'
+import {selectedPoolSelector} from "store/uiReducer";
 
 const {POOLS} = config
 
@@ -23,7 +24,8 @@ function Deposit() {
 
     const apiKey = "deposit"
 
-    const poolId = '3POOL'
+    // const poolId = '3POOL'
+    const poolId = useSelector(selectedPoolSelector)
     const {tokens, lpTokenSymbol} = POOLS[poolId]
 
     const activeUser = useSelector(state => _.get(state, 'activeUser'))
@@ -50,7 +52,7 @@ function Deposit() {
     const sumAmount = _.sum(_.values(amounts))
 
     const onSubmit = data => {
-        dispatch(deposit(activeUser, amounts, receiveAmount))
+        dispatch(deposit(activeUser, poolId, amounts, receiveAmount))
     }
 
     const setInputAmount = (symbol, amount) => {
@@ -67,7 +69,7 @@ function Deposit() {
 
     const onToggleDepositMax = () => {
         if (!isDepositMax) {
-            const values = isDepositBalanced ? _.zipObject(tokens, calc.maxBalancedDeposit(balances)) : balances
+            const values = isDepositBalanced ? _.zipObject(tokens, calc.maxBalancedDeposit(poolId, balances)) : balances
             _.forEach(tokens, symbol => setInputAmount(symbol, values[symbol]))
         }
         setIsDepositMax(!isDepositMax)
@@ -88,7 +90,7 @@ function Deposit() {
 
         // valid amounts - calculate received LP token and bonus
         const depositAmounts = _.map(tokens, (symbol, i) => amounts[symbol] * 1000000)
-        const {lpTokenAmount, withoutSlippage, bonusAmount} = calc.lpTokenOnDeposit(depositAmounts, toFloat(slippage))
+        const {lpTokenAmount, withoutSlippage, bonusAmount} = calc.lpTokenOnDeposit(poolId, depositAmounts, toFloat(slippage))
 
         console.log('deposit receive amount', {lpTokenAmount, bonusAmount})
 

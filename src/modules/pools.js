@@ -129,7 +129,7 @@ export const fetchDefiboxPoolData = poolId => async dispatch => {
 
 export const fetchPoolData = poolId => async dispatch => {
 
-    const {lpTokenSymbol, poolContract} = POOLS[poolId]
+    const {lpTokenSymbol, poolContract, depositContract} = POOLS[poolId]
 
     dispatch(fetchPoolBalances(poolId))
 
@@ -139,7 +139,7 @@ export const fetchPoolData = poolId => async dispatch => {
             fetchTokenStats({contract: CONTRACTS.LPTokens, symbol: lpTokenSymbol}),
             fetchOne({code: poolContract, scope: poolContract, table: 'priceinfo1'}),
             fetchOne({code: poolContract, scope: poolContract, table: 'config'}),
-            fetchOne({code: CONTRACTS.LPDeposit, scope: CONTRACTS.LPDeposit, table: 'totalstake'})
+            fetchOne({code: depositContract, scope: depositContract, table: 'totalstake'})
         ])
 
         const totalSupply = parseFloat(_.get(data, [0, lpTokenSymbol, 'supply'], '0'))

@@ -8,7 +8,6 @@ const {POOLS} = config
 
 function useFormulas(poolId) {
 
-    // const poolKey = '3POOL'
     const {tokens} = POOLS[poolId]
 
 

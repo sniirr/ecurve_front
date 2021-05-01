@@ -8,6 +8,13 @@
 
   .pool-tokens {
     flex-grow: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+
+    .token-balances {
+      flex-grow: 2;
+    }
 
     .token-info {
       display: flex;
@@ -16,7 +23,7 @@
 
       .token-symbol {
         justify-content: flex-start;
-        width: 80px;
+        width: 106px;
       }
 
       .percentage {
@@ -24,15 +31,16 @@
         font-size: 0.9em;
       }
 
-      .tvl {
-        margin-left: 10px;
-        font-weight: bold;
-      }
+      &.pool-tvl {
+        margin-bottom: 0;
 
-      &:last-child {
-        margin-top: 21px;
+        .tvl {
+          margin-left: 10px;
+          font-weight: bold;
+        }
       }
     }
+
   }
 
   .pool-apy {

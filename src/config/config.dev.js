@@ -24,23 +24,24 @@ export const WEIGHT_TOKEN = 'veCRV'
 
 export const CONTRACTS = {
     curveToken: 'curvetoken22',     // ecurvetoken1
-
     curve3Pool: 'eoscurvecon1',     // ecurve3pool1
     LPDeposit: 'lpstakecon11',      // depositlp111
     LPTokens: 'curvetoken11',       // ecurvelp1111
     curveLock: 'curvelockcon',      // ecrvgovlock1
     dadLock: 'dadgovernanc',        // dadgovernanc
-
     claimCurveLP: 'curveissue11',   // ecrvclaim111
     claimCurveDAD: 'dadcrvlock11',  // dadlockecrv1
 }
 
 export const POOLS = {
     "3POOL": {
-        name: "3Pool",
+        id: '3POOL',
+        name: '3Pool',
         poolContract: CONTRACTS.curve3Pool,
+        depositContract: CONTRACTS.LPDeposit,
         tokens: ["USDC", "DAI", "USDT"],
         lpTokenSymbol: 'EPOOL', // TRIPOOL
+        poolMiningWeight: 0.6,
     }
 }
 

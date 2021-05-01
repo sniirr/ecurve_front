@@ -1,5 +1,5 @@
 import React from 'react'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import _ from "lodash";
 import classNames from 'classnames'
 import usePoolLoader from "hooks/usePoolLoader";
@@ -12,11 +12,14 @@ import defiboxLogo from 'images/defi-box.png'
 import dadLogo from 'images/logo-dad.svg'
 import numeral from 'numeral'
 import {useHistory} from "react-router-dom"
-import {maxDADApySelector} from "../../modules/ecrv";
+import {maxDADApySelector} from "modules/ecrv";
+import {selectPool} from "store/uiReducer";
 
 const {POOLS} = config
 
 const Pool = ({poolId, isEcurve}) => {
+
+    const dispatch = useDispatch()
     let history = useHistory();
     const {name, tokens, lpTokenSymbol, pairId} = POOLS[poolId]
     const tvl = useSelector(poolTVLSelector(poolId))
@@ -25,6 +28,7 @@ const Pool = ({poolId, isEcurve}) => {
 
     const onClick = () => {
         if (isEcurve) {
+            dispatch(selectPool(poolId))
             history.push('/exchange')
         }
     }

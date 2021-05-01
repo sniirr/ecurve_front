@@ -15,7 +15,7 @@ export const calcD = (xp, {N_COINS, Ann}) => {
     while (Math.abs(Dprev - D) > 1) {
         let D_P = D
         for (let i = 0; i < N_COINS; i++) {
-            D_P = D_P * D / (xp[i] * 3)
+            D_P = D_P * D / (xp[i] * N_COINS)
         }
         Dprev = D
         D = (Ann * S + D_P * N_COINS) * D / ((Ann - 1) * D + (N_COINS + 1) * D_P)
@@ -25,10 +25,10 @@ export const calcD = (xp, {N_COINS, Ann}) => {
     return D
 }
 
-const getOrderedAmounts = amounts => {
-    const {tokens} = POOLS["3POOL"]
-    return _.map(tokens, symbol => _.get(amounts, symbol, 0))
-}
+// const getOrderedAmounts = (poolId, amounts) => {
+//     const {tokens} = POOLS[poolId]
+//     return _.map(tokens, symbol => _.get(amounts, symbol, 0))
+// }
 
 // EXCHANGE
 const get_y = (i, j, x, {xp, N_COINS, Ann, D}) => {
@@ -69,8 +69,8 @@ const calcExchangeAmount = common => (i, j, dx, slippage) => {
     // console.log('-------------- START EXCHANGE LOG -----------------')
     const {xp, fee} = common
 
-    // console.log('calcExchangeAmount', 'config', common)
-    // console.log('calcExchangeAmount', 'input', {i, j, dx, slippage})
+    console.log('calcExchangeAmount', 'config', common)
+    console.log('calcExchangeAmount', 'input', {i, j, dx, slippage})
 
     const x = xp[i] + dx
     const y = get_y(i, j, x, {
@@ -116,12 +116,12 @@ const calcLPTokenOnDeposit = common => (amounts, slippage) => {
     return {withSlippage, withoutSlippage}
 }
 
-const calcDeposit = common => (amounts, slippage) => {
+const calcDeposit = common => (poolId, amounts, slippage) => {
     // console.log('-------------- START DEPOSIT LOG -----------------')
     const {withSlippage, withoutSlippage} = calcLPTokenOnDeposit(common)(amounts, slippage)
 
     const {xp} = common
-    const {tokens} = POOLS["3POOL"]
+    const {tokens} = POOLS[poolId]
 
     const sumDeposited = _.sum(amounts)
     const sumInPool = _.sum(xp)
@@ -157,8 +157,10 @@ const calcBalancedDeposit = ({xp}) => (amount, tokenIndex) => {
     })
 }
 
-const calcMaxBalancedDeposit = common => accountBalances => {
-    const orderedAmounts = getOrderedAmounts(accountBalances)
+const calcMaxBalancedDeposit = common => (poolId, accountBalances) => {
+    const {tokens} = POOLS[poolId]
+    const orderedAmounts = _.map(tokens, symbol => _.get(accountBalances, symbol, 0))
+    // const orderedAmounts = getOrderedAmounts(poolId, accountBalances)
 
     return _.reduce(orderedAmounts, (res, amount, i) => {
         const balances = calcBalancedDeposit(common)(amount, i)
@@ -223,9 +225,9 @@ const get_y_D = (i, xp, D, {N_COINS, Ann}) => {
         }
 
         S_ = S_ + _x
-        c = c * D / (_x * 3)
+        c = c * D / (_x * N_COINS)
     }
-    c = c * D / (Ann * 3)
+    c = c * D / (Ann * N_COINS)
 
     let b = S_ + D / Ann
     let y_prev = 0

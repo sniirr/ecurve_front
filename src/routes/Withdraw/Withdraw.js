@@ -15,6 +15,7 @@ import Button from "components/Inputs/Button";
 import {balancesSelector} from 'modules/balances'
 import config from 'config'
 import usePoolLoader from "hooks/usePoolLoader";
+import {selectedPoolSelector} from "store/uiReducer";
 const {POOLS, TOKENS} = config
 
 function Withdraw() {
@@ -22,7 +23,8 @@ function Withdraw() {
     const dispatch = useDispatch()
 
     const apiKey = "withdraw"
-    const poolId = "3POOL"
+    // const poolId = "3POOL"
+    const poolId = useSelector(selectedPoolSelector)
     const {tokens, lpTokenSymbol} = POOLS[poolId]
 
     const [shareOfLiquidity, setShareOfLiquidity] = useState(0)
@@ -56,7 +58,7 @@ function Withdraw() {
     const onSubmit = data => {
         console.log(data)
         const withdrawOneSymbol = withdrawOne > -1 && tokens[withdrawOne]
-        dispatch(withdraw(activeUser, toBeBurned, amounts, withdrawOneSymbol, isBalanced))
+        dispatch(withdraw(activeUser, poolId, toBeBurned, amounts, withdrawOneSymbol, isBalanced))
     }
 
     const estimateWithdrawOne = (lpTokenAmount) => {
