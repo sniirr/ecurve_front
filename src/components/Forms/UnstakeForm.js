@@ -10,7 +10,7 @@ import {balanceSelector} from "modules/balances";
 const UnstakeForm = ({symbol, onChange, shouldReset}) => {
     const dispatch = useDispatch()
 
-    const apiKey = "unstake"
+    const apiKey = `unstake-${symbol}`
     const activeUser = useSelector(state => _.get(state, 'activeUser'))
     const stakedBalance = useSelector(balanceSelector('staked', symbol))
 

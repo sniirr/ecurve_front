@@ -149,7 +149,7 @@ export const unstake = (activeUser, amount, symbol) => dispatch => {
             memo: `Unstake ${symbol}`,
         },
     }], {
-        apiKey: 'unstake',
+        apiKey: `unstake-${symbol}`,
         callback: dispatch => {
             dispatch(fetchBalance(activeUser.accountName, TOKENS[symbol]))
             dispatch(fetchStakedToken(activeUser, symbol))

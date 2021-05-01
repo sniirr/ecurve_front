@@ -40,6 +40,19 @@ export const fetchOneByPk = async (opts, pkFieldName, pk) => {
 
 export const fetchTokenStats = ({contract, symbol}) => rpc.get_currency_stats(contract, symbol)
 
+export const fetchCurrencyBalance = async (accountName, {contract, symbol}) => {
+    try {
+        return await rpc.get_currency_balance(contract, accountName, symbol)
+    } catch (error) {
+        return {success: false, error}
+    }
+}
+
+export const requestEcurveApi = endpoint => axios(`${ECURVE_API_URL}${endpoint}`)
+
+export const requestDefiboxPair = pairId => axios.post(`https://defibox.io/api/swap/getMarket`, {pairId})
+
+// API HELPERS
 export const getTableData = (opts, {apiKey, callback} = {}) => async dispatch => {
     let res
     try {
@@ -82,18 +95,6 @@ export const getSingleRow = (opts, pkFieldName, {apiKey, callback} = {}) => {
         }
     })
 }
-
-export const fetchCurrencyBalance = async (accountName, {contract, symbol}) => {
-    try {
-        return await rpc.get_currency_balance(contract, accountName, symbol)
-    } catch (error) {
-        return {success: false, error}
-    }
-}
-
-export const requestEcurveApi = endpoint => axios(`${ECURVE_API_URL}${endpoint}`)
-
-export const requestDefiboxPair = pairId => axios.post(`https://defibox.io/api/swap/getMarket`, {pairId})
 
 // transact
 export const createTransferAction = (from, quantity, {contract, symbol}, to, memo) => {
