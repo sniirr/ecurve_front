@@ -17,9 +17,7 @@ function Header({ual}) {
     const isLoggedIn = !_.isEmpty(activeUser?.accountName)
 
     const renderNetMarker = () => {
-        if (ENVIRONMENT === 'production') return (
-            <div className="net-marker">EOS MAINNET</div>
-        )
+        if (ENVIRONMENT === 'production') return null
         return (
             <div className="net-marker">KYLIN TESTNET</div>
         )
