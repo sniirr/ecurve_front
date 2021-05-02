@@ -12,4 +12,4 @@ export const uiReducer = makeReducer({
     'UI.SELECT_POOL': reduceSetKey('selectedPool'),
 }, {
     selectedPool: 'TRIPOOL',
-})
+}, false)

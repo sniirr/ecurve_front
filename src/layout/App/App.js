@@ -41,7 +41,7 @@ function App({ual}) {
             <Header ual={ual}/>
             <div className="main-scroll">
                 <Router>
-                    <ApiSuspense apiKey="fetch-pools-config" withLoader={false}>
+                    <ApiSuspense apiKey="fetch-pools-config" withLoader={false} strict>
                         <Main ual={ual} poolId={poolId} isLoggedIn={isLoggedIn}/>
                         <Footer/>
                     </ApiSuspense>

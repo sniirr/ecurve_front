@@ -20,6 +20,7 @@ export const fetchBoostData = activeUser => async dispatch => {
 
         if (activeUser) {
             _.forEach(POOLS, (pool, poolId) => {
+                if (poolId !== 'DADGOV')
                 dispatch(fetchPoolWeights(activeUser, poolId, scope))
             })
         }

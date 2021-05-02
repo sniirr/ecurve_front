@@ -3,13 +3,14 @@ import _ from 'lodash'
 import {useSelector} from "react-redux";
 import SyncLoader from "react-spinners/SyncLoader";
 
-const ApiSuspense = ({apiKey, withLoader = true, children}) => {
+const ApiSuspense = ({apiKey, withLoader = true, strict = false, children}) => {
 
     const isPending = useSelector(state => {
         const keys = _.isArray(apiKey) ? apiKey : [apiKey]
         return _.some(keys, key => {
             const {status, fetched} = _.get(state.api, key, {})
-            return (_.isEmpty(status) || status === 'pending') && !fetched
+            const pending = strict ? _.isEmpty(status) || status === 'pending' : status === 'pending'
+            return pending && !fetched
         })
     })
 

@@ -96,8 +96,7 @@ export const POOLS = {
     },
 }
 
-// export const LP_TOKENS = ['TRIPOOL']
-export const LP_TOKENS = ['TRIPOOL', 'USNPOOL']
+export const LP_TOKENS = ['TRIPOOL']
 
 export const TOKENS = {
     BOXAVG: {

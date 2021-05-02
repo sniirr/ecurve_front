@@ -176,7 +176,7 @@ export const apiReducer = makeReducer({
             },
         }
     },
-})
+}, {}, false)
 
 
 

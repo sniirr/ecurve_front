@@ -84,7 +84,7 @@ export const StakeAndLockDAD = () => {
 
     return (
         <div className="section stake-and-lock boost dad">
-            <ApiSuspense apiKey={[`fetch-lock-${symbol}`, `fetch-unlock-${symbol}`]}>
+            <ApiSuspense apiKey={`fetch-lock-${symbol}`}>
                 <div className="section-header">
                     <h3>Lock staked DAD to receive {MAIN_TOKEN} rewards</h3>
                     <div className="apy success">

@@ -20,7 +20,7 @@ export const AssetInput = ({symbol, name = "amount", label, apiKey, maxAmount, w
     }
 
     const processValue = v => {
-        const fValue = parseFloat(v)
+        const fValue = parseFloat(v.replace(/\,/g, ''))
         return !_.isNaN(fValue) ? fValue : 0
     }
 
