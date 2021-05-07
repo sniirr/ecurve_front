@@ -81,11 +81,13 @@ export const fetchPoolFeeStats = poolId => async dispatch => {
     try {
         const data = await requestEcurveApi('/GetEcurveStats')
 
+        const record = _.find(data?.data, ({pool_id}) => pool_id === poolId) || {}
+
         dispatch({
             type: 'SET_POOL_FEE_STATS',
             payload: {
                 poolId,
-                ..._.get(data, ['data', 0], {})
+                ...record,
             },
         })
     } catch (e) {
@@ -110,8 +112,6 @@ export const fetchDefiboxPoolData = poolId => async dispatch => {
 
         const stableBalance = balances[stableIdx]
         const sumPoolUsd = stableBalance * 2
-
-        // console.log(name, {balances, stableIdx, stableBalance, sumPoolUsd})
 
         dispatch({
             type: 'SET_POOL_STATS',
@@ -174,17 +174,21 @@ export const fetchPoolData = poolId => async (dispatch, getState) => {
 }
 
 // SELECTORS
+const EMPTY_OBJECT = {}
+
 export const poolInfoSelector = (poolId, key) => state => {
     const path = ['pools', poolId]
     if (!_.isEmpty(key)) {
         path.push(key)
     }
-    return _.get(state, path, {})
+    return _.get(state, path, EMPTY_OBJECT)
 }
 
-export const poolTVLSelector = poolId => createSelector(
+export const makePoolTVLSelector = poolId => () => createSelector(
     poolInfoSelector(poolId, 'balances'),
-    poolBalances => !_.isEmpty(poolBalances) && _.sum(_.map(_.values(poolBalances), parseFloat))
+    poolBalances => {
+        return !_.isEmpty(poolBalances) && _.sum(_.map(_.values(poolBalances), parseFloat))
+    }
 )
 
 const SECONDS_IN_YEAR = 31556952
@@ -198,20 +202,21 @@ export const poolFeesApySelector = poolId => state => {
 
     const total_vcrv_in_usdt = totalvcrv / SECONDS_IN_YEAR * ecrv_usdt_price
 
-
-    return 365 * 100 * last_24h_fees * 100000 / total_vcrv_in_usdt
+    return 365 * 100 * last_24h_fees * 1000000 / total_vcrv_in_usdt
 }
 
-export const poolECRVApySelector = poolId => createSelector(
+export const makePoolMiningApySelector = poolId => () => createSelector(
     nextRoundEcrvInUsdtSelector,
     poolInfoSelector(poolId, 'stats'),
     poolConfigSelector(poolId),
     (next_round_ecrv_in_usdt, {price: lpTokenPrice, totalStake}, {poolMiningWeight}) => {
+        console.log('makePoolMiningApySelector', poolId)
         if (!(next_round_ecrv_in_usdt > 0 && lpTokenPrice > 0)) return {basePoolApy: 0, maxPoolApy: 0}
 
         const total_stake_in_usdt = totalStake * lpTokenPrice
 
         const maxPoolApy = 365 * 100 * 24 * poolMiningWeight * next_round_ecrv_in_usdt / total_stake_in_usdt
+
         return {
             basePoolApy: maxPoolApy * 0.4,
             maxPoolApy

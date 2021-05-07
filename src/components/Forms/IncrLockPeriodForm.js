@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {increaseLockPeriod} from "modules/wallet";
 import {useDispatch, useSelector} from "react-redux";
 import {useForm} from "react-hook-form";
@@ -8,7 +8,7 @@ import useLocking from "hooks/useLocking";
 import {getMinLockHours, getVCRVString} from "utils";
 import Button from "../Inputs/Button";
 import config from 'config'
-import {getTempLockArgs, setTempLockArgs} from "routes/UseECRV/UseECRV.reducer";
+import {getTempLockArgs, setTempLockArgs,resetTempLockArgs} from "routes/UseECRV/UseECRV.reducer";
 const {MAIN_TOKEN} = config
 
 const IncrLockPeriodForm = ({symbol, intervals, apiKey = "incr-lock-period", increaseLock = increaseLockPeriod, title = 'Increase Lock Period', buttonText = 'Increase Lock Period'}) => {
@@ -32,6 +32,10 @@ const IncrLockPeriodForm = ({symbol, intervals, apiKey = "incr-lock-period", inc
     const onLockPeriodChange = newLockTimeInHours => {
         dispatch(setTempLockArgs({lockTimeInHours: newLockTimeInHours}))
     }
+
+    useEffect(() => {
+        return () => dispatch(resetTempLockArgs())
+    }, [])
 
     return (
         <form>

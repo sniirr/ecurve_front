@@ -1,11 +1,11 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useMemo} from 'react'
 import _ from 'lodash'
 import {useDispatch, useSelector} from "react-redux";
 import numeral from 'numeral'
 import classNames from 'classnames'
 import TokenSymbol from "components/TokenSymbol";
 import config from 'config'
-import {poolFeesApySelector, poolInfoSelector, poolTVLSelector} from 'modules/pools'
+import {poolFeesApySelector, poolInfoSelector, makePoolTVLSelector} from 'modules/pools'
 import './PoolInfo.scss'
 import PoolAPY from 'components/PoolAPY'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
@@ -17,8 +17,6 @@ const {POOLS} = config
 
 const PoolSelect = ({poolId}) => {
 
-    const {name: poolName} = POOLS[poolId]
-
     const dispatch = useDispatch()
     const ref = useRef(null)
     const [menuVisible, setMenuVisible] = useState(false)
@@ -29,7 +27,6 @@ const PoolSelect = ({poolId}) => {
 
     return (
         <div ref={ref} className={classNames("pool-title", {'menu-visible': menuVisible})} onClick={() => setMenuVisible(!menuVisible)}>
-            {/*<span className="pool-name">{poolName}</span>*/}
             <div>More pools</div>
             <div className="caret">
                 <FontAwesomeIcon icon={menuVisible ? faCaretDown : faCaretRight}/>
@@ -48,12 +45,13 @@ const PoolInfo = ({poolId}) => {
     const {name: poolName, tokens} = POOLS[poolId]
     const poolBalances = useSelector(poolInfoSelector(poolId, 'balances'))
     const feesApy = useSelector(poolFeesApySelector(poolId))
-    const tvl = useSelector(poolTVLSelector(poolId))
+
+    const poolTvlSelector = useMemo(makePoolTVLSelector(poolId), [poolId])
+    const tvl = useSelector(poolTvlSelector)
 
     return (
         <div className={classNames("top-section pool-info")}>
             <div className="top-section-title">
-                {/*<div/>*/}
                 <div className="pool-name">{poolName}</div>
                 <PoolSelect poolId={poolId}/>
             </div>

@@ -1,9 +1,12 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {useSelector} from "react-redux";
-import {poolECRVApySelector} from "modules/pools";
+import {makePoolMiningApySelector} from "modules/pools";
 
-const PoolApy = ({poolId}) => {
-    const {basePoolApy, maxPoolApy} = useSelector(poolECRVApySelector(poolId))
+const PoolAPY = ({poolId}) => {
+
+    const poolMiningApySelector = useMemo(makePoolMiningApySelector(poolId), [poolId])
+
+    const {basePoolApy, maxPoolApy} = useSelector(poolMiningApySelector)
 
     return (
         <div className="apys">
@@ -19,4 +22,4 @@ const PoolApy = ({poolId}) => {
     )
 }
 
-export default PoolApy
+export default PoolAPY

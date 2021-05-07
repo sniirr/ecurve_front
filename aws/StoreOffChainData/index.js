@@ -11,17 +11,19 @@ const CHAIN = {
     protocol: 'https'
 }
 
-const CONTRACT = 'ecurve3pool1'
+const POOLS = [
+    {contract: 'ecurve3pool1', pool_id: 'TRIPOOL'},
+    {contract: 'ecrvusnpool1', pool_id: 'USNPOOL'},
+]
+
 const TABLE = 'adminfee'
 
 const ROUNDS_PER_DAY = 24 * 60 / 5
 
-async function handleFees(fees) {
+async function handleFees(pool_id, fees) {
     const currStats = await ddb.get({
         TableName: 'ecurve_stats',
-        Key: {
-            pool_id: 'TRIPOOL'
-        }
+        Key: { pool_id }
     }).promise()
 
     const sumFees = _.sum(_.map(fees, parseFloat))
@@ -30,12 +32,12 @@ async function handleFees(fees) {
         // no record yet, create one with 0's, collection will begin in the following run
         const insertRes = await ddb.put({
             TableName: 'ecurve_stats',
-            Item: {pool_id: 'TRIPOOL', total_fees: sumFees, last_24h_fees: sumFees, round_fees: [sumFees]}
+            Item: {pool_id, total_fees: sumFees, last_24h_fees: sumFees, round_fees: [sumFees]}
         }).promise()
     }
     else {
         // record found
-        let {pool_id, total_fees, last_24h_fees, round_fees} = currStats.Item
+        let {total_fees, last_24h_fees, round_fees} = currStats.Item
 
         const prev_sum_fees = _.get(round_fees, 0, 0)
 
@@ -68,27 +70,44 @@ function getDiff([a, b]) {
     return a < b ? a : a - b
 }
 
-exports.handler = async function (event, context) {
-    const rpc = new JsonRpc(`${CHAIN.protocol}://${CHAIN.host}:${CHAIN.port}`, {fetch})
-
+async function processPool (rpc, {pool_id, contract}) {
+    console.log('processing pool', pool_id)
     const data = await rpc.get_table_rows({
         json: true,                 // Get the response as json
         limit: 1,                  // Maximum number of rows that we want to get
         reverse: false,             // Optional: Get reversed data
         show_payer: false,          // Optional: Show ram payer
 
-        code: CONTRACT,
-        scope: CONTRACT,
+        code: contract,
+        scope: contract,
         table: TABLE,
     })
+
+    console.log(data)
 
     const fees = _.get(data, ['rows', 0, 'fees'], [])
 
     if (_.isEmpty(fees)) return false
 
-    await handleFees(fees)
+    await handleFees(pool_id, fees)
 
     return true
+}
+
+exports.handler = async function (event, context) {
+    const rpc = new JsonRpc(`${CHAIN.protocol}://${CHAIN.host}:${CHAIN.port}`, {fetch})
+
+    console.log('start')
+
+    try {
+        await Promise.allSettled(_.map(POOLS, pool => processPool(rpc, pool)))
+
+        return true
+    }
+    catch (e) {
+        console.log(e)
+        return false
+    }
 }
 
 

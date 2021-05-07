@@ -73,6 +73,21 @@
 
     .pool-name {
       font-weight: bold;
+      display: flex;
+      align-self: center;
+      width: 100%;
+
+      .new-pool {
+        position: relative;
+        color: $info;
+        border: solid 1px $info;
+        padding: 1px 6px;
+        border-radius: 4px;
+        top: -5px;
+        left: 5px;
+        font-size: .8em;
+        font-weight: normal;
+      }
     }
   }
 

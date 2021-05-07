@@ -6,7 +6,7 @@ import {fetchCurrentRound, fetchVeCRVStats, eCRVStatsSelector} from "./ecrv";
 import {fetchPoolWeights, poolInfoSelector} from "./pools";
 import {createSelector} from 'reselect'
 
-const {TOKENS, POOLS, MAIN_TOKEN} = config
+const {POOLS, MAIN_TOKEN} = config
 
 export const fetchBoostData = activeUser => async dispatch => {
 
@@ -30,7 +30,7 @@ export const fetchBoostData = activeUser => async dispatch => {
 }
 
 // SELECTORS
-export const boostSelector = (poolId, overrides = {}) => {
+export const makeBoostSelector = (poolId, overrides = {}) => () => {
     return createSelector(
         eCRVStatsSelector,
         poolInfoSelector(poolId, "weights"),
@@ -65,7 +65,6 @@ export const boostSelector = (poolId, overrides = {}) => {
             if (hasTempLockPeriod) {
                 // when temp lock period selected calculate boost by full hour
                 lockTimeInSeconds = overrides.lockTimeInHours * 3600
-                console.log('sldfjlsdjflsjdlfksjdf')
             }
             else {
                 // use current lock when not overridden - calc by remaining time
@@ -77,20 +76,19 @@ export const boostSelector = (poolId, overrides = {}) => {
             const lastUpdateInSeconds = dayJS.utc(lastupdate).unix()
 
             let total_veCRV = totalvcrv - oldtotamt * (currentTimeInSecond - lastUpdateInSeconds) + newuserwt
+            // let total_veCRV = totalvcrv
+
             const user_veCRV = lockedamt * lockTimeInSeconds
 
             // if (hasTempLockedBalance || hasTempLockPeriod) {
             //     total_veCRV += user_veCRV
             // }
 
-            const {lpTokenSymbol} = POOLS[poolId]
-            const {precision} = TOKENS[lpTokenSymbol]
-
             if (!_.isNaN(overrides.stakedAmount) && overrides.stakedAmount !== 0) {
                 // subtract previous user_weight
                 total_weight -= user_weight
                 // calc and add new user_weight
-                user_weight += overrides.stakedAmount * 3600 * Math.pow(10, precision) // * 1000000
+                user_weight += overrides.stakedAmount * 3600 * 1000000 // Math.pow(10, precision)
                 total_weight += user_weight
             }
 
@@ -98,7 +96,7 @@ export const boostSelector = (poolId, overrides = {}) => {
                 return {boost: 1, min_veCRV: -1, ecrv_for_max_boost: -1}
             }
 
-            // console.log('boostSelector', {lockedamt, lockTimeInSeconds, total_veCRV, user_veCRV, total_weight, user_weight})
+            // console.log('makeBoostSelector', {lockedamt, lockTimeInSeconds, total_veCRV, user_veCRV, total_weight, user_weight})
 
             const b = (0.4 * user_weight + (0.6 * total_weight * user_veCRV / total_veCRV)) / (0.4 * user_weight)
             const boost = toFloat(b, 2)

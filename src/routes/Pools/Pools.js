@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import _ from "lodash";
 import classNames from 'classnames'
@@ -6,7 +6,7 @@ import usePoolLoader from "hooks/usePoolLoader";
 import './Pools.scss'
 import config from 'config'
 import PoolAPY from "components/PoolAPY";
-import {poolTVLSelector} from "modules/pools";
+import {makePoolTVLSelector} from "modules/pools";
 import logo from 'images/ecurve-logo.png'
 import defiboxLogo from 'images/defi-box.png'
 import dadLogo from 'images/logo-dad.svg'
@@ -17,12 +17,14 @@ import {selectPool} from "store/uiReducer";
 
 const {POOLS} = config
 
-const Pool = ({poolId, isEcurve}) => {
+const Pool = ({poolId, isEcurve, isNew}) => {
 
     const dispatch = useDispatch()
     let history = useHistory();
     const {name, tokens, lpTokenSymbol, pairId} = POOLS[poolId]
-    const tvl = useSelector(poolTVLSelector(poolId))
+
+    const poolTvlSelector = useMemo(makePoolTVLSelector(poolId), [poolId])
+    const tvl = useSelector(poolTvlSelector)
 
     usePoolLoader(poolId)
 
@@ -42,7 +44,10 @@ const Pool = ({poolId, isEcurve}) => {
     return (
         <div className={classNames("pool-list-item", {'internal-pool': isEcurve})} onClick={onClick}>
             <div className="column col-info">
-                <div className="pool-name">{name}</div>
+                <div className="pool-name">
+                    {name}
+                    {isNew && <div className="new-pool">NEW</div>}
+                </div>
                 <div className="text-small">
                     {!_.isEmpty(tokens) ? _.join(tokens, '+') : lpTokenSymbol}
                 </div>
@@ -148,12 +153,12 @@ export const Pools = () => {
                     </div>
                     <div className="column col-actions"/>
                 </div>
-                {_.map(group, ({id: poolId}) => {
+                {_.map(group, ({id: poolId, isNew}) => {
                     const key = `pool-item-${poolId}`
                     return poolId === 'DADGOV' ? (
                         <DADPool key={key} poolId={poolId}/>
                     ) : (
-                        <Pool key={key} poolId={poolId} isEcurve={isEcurve}/>
+                        <Pool key={key} poolId={poolId} isEcurve={isEcurve} isNew={isNew}/>
                     )
                 })}
             </div>

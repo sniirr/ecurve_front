@@ -2,7 +2,7 @@ import React from 'react'
 import TokenSymbol from "components/TokenSymbol"
 import _ from 'lodash'
 import classNames from 'classnames'
-import {amountToAsset} from "utils";
+import {amountToAsset, removeComma} from "utils";
 import useApiStatus from "hooks/useApiStatus"
 import './AssetInput.scss'
 
@@ -12,15 +12,15 @@ export const AssetInput = ({symbol, name = "amount", label, apiKey, maxAmount, w
 
     useApiStatus(apiKey, () => setValue(name, 0))
 
-    const _onChange = value => _.isFunction(onChange) && onChange(value)
+    const _onChange = value => _.isFunction(onChange) && onChange(removeComma(value))
 
     const _onMaxClick = () => {
-        _onChange(maxAmount)
+        _onChange(maxAmount + '')
         setValue(name, maxAmount, {shouldValidate: true})
     }
 
     const processValue = v => {
-        const fValue = parseFloat(v.replace(/\,/g, ''))
+        const fValue = parseFloat(removeComma(v))
         return !_.isNaN(fValue) ? fValue : 0
     }
 
@@ -49,7 +49,7 @@ export const AssetInput = ({symbol, name = "amount", label, apiKey, maxAmount, w
                             const fv = parseFloat(v)
                             return (canBeZero ? fv >= 0 : fv > 0) || "Must be greater then 0"
                         },
-                        maxExceeded: v => !withMax || parseFloat(v) <= maxAmount || "Max amount exceeded",
+                        maxExceeded: v => !withMax || parseFloat(removeComma(v)) <= maxAmount || "Max amount exceeded",
                     }
                 })}
                    onChange={e => _onChange(e.target.value)} {...inputProps}/>

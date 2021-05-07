@@ -1,14 +1,14 @@
-import React, {useState} from 'react'
+import React, {useState, useMemo} from 'react'
 import StakeForm from 'components/Forms/StakeForm'
 import UnstakeForm from 'components/Forms/UnstakeForm'
 import {fetchStakedToken} from "modules/wallet"
 import {useDispatch, useSelector} from "react-redux";
 import _ from "lodash";
 import useOnLogin from "hooks/useOnLogin";
-import {boostSelector} from "modules/boost";
+import {makeBoostSelector} from "modules/boost";
 import BoostGauge from 'components/BoostGauge'
 import {getTempLockArgs} from "routes/UseECRV/UseECRV.reducer";
-import {poolFeesApySelector, poolECRVApySelector} from 'modules/pools'
+import {poolFeesApySelector, makePoolMiningApySelector} from 'modules/pools'
 import config from 'config'
 import {fetchBalance, balanceSelector} from "modules/balances";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
@@ -29,9 +29,13 @@ const StakeLPToken = ({poolId}) => {
     const [poolTempStake, setPoolTempStake] = useState(0)
 
     const overrides = useSelector(getTempLockArgs)
-    const {boost, ecrv_for_max_boost} = useSelector(boostSelector(poolId, {...overrides, stakedAmount: poolTempStake}))
-    const feesApy = useSelector(poolFeesApySelector(poolId))
-    const {basePoolApy, maxPoolApy} = useSelector(poolECRVApySelector(poolId))
+
+    const boostSelector = useMemo(makeBoostSelector(poolId, {...overrides, stakedAmount: poolTempStake}), [poolId, overrides, poolTempStake])
+    // const boostSelector = useMemo(makeBoostSelector, [])
+    const poolMiningApySelector = useMemo(makePoolMiningApySelector(poolId), [poolId])
+
+    const {boost, ecrv_for_max_boost} = useSelector(boostSelector)
+    const {basePoolApy, maxPoolApy} = useSelector(poolMiningApySelector)
     const stakedBalance = useSelector(balanceSelector('staked', symbol))
     const {hasLocked, lockedBalance} = useLocking(MAIN_TOKEN)
 

@@ -130,5 +130,8 @@ export const getTimePeriodHoursValue = ({unit, value, offsetHours = 0}) => {
 // custom strings
 export const getVCRVString = (balance, lockHours) => {
     const maxLockHours = getMaxLockHours(LOCK_INTERVALS[MAIN_TOKEN])
-    return `${(balance * lockHours / maxLockHours).toFixed(4)} ${WEIGHT_TOKEN}`
+    const vecrvAmount = (balance * lockHours / maxLockHours).toFixed(4)
+    return `${numeral(vecrvAmount).format('0,0.[0000]')} ${WEIGHT_TOKEN}`
 }
+
+export const removeComma = v => v.replace(/\,/g, '')
