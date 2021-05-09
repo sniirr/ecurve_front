@@ -1,10 +1,12 @@
 import _ from 'lodash'
-import {amountToAsset, balanceToFloat} from "utils";
-import {transact, createTransferAction, getSingleRow} from './api'
+import {amountToAsset, balanceToFloat, toFloat} from "utils";
+import {transact, createTransferAction, getSingleRow, fetchTokenStats, fetchOne, fetchOneByPk} from './api'
 import {fetchBalance} from './balances'
+import {fetchPoolData} from './pools'
 import config from 'config'
+import {poolConfigSelector} from "modules/ecrv";
 
-const {CONTRACTS, TOKENS, MAIN_TOKEN, DAD_TOKEN} = config
+const {CONTRACTS, TOKENS, POOLS, MAIN_TOKEN, DAD_TOKEN} = config
 
 // FETCH
 export const fetchStakedToken = (activeUser, symbol) => dispatch => {
@@ -121,24 +123,66 @@ export const claim = (activeUser, symbols = []) => dispatch => {
     ))
 }
 
-export const stake = (activeUser, amount, symbol) => dispatch => {
+export const stake = (activeUser, amount, symbol, onSuccess) => dispatch => {
     if (_.isEmpty(activeUser)) return
-    const {stakeContract} = TOKENS[symbol]
+    const {stakeContract, isLPToken} = TOKENS[symbol]
 
     dispatch(transact(activeUser, [
         createTransferAction(activeUser.accountName, amountToAsset(amount, symbol), TOKENS[symbol], stakeContract, `Stake ${symbol}`)
     ], {
         apiKey: `stake-${symbol}`,
         callback: dispatch => {
+            // dispatch(stakeChangedCallback(activeUser, symbol))
+            _.isFunction(onSuccess) && onSuccess()
             dispatch(fetchBalance(activeUser.accountName, TOKENS[symbol]))
             dispatch(fetchStakedToken(activeUser, symbol))
+            if (isLPToken) {
+                dispatch(fetchPoolData(symbol))
+            }
         },
     }))
 }
 
-export const unstake = (activeUser, amount, symbol) => dispatch => {
+// const stakeChangedCallback = (activeUser, symbol) => async (dispatch, getState) => {
+//     const {stakeContract, stakeTable} = TOKENS[symbol]
+//     try {
+//         dispatch(fetchBalance(activeUser.accountName, TOKENS[symbol]))
+//         if (symbol === DAD_TOKEN) {
+//             dispatch(fetchStakedToken(activeUser, symbol))
+//             return
+//         }
+//
+//         const {depositContract} = poolConfigSelector(symbol)(getState())
+//
+//         const data = await Promise.all([
+//             fetchOneByPk({
+//                 code: stakeContract,
+//                 scope: stakeContract,
+//                 table: stakeTable,
+//             }, 'account', activeUser.accountName),
+//             fetchOne({code: depositContract, scope: depositContract, table: 'totalstake'})
+//         ])
+//
+//         const {balance: accountStake} = _.get(data, [0], 0)
+//         const {balance: totalStake} = _.get(data, [1], 0)
+//
+//         dispatch({
+//             type: 'POOL.LP_STAKE_CHANGED',
+//             payload: {
+//                 poolId: symbol,
+//                 accountStake: toFloat(accountStake),
+//                 totalStake: toFloat(totalStake),
+//             }
+//         })
+//     }
+//     catch (e) {
+//
+//     }
+// }
+
+export const unstake = (activeUser, amount, symbol, onSuccess) => dispatch => {
     if (_.isEmpty(activeUser)) return
-    const {stakeContract} = TOKENS[symbol]
+    const {stakeContract, isLPToken} = TOKENS[symbol]
 
     dispatch(transact(activeUser, [{
         account: stakeContract,
@@ -151,8 +195,13 @@ export const unstake = (activeUser, amount, symbol) => dispatch => {
     }], {
         apiKey: `unstake-${symbol}`,
         callback: dispatch => {
+            // dispatch(stakeChangedCallback(activeUser, symbol))
+            _.isFunction(onSuccess) && onSuccess()
             dispatch(fetchBalance(activeUser.accountName, TOKENS[symbol]))
             dispatch(fetchStakedToken(activeUser, symbol))
+            if (isLPToken) {
+                dispatch(fetchPoolData(symbol))
+            }
         },
     }))
 }

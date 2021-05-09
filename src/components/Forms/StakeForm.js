@@ -7,7 +7,7 @@ import AssetInput from "components/Inputs/AssetInput"
 import Button from 'components/Inputs/Button'
 import {balanceSelector} from 'modules/balances'
 
-const StakeForm = ({symbol, withTitle, onChange, onFocus, shouldReset}) => {
+const StakeForm = ({symbol, withTitle, onChange, onSuccess, onFocus, shouldReset}) => {
     const dispatch = useDispatch()
 
     const apiKey = `stake-${symbol}`
@@ -20,7 +20,7 @@ const StakeForm = ({symbol, withTitle, onChange, onFocus, shouldReset}) => {
     });
 
     const onSubmit = ({amount}) => {
-        dispatch(stake(activeUser, amount, symbol))
+        dispatch(stake(activeUser, amount, symbol, onSuccess))
     }
 
     useEffect(() => {

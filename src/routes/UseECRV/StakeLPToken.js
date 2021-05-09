@@ -104,8 +104,8 @@ const StakeLPToken = ({poolId}) => {
                 <BoostGauge disabled={!hasStaked} boost={boost}/>
             </div>
             <div className="stake-unstake">
-                <StakeForm symbol={symbol} onChange={onInputChange(true)} shouldReset={shouldReset === 'stake'}/>
-                <UnstakeForm symbol={symbol} onChange={onInputChange(false)} shouldReset={shouldReset === 'unstake'}/>
+                <StakeForm symbol={symbol} onChange={onInputChange(true)} onSuccess={() => setPoolTempStake(0)} shouldReset={shouldReset === 'stake'}/>
+                <UnstakeForm symbol={symbol} onChange={onInputChange(false)} onSuccess={() => setPoolTempStake(0)} shouldReset={shouldReset === 'unstake'}/>
             </div>
         </div>
     );

@@ -149,6 +149,7 @@ export const TOKENS = {
         stakeContract: CONTRACTS.LPDeposit,
         stakeTable: 'stake',
         precision: 6,
+        isLPToken: true,
     },
 
     USN: {
@@ -162,6 +163,7 @@ export const TOKENS = {
         stakeContract: CONTRACTS.depositUSNLP,
         stakeTable: 'stake',
         precision: 6,
+        isLPToken: true,
     },
 
     ECRV: {

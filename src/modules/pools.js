@@ -36,46 +36,45 @@ export const fetchPoolBalances = poolId => dispatch => {
     }))
 }
 
-const fetchPoolUserWeight = (activeUser, code, scope) => fetchOneByPk({
-    code,
-    scope,
-    table: 'userweight',
-}, 'account', activeUser.accountName)
-
-const fetchPoolTotalWeight = (code, scope) => fetchOne({
-    code,
-    scope,
-    table: 'totwght',
-})
-
-export const fetchPoolWeights = (activeUser, poolId, scope) => async (dispatch, getState) => {
-
-    const apiKey = `pool-weights-${poolId}`
-
-    dispatch(setStatus(apiKey, {status: 'pending'}))
-
-    try {
-        const {depositContract} = poolConfigSelector(poolId)(getState())
-        const data = await Promise.all([
-            fetchPoolUserWeight(activeUser, depositContract, scope),
-            fetchPoolTotalWeight(depositContract, scope),
-        ])
-
-        dispatch({
-            type: 'SET_POOL_WEIGHTS',
-            payload: {
-                poolId,
-                user_weight: parseFloat(_.get(data, [0, 'userwgt'], 0)),
-                total_weight: parseFloat(_.get(data, [1, 'totwght'], 0))
-            }
-        })
-
-        dispatch(setStatus(apiKey, {status: 'success'}))
-
-    } catch (e) {
-        dispatch(setStatus(apiKey, {status: 'error', error: `Failed to fetch ${poolId} boost info`}))
-    }
-}
+// const fetchPoolUserWeight = (activeUser, code, scope) => fetchOneByPk({
+//     code,
+//     scope,
+//     table: 'userweight',
+// }, 'account', activeUser.accountName)
+//
+// const fetchPoolTotalWeight = (code, scope) => fetchOne({
+//     code,
+//     scope,
+//     table: 'totwght',
+// })
+// export const fetchPoolWeights = (activeUser, poolId, scope) => async (dispatch, getState) => {
+//
+//     const apiKey = `pool-weights-${poolId}`
+//
+//     dispatch(setStatus(apiKey, {status: 'pending'}))
+//
+//     try {
+//         const {depositContract} = poolConfigSelector(poolId)(getState())
+//         const data = await Promise.all([
+//             fetchPoolUserWeight(activeUser, depositContract, scope),
+//             fetchPoolTotalWeight(depositContract, scope),
+//         ])
+//
+//         dispatch({
+//             type: 'SET_POOL_WEIGHTS',
+//             payload: {
+//                 poolId,
+//                 user_weight: parseFloat(_.get(data, [0, 'userwgt'], 0)),
+//                 total_weight: parseFloat(_.get(data, [1, 'totwght'], 0))
+//             }
+//         })
+//
+//         dispatch(setStatus(apiKey, {status: 'success'}))
+//
+//     } catch (e) {
+//         dispatch(setStatus(apiKey, {status: 'error', error: `Failed to fetch ${poolId} boost info`}))
+//     }
+// }
 
 export const fetchPoolFeeStats = poolId => async dispatch => {
     try {

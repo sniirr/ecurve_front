@@ -7,7 +7,7 @@ import AssetInput from "components/Inputs/AssetInput"
 import Button from "../Inputs/Button";
 import {balanceSelector} from "modules/balances";
 
-const UnstakeForm = ({symbol, onChange, shouldReset}) => {
+const UnstakeForm = ({symbol, onChange, onSuccess, shouldReset}) => {
     const dispatch = useDispatch()
 
     const apiKey = `unstake-${symbol}`
@@ -15,7 +15,7 @@ const UnstakeForm = ({symbol, onChange, shouldReset}) => {
     const stakedBalance = useSelector(balanceSelector('staked', symbol))
 
     const onSubmit = ({amount}) => {
-        dispatch(unstake(activeUser, amount, symbol))
+        dispatch(unstake(activeUser, amount, symbol, onSuccess))
     }
 
     const {register, handleSubmit, setValue, errors, reset} = useForm({

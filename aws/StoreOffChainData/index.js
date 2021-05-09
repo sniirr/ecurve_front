@@ -32,7 +32,7 @@ async function handleFees(pool_id, fees) {
         // no record yet, create one with 0's, collection will begin in the following run
         const insertRes = await ddb.put({
             TableName: 'ecurve_stats',
-            Item: {pool_id, total_fees: sumFees, last_24h_fees: sumFees, round_fees: [sumFees]}
+            Item: {pool_id, total_fees: sumFees, last_24h_fees: sumFees, round_fees: [sumFees, 0]}
         }).promise()
     }
     else {

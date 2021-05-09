@@ -3,7 +3,8 @@ import _ from "lodash";
 import config from 'config'
 import {balanceSelector, balanceObjectSelector} from './balances'
 import {fetchCurrentRound, fetchVeCRVStats, eCRVStatsSelector} from "./ecrv";
-import {fetchPoolWeights, poolInfoSelector} from "./pools";
+import {poolInfoSelector} from "./pools";
+// import {fetchPoolWeights, poolInfoSelector} from "./pools";
 import {createSelector} from 'reselect'
 
 const {POOLS, MAIN_TOKEN} = config
@@ -18,12 +19,12 @@ export const fetchBoostData = activeUser => async dispatch => {
 
         dispatch(fetchVeCRVStats(currround, currround_amount))
 
-        if (activeUser) {
-            _.forEach(POOLS, (pool, poolId) => {
-                if (poolId !== 'DADGOV')
-                dispatch(fetchPoolWeights(activeUser, poolId, scope))
-            })
-        }
+        // if (activeUser) {
+        //     _.forEach(POOLS, (pool, poolId) => {
+        //         if (poolId !== 'DADGOV')
+        //         dispatch(fetchPoolWeights(activeUser, poolId, scope))
+        //     })
+        // }
     } catch (e) {
 
     }
@@ -31,26 +32,31 @@ export const fetchBoostData = activeUser => async dispatch => {
 
 // SELECTORS
 export const makeBoostSelector = (poolId, overrides = {}) => () => {
+    const {lpTokenSymbol} = POOLS[poolId]
+
     return createSelector(
         eCRVStatsSelector,
         poolInfoSelector(poolId, "weights"),
+        poolInfoSelector(poolId, "stats"),
         balanceObjectSelector('locked', MAIN_TOKEN),
         balanceSelector('unlocked', MAIN_TOKEN),
-        (ecrvStats, poolWeights, locked, unlockedBalance) => {
+        balanceSelector('staked', lpTokenSymbol),
+        (ecrvStats, poolWeights, {totalStake}, locked, unlockedBalance, accountStake) => {
             const hasTempLockedBalance = overrides.lockedBalance > 0
             const hasTempLockPeriod = overrides.lockTimeInHours > 0
             const hasLocked = !_.isEmpty(locked) && locked.balance > 0
 
             // validate all data is ready
             if (_.isEmpty(ecrvStats)
-                || _.isEmpty(poolWeights)
+                // || _.isEmpty(poolWeights)
+                || !(totalStake > 0)
                 || (!hasLocked && !hasTempLockPeriod)
                 || unlockedBalance > 0
             ) return {boost: 1, min_veCRV: -1, ecrv_for_max_boost: -1}
 
             // contracts data
             const {totalvcrv, lastupdate, oldtotamt, newuserwt} = ecrvStats
-            let {user_weight, total_weight} = poolWeights
+            // let {user_weight, total_weight} = poolWeights
             const {balance: lockedBalance, unlockTime} = locked
 
             // resolve lockedamt & lockTimeInSeconds according to current timelock and/or temp input
@@ -84,12 +90,17 @@ export const makeBoostSelector = (poolId, overrides = {}) => () => {
             //     total_veCRV += user_veCRV
             // }
 
+            let user_weight = accountStake
+            let total_weight = totalStake
+
             if (!_.isNaN(overrides.stakedAmount) && overrides.stakedAmount !== 0) {
+                user_weight += overrides.stakedAmount
+                total_weight += overrides.stakedAmount
                 // subtract previous user_weight
-                total_weight -= user_weight
-                // calc and add new user_weight
-                user_weight += overrides.stakedAmount * 3600 * 1000000 // Math.pow(10, precision)
-                total_weight += user_weight
+                // total_weight -= user_weight
+                // // calc and add new user_weight
+                // user_weight += overrides.stakedAmount * 3600 * 1000000 // Math.pow(10, precision)
+                // total_weight += user_weight
             }
 
             if (user_weight === 0) {

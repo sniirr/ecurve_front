@@ -34,7 +34,7 @@ const UnlockForm = ({symbol}) => {
             return (
                 <div className="claim-box">
                     <div>
-                        Unlocked {symbol}: <span className="claim-amount">{amountToAsset(unlockedBalance, MAIN_TOKEN, true, true)}</span>
+                        Unlocked {symbol}: <span className="claim-amount">{amountToAsset(unlockedBalance, symbol, true, true)}</span>
                     </div>
                     <Button apiKey="unlock" onClick={handleSubmit(onSubmit)}>Claim</Button>
                 </div>
@@ -44,7 +44,7 @@ const UnlockForm = ({symbol}) => {
         if (remainingLock === 0) {
             return (
                 <div className="unlock-time">
-                    Unlocking {amountToAsset(lockedBalance, MAIN_TOKEN, true, true)} (<Countdown date={unlocksAtUTC}/>)
+                    Unlocking {amountToAsset(lockedBalance, symbol, true, true)} (<Countdown date={unlocksAtUTC}/>)
                 </div>
             )
         }
@@ -53,7 +53,7 @@ const UnlockForm = ({symbol}) => {
             return (
                 <div className="unlock-time">
                     <div>
-                        {amountToAsset(lockedBalance, MAIN_TOKEN, true, true)} are locked until {unlocksAtUTC.local().format('DD MMM YYYY HH:mm:ss')} (<Countdown date={unlocksAtUTC}/>)
+                        {amountToAsset(lockedBalance, symbol, true, true)} are locked until {unlocksAtUTC.local().format('DD MMM YYYY HH:mm:ss')} (<Countdown date={unlocksAtUTC}/>)
                     </div>
                     {symbol === MAIN_TOKEN && <div className="weight">Your current mining power: {getVCRVString(lockedBalance, remainingLock)}</div>}
                 </div>
@@ -61,7 +61,7 @@ const UnlockForm = ({symbol}) => {
         }
 
         return (
-            <div className="">You have 0 locked {MAIN_TOKEN}</div>
+            <div className="">You have 0 locked {symbol}</div>
         )
     }
 
