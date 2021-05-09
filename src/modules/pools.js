@@ -1,4 +1,4 @@
-import {balancesToMap, makeReducer, toFloat} from "utils";
+import {SECONDS_IN_YEAR, balancesToMap, makeReducer, toFloat} from "utils";
 import {
     setStatus,
     fetchOne,
@@ -190,8 +190,6 @@ export const makePoolTVLSelector = poolId => () => createSelector(
     }
 )
 
-const SECONDS_IN_YEAR = 31556952
-
 export const poolFeesApySelector = poolId => state => {
     const {totalvcrv} = _.get(state, 'ecrv', {totalvcrv: 0})
     const ecrv_usdt_price = tokenPriceSelector(MAIN_TOKEN)(state)
@@ -199,7 +197,7 @@ export const poolFeesApySelector = poolId => state => {
 
     const {last_24h_fees} = poolInfoSelector(poolId, 'feeStats')(state)
 
-    const total_vcrv_in_usdt = totalvcrv / SECONDS_IN_YEAR * ecrv_usdt_price
+    const total_vcrv_in_usdt = totalvcrv / (SECONDS_IN_YEAR * 4) * ecrv_usdt_price
 
     return 365 * 100 * last_24h_fees * 1000000 / total_vcrv_in_usdt
 }
@@ -209,7 +207,6 @@ export const makePoolMiningApySelector = poolId => () => createSelector(
     poolInfoSelector(poolId, 'stats'),
     poolConfigSelector(poolId),
     (next_round_ecrv_in_usdt, {price: lpTokenPrice, totalStake}, {poolMiningWeight}) => {
-        console.log('makePoolMiningApySelector', poolId)
         if (!(next_round_ecrv_in_usdt > 0 && lpTokenPrice > 0)) return {basePoolApy: 0, maxPoolApy: 0}
 
         const total_stake_in_usdt = totalStake * lpTokenPrice

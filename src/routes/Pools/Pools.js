@@ -75,7 +75,7 @@ const DADPool = ({poolId}) => {
     let history = useHistory();
     const {name, pairId} = POOLS[poolId]
 
-    const dadMaxApy = useSelector(maxDADApySelector)
+    const {maxApy} = useSelector(maxDADApySelector)
 
     const onLockClick = e => {
         e.preventDefault()
@@ -93,7 +93,7 @@ const DADPool = ({poolId}) => {
                 <div className="apys">
                     <div className="apy-sbs">
                         <div className="text">Max</div>
-                        <div className="num">{dadMaxApy.toFixed(2)}%</div>
+                        <div className="num">{maxApy.toFixed(2)}%</div>
                     </div>
                 </div>
             </div>

@@ -24,7 +24,7 @@ export const StakeAndLockDAD = () => {
     const activeUser = useSelector(state => _.get(state, 'activeUser'))
     const {hasLocked} = useLocking(symbol)
     const stakedBalance = useSelector(balanceSelector('staked', symbol))
-    const dadMaxApy = useSelector(maxDADApySelector)
+    const {maxApy, accountApy} = useSelector(maxDADApySelector)
 
     const hasStaked = stakedBalance > 0
 
@@ -88,7 +88,11 @@ export const StakeAndLockDAD = () => {
                 <div className="section-header">
                     <h3>Lock staked DAD to receive {MAIN_TOKEN} rewards</h3>
                     <div className="apy success">
-                        DAD Locking Max APY {dadMaxApy.toFixed(2)}%
+                        {hasLocked && accountApy > 0 ? (
+                            <>Your APY {accountApy.toFixed(2)}% | Max APY {maxApy.toFixed(2)}%</>
+                        ) : (
+                            <>DAD Locking Max APY {maxApy.toFixed(2)}%</>
+                        )}
                     </div>
                 </div>
                 {renderTopContent()}

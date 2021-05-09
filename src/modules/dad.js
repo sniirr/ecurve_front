@@ -7,16 +7,16 @@ const {CONTRACTS} = config
 
 export const fetchDADStats = () => async dispatch =>{
     try {
-        const {oldtotamt: total_dad_locked} = await fetchOne({
+        const {totalvcrv} = await fetchOne({
             code: CONTRACTS.dadLock,
             scope: CONTRACTS.dadLock,
-            table: 'totallock1',
+            table: 'totalvcrv',
         })
 
         dispatch({
             type: 'SET_DAD_STATS',
             payload: {
-                total_dad_locked: parseFloat(total_dad_locked),
+                totalvcrv: parseFloat(totalvcrv),
             }
         })
     } catch (e) {

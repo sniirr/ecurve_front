@@ -45,6 +45,7 @@ const PoolInfo = ({poolId}) => {
     const {name: poolName, tokens} = POOLS[poolId]
     const poolBalances = useSelector(poolInfoSelector(poolId, 'balances'))
     const feesApy = useSelector(poolFeesApySelector(poolId))
+    //  FEES APY {feesApy.toFixed(2)}%
 
     const poolTvlSelector = useMemo(makePoolTVLSelector(poolId), [poolId])
     const tvl = useSelector(poolTvlSelector)

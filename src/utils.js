@@ -135,3 +135,6 @@ export const getVCRVString = (balance, lockHours) => {
 }
 
 export const removeComma = v => v.replace(/\,/g, '')
+
+// consts
+export const SECONDS_IN_YEAR = 31556952

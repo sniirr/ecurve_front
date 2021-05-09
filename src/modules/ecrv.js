@@ -1,10 +1,11 @@
-import {makeReducer, reduceUpdateFull} from "utils";
+import {SECONDS_IN_YEAR, makeReducer, reduceUpdateFull, dayJS} from "utils";
 import {fetchOne, fetchOneByPk, fetchTokenStats, getTableData} from "modules/api"
 import _ from "lodash";
 import config from 'config'
 import {createSelector} from "reselect";
 import {tokenPriceSelector} from "./prices";
 import {DADStatsSelector} from './dad'
+import {balanceObjectSelector} from "modules/balances";
 
 const {CONTRACTS, LP_TOKENS, MAIN_TOKEN, DAD_TOKEN, TOKENS} = config
 
@@ -166,11 +167,20 @@ export const maxDADApySelector = createSelector(
     nextRoundEcrvInUsdtSelector,
     tokenPriceSelector(DAD_TOKEN),
     DADStatsSelector,
-    (next_round_ecrv_in_usdt, dad_usdt_price, {total_dad_locked}) => {
-        if (!(next_round_ecrv_in_usdt > 0 && dad_usdt_price > 0)) return 0
+    balanceObjectSelector('locked', DAD_TOKEN),
+    (next_round_ecrv_in_usdt, dad_usdt_price, {totalvcrv}, {unlockTime}) => {
+        if (!(next_round_ecrv_in_usdt > 0 && dad_usdt_price > 0 && totalvcrv > 0)) return {maxApy: 0, accountApy: 0}
 
-        const total_stake_in_usdt = total_dad_locked * dad_usdt_price
-        return 365 * 100 * 24 * 0.15 * next_round_ecrv_in_usdt / total_stake_in_usdt
+        const total_vcrv_in_usdt = totalvcrv / SECONDS_IN_YEAR * dad_usdt_price
+
+        const maxApy = 365 * 100 * 24 * 0.15 * next_round_ecrv_in_usdt * 1000000 / total_vcrv_in_usdt
+
+        const lockTimeInSeconds = dayJS.utc(unlockTime).diff(dayJS(), 'second')
+
+        return {
+            maxApy,
+            accountApy: lockTimeInSeconds / SECONDS_IN_YEAR * maxApy
+        }
     }
 )
 
