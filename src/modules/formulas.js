@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import config from 'config'
+
 const {POOLS} = config
 
 export const calcD = (xp, {N_COINS, Ann}) => {
@@ -125,7 +126,7 @@ const calcDeposit = common => (poolId, amounts, slippage) => {
 
     const sumDeposited = _.sum(amounts)
     const sumInPool = _.sum(xp)
-    const ifWasBalanced =_.map(tokens, (s, i) => sumDeposited * xp[i] / sumInPool)
+    const ifWasBalanced = _.map(tokens, (s, i) => sumDeposited * xp[i] / sumInPool)
 
     const {withSlippage: lpTokenIfBalanced} = calcLPTokenOnDeposit(common)(ifWasBalanced, 0)
 
@@ -204,11 +205,12 @@ const calcWithdrawImbalanced = common => (amounts, slippage) => {
     const D1 = calcD(newBalances, common)
     // console.log('calcWithdrawImbalanced D1', D1)
 
-    const maxBurn = (1 + slippage / 100) * Math.abs(D0 - D1) * total_supply / D0
+    const estBurn = Math.abs(D0 - D1) * total_supply / D0  / 1000000
+    const maxBurn = (1 + slippage / 100) * estBurn
     // console.log('calcWithdrawImbalanced maxBurn', maxBurn)
 
     // console.log('-------------- END WITHDRAW IMBALANCED LOG -----------------')
-    return maxBurn
+    return {estBurn, maxBurn}
 }
 
 const get_y_D = (i, xp, D, {N_COINS, Ann}) => {
@@ -247,7 +249,6 @@ export const calcWithdrawOne = common => (token_amount, i, slippage) => {
     // console.log('calcWithdrawOne config', common)
     // console.log('calcWithdrawOne inputs', token_amount, i, slippage)
     const {xp, total_supply, fee, N_COINS} = common
-    // const amp = A
     const _fee = fee * N_COINS / (4 * (N_COINS - 1))
     // console.log('calcWithdrawOne _fee', _fee)
 
@@ -275,12 +276,16 @@ export const calcWithdrawOne = common => (token_amount, i, slippage) => {
     }
     // console.log('withdrawOne xp_reduced', xp_reduced)
 
-    const max_amount_received = (1 - slippage / 100) * (xp_reduced[i] - get_y_D(i, xp_reduced, D1, common) - 1)
-
+    let est_amount_received = xp_reduced[i] - get_y_D(i, xp_reduced, D1, common) - 1
+    est_amount_received = est_amount_received > 0 ? est_amount_received : 0
+    est_amount_received = est_amount_received / 1000000
 
     // console.log('withdrawOne max_burn', max_amount_received)
     // console.log('-------------- END WITHDRAW ONE LOG -----------------')
-    return max_amount_received
+    return {
+        estAmount: est_amount_received,
+        minAmount: (1 - slippage / 100) * est_amount_received,
+    }
 }
 
 export const calc = common => {

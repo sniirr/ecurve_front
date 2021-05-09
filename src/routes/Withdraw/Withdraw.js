@@ -23,7 +23,6 @@ function Withdraw() {
     const dispatch = useDispatch()
 
     const apiKey = "withdraw"
-    // const poolId = "3POOL"
     const poolId = useSelector(selectedPoolSelector)
     const {tokens, lpTokenSymbol} = POOLS[poolId]
 
@@ -31,6 +30,7 @@ function Withdraw() {
     const [withdrawOne, setWithdrawOne] = useState(-1)
     const [slippage, setSlippage] = useState('0.5')
     const [toBeBurned, setToBeBurned] = useState(0)
+    const [otherAmount, setOtherAmount] = useState(0)
 
     const activeUser = useSelector(state => _.get(state, 'activeUser'))
     const balances = useSelector(balancesSelector('current'))
@@ -43,6 +43,7 @@ function Withdraw() {
     useApiStatus(apiKey, () => {
         setShareOfLiquidity(0)
         setToBeBurned(0)
+        setOtherAmount(0)
     })
 
     const {register, handleSubmit, watch, setValue, errors, reset} = useForm({
@@ -62,12 +63,11 @@ function Withdraw() {
     }
 
     const estimateWithdrawOne = (lpTokenAmount) => {
-        let amountReceived = calc.withdrawOne(lpTokenAmount * 1000000, withdrawOne, toFloat(slippage)) / 1000000
-        amountReceived = amountReceived > 0 ? amountReceived : 0
-
+        const {estAmount, minAmount} = calc.withdrawOne(lpTokenAmount * 1000000, withdrawOne, toFloat(slippage))
         _.forEach(tokens, (symbol, i) => {
-            setValue(symbol, i === withdrawOne ? amountReceived.toFixed(TOKENS[symbol].precision) : 0)
+            setValue(symbol, i === withdrawOne ? estAmount.toFixed(TOKENS[symbol].precision) : 0)
         })
+        setOtherAmount(minAmount)
     }
 
     const onSliderChange = value => {
@@ -91,6 +91,7 @@ function Withdraw() {
         reset()
         setWithdrawOne(value)
         setToBeBurned(0)
+        setOtherAmount(0)
     }
 
     const onInputFocus = () => {
@@ -101,14 +102,16 @@ function Withdraw() {
     const estimateBurn = () => {
         const withdrawAmounts = _.map(tokens, (symbol, i) => amounts[symbol] * 1000000)
 
-        const estimatedBurn = calc.withdrawImbalanced(withdrawAmounts, toFloat(slippage))
-        setToBeBurned(toFloat(estimatedBurn / 1000000))
+        const {estBurn, maxBurn} = calc.withdrawImbalanced(withdrawAmounts, toFloat(slippage))
+        setToBeBurned(toFloat(estBurn))
+        setOtherAmount(maxBurn)
     }
 
     useEffect(() => {
         if (sumAmount === 0) {
             // all 0's, no need to calc
             setToBeBurned(0)
+            setOtherAmount(0)
             return
         }
         if (isWithdrawOne) {
@@ -122,13 +125,33 @@ function Withdraw() {
     usePoolLoader(poolId)
 
     const renderBurnMessage = () => {
+        if (isWithdrawOne) {
+            if (otherAmount <= 0) return null
+
+            return (
+                <>
+                    <span>Receive at least {amountToAsset(otherAmount, tokens[withdrawOne], true, true)}</span>
+                    <span className="text-small"> (with {slippage}% max slippage)</span>
+                </>
+            )
+        }
+
         if (toBeBurned <= 0) return null
 
         if (toBeBurned > balances[lpTokenSymbol]) return (
             <span className="error">Burn amount exceeding {lpTokenSymbol} balance ({toBeBurned} {lpTokenSymbol})</span>
         )
 
-        return `${!isBalanced && !isWithdrawOne ? 'Max. ' : ''}${amountToAsset(toBeBurned, lpTokenSymbol, true, true)} will be burned`
+        if (!isBalanced) {
+            return (
+                <>
+                    <div style={{marginBottom: 8}}>{amountToAsset(toBeBurned, lpTokenSymbol, true, true)} will be burned</div>
+                    <div className="text-small">(Max. {amountToAsset(otherAmount, lpTokenSymbol, true, true)} with {slippage}% max slippage)</div>
+                </>
+            )
+        }
+
+        return `${amountToAsset(toBeBurned, lpTokenSymbol, true, true)} will be burned`
     }
 
     return (
