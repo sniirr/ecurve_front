@@ -15,7 +15,7 @@ export const BLOCKS_URL = 'bloks.io'
 
 export const MAIN_TOKEN = 'ECRV'
 export const DAD_TOKEN = 'DAD'
-export const WEIGHT_TOKEN = 'veCRV'
+export const WEIGHT_TOKEN = 'vECRV'
 
 export const CONTRACTS = {
     curveToken: 'ecurvetoken1',

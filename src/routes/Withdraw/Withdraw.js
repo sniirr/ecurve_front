@@ -59,7 +59,9 @@ function Withdraw() {
     const onSubmit = data => {
         console.log(data)
         const withdrawOneSymbol = withdrawOne > -1 && tokens[withdrawOne]
-        dispatch(withdraw(activeUser, poolId, toBeBurned, amounts, withdrawOneSymbol, isBalanced))
+        const receiveAmounts = !isWithdrawOne ? amounts : _.mapValues(amounts, (v, sym) => sym === withdrawOneSymbol ? otherAmount : v)
+        const sendAmount = isBalanced || isWithdrawOne ? toBeBurned : otherAmount
+        dispatch(withdraw(activeUser, poolId, sendAmount, receiveAmounts, withdrawOneSymbol, isBalanced))
     }
 
     const estimateWithdrawOne = (lpTokenAmount) => {
