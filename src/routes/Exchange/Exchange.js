@@ -91,10 +91,18 @@ function Exchange() {
     }
 
     useEffect(() => {
+        if (!_.isEmpty(poolId)) {
+            setFromTo([0, 1])
+        }
+    }, [poolId])
+
+    useEffect(() => {
         setRate(isCalcReady ? calcReceiveAmount(1, 0) : 1)
     }, [fromSymbol, toSymbol, isCalcReady])
 
     useEffect(() => {
+        if (!_.has(TOKENS, toSymbol)) return
+
         const precision = TOKENS[toSymbol].precision
         const expected = inAmount > 0 ? calcReceiveAmount(inAmount, 0).toFixed(precision) : 0
         const minAmount = inAmount > 0 ? calcReceiveAmount(inAmount, slippage).toFixed(precision) : 0
@@ -133,7 +141,8 @@ function Exchange() {
                 </div>
                 <div className="exchange-info">
                     <div className="fee">Fee + Admin Fee: {fee.lpPart}% + {fee.adminPart}%</div>
-                    <div className="rate">Exchange rate <span className="text-small">(inc. fees)</span> {fromSymbol}/{toSymbol}: {(rate).toFixed(4)}</div>
+                    <div className="rate">Exchange rate <span
+                        className="text-small">(inc. fees)</span> {fromSymbol}/{toSymbol}: {(rate).toFixed(4)}</div>
                 </div>
                 <SlippageInput slippage={slippage} setSlippage={setSlippage} options={['0.5', '1']}/>
                 <div className="submit-container">
