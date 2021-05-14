@@ -86,6 +86,8 @@ export const makeBoostSelector = (poolId, overrides = {}) => () => {
 
             const user_veCRV = lockedamt * lockTimeInSeconds
 
+            console.log('account vECRV portion', user_veCRV / total_veCRV)
+
             // if (hasTempLockedBalance || hasTempLockPeriod) {
             //     total_veCRV += user_veCRV
             // }

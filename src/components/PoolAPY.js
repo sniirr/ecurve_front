@@ -9,7 +9,7 @@ const PoolAPY = ({poolId}) => {
     const {basePoolApy, maxPoolApy} = useSelector(poolMiningApySelector)
 
     return (
-        <div className="apys">
+        <div className="apys sbs">
             <div className="apy-sbs">
                 <div className="text">Base</div>
                 <div className="num">{basePoolApy.toFixed(2)}%</div>

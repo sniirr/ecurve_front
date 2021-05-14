@@ -2,7 +2,6 @@ import {SECONDS_IN_YEAR, balancesToMap, makeReducer, toFloat} from "utils";
 import {
     setStatus,
     fetchOne,
-    fetchOneByPk,
     fetchTokenStats,
     getTableData, requestEcurveApi, requestDefiboxPair
 } from "modules/api"
@@ -36,58 +35,18 @@ export const fetchPoolBalances = poolId => dispatch => {
     }))
 }
 
-// const fetchPoolUserWeight = (activeUser, code, scope) => fetchOneByPk({
-//     code,
-//     scope,
-//     table: 'userweight',
-// }, 'account', activeUser.accountName)
-//
-// const fetchPoolTotalWeight = (code, scope) => fetchOne({
-//     code,
-//     scope,
-//     table: 'totwght',
-// })
-// export const fetchPoolWeights = (activeUser, poolId, scope) => async (dispatch, getState) => {
-//
-//     const apiKey = `pool-weights-${poolId}`
-//
-//     dispatch(setStatus(apiKey, {status: 'pending'}))
-//
-//     try {
-//         const {depositContract} = poolConfigSelector(poolId)(getState())
-//         const data = await Promise.all([
-//             fetchPoolUserWeight(activeUser, depositContract, scope),
-//             fetchPoolTotalWeight(depositContract, scope),
-//         ])
-//
-//         dispatch({
-//             type: 'SET_POOL_WEIGHTS',
-//             payload: {
-//                 poolId,
-//                 user_weight: parseFloat(_.get(data, [0, 'userwgt'], 0)),
-//                 total_weight: parseFloat(_.get(data, [1, 'totwght'], 0))
-//             }
-//         })
-//
-//         dispatch(setStatus(apiKey, {status: 'success'}))
-//
-//     } catch (e) {
-//         dispatch(setStatus(apiKey, {status: 'error', error: `Failed to fetch ${poolId} boost info`}))
-//     }
-// }
-
-export const fetchPoolFeeStats = poolId => async dispatch => {
+export const fetchPoolFeeStats = () => async dispatch => {
     try {
         const data = await requestEcurveApi('/GetEcurveStats')
 
-        const record = _.find(data?.data, ({pool_id}) => pool_id === poolId) || {}
-
-        dispatch({
-            type: 'SET_POOL_FEE_STATS',
-            payload: {
-                poolId,
-                ...record,
-            },
+        _.forEach(data?.data, ({pool_id, ...record}) => {
+            dispatch({
+                type: 'SET_POOL_FEE_STATS',
+                payload: {
+                    poolId: pool_id,
+                    ...record,
+                },
+            })
         })
     } catch (e) {
 
@@ -192,14 +151,18 @@ export const makePoolTVLSelector = poolId => () => createSelector(
 
 export const poolFeesApySelector = poolId => state => {
     const {totalvcrv} = _.get(state, 'ecrv', {totalvcrv: 0})
+    const {fee} = poolInfoSelector(poolId, 'stats')(state)
     const ecrv_usdt_price = tokenPriceSelector(MAIN_TOKEN)(state)
-    if (!(ecrv_usdt_price > 0 && totalvcrv > 0)) return 0
+    if (!(ecrv_usdt_price > 0 && totalvcrv > 0 && _.get(fee, 'adminPart') > 0)) return {apy: 0, volume: 0}
 
     const {last_24h_fees} = poolInfoSelector(poolId, 'feeStats')(state)
 
     const total_vcrv_in_usdt = totalvcrv / (SECONDS_IN_YEAR * 4) * ecrv_usdt_price
 
-    return 365 * 100 * last_24h_fees * 1000000 / total_vcrv_in_usdt
+    return {
+        apy: 365 * 100 * last_24h_fees * 1000000 / total_vcrv_in_usdt,
+        volume: last_24h_fees * 100 / fee.adminPart
+    }
 }
 
 export const makePoolMiningApySelector = poolId => () => createSelector(

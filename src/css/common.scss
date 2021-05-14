@@ -102,6 +102,18 @@ input {
   }
 }
 
+.sbs {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+
+  text-align: left;
+
+  & > div:first-child {
+    margin-right: 40px;
+  }
+}
+
 .disable-cover {
   position: absolute;
   top: -20px;

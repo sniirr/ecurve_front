@@ -62,7 +62,7 @@ const OverviewBox = () => {
                                 </div>
                             </div>
                         </div>
-                        <div>
+                        <div className="bottom-row">
                             <div className="text-small">Round Distribution</div>
                             <div className="num">{amountToAsset(currround_amount, MAIN_TOKEN, true, true)}</div>
                         </div>
@@ -79,7 +79,7 @@ const OverviewBox = () => {
                                 <div className="num">{amountToAsset(totalSupply, MAIN_TOKEN, true, true)}</div>
                             </div>
                         </div>
-                        <div className="sbs">
+                        <div className="bottom-row sbs">
                             <div>
                                 <div className="text-small">DAD Price</div>
                                 <div className="num">{_.get(prices, DAD_TOKEN, 0).toFixed(4)}$</div>
