@@ -165,6 +165,14 @@ export const poolFeesApySelector = poolId => state => {
     }
 }
 
+export const ECRVAggStatsSelector = state => _.reduce(state.pools, (agg, {}, poolId) => {
+    const {apy, volume} = poolFeesApySelector(poolId)(state)
+    return {
+        apy: agg.apy + apy,
+        volume: agg.volume + volume,
+    }
+}, {apy: 0, volume: 0})
+
 export const makePoolMiningApySelector = poolId => () => createSelector(
     nextRoundEcrvInUsdtSelector,
     poolInfoSelector(poolId, 'stats'),

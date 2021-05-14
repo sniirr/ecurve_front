@@ -109,7 +109,7 @@ input {
 
   text-align: left;
 
-  & > div:first-child {
+  & > div:not(:last-child) {
     margin-right: 40px;
   }
 }

@@ -8,8 +8,9 @@ import './OverviewBox.scss'
 import Countdown from "react-countdown";
 import {amountToAsset, dayJS} from "utils";
 import {pricesSelector} from "modules/prices";
+import {ECRVAggStatsSelector} from 'modules/pools'
 
-const {MAIN_TOKEN, DAD_TOKEN} = config
+const {MAIN_TOKEN} = config
 
 const OverviewBox = () => {
 
@@ -20,6 +21,9 @@ const OverviewBox = () => {
     const {currround, currround_amount, lastupdate, totalSupply} = useSelector(eCRVStatsSelector)
     const prices = useSelector(pricesSelector)
     const {maxApy: dadMaxApy} = useSelector(maxDADApySelector)
+    const {apy: vECRVApy, volume} = useSelector(ECRVAggStatsSelector)
+    console.log({vECRVApy, volume})
+
 
     useEffect(() => {
         dispatch(fetchEcrvStats())
@@ -81,8 +85,8 @@ const OverviewBox = () => {
                         </div>
                         <div className="bottom-row sbs">
                             <div>
-                                <div className="text-small">DAD Price</div>
-                                <div className="num">{_.get(prices, DAD_TOKEN, 0).toFixed(4)}$</div>
+                                <div className="text-small">vECRV APY</div>
+                                <div className="num">{vECRVApy.toFixed(2)}%</div>
                             </div>
                             <div>
                                 <div className="text-small">DAD Locking Max APY</div>

@@ -6,7 +6,7 @@ import usePoolLoader from "hooks/usePoolLoader";
 import './Pools.scss'
 import config from 'config'
 import PoolAPY from "components/PoolAPY";
-import {makePoolTVLSelector} from "modules/pools";
+import {makePoolTVLSelector, poolFeesApySelector} from "modules/pools";
 import logo from 'images/ecurve-logo.png'
 import defiboxLogo from 'images/defi-box.png'
 import dadLogo from 'images/logo-dad.svg'
@@ -25,6 +25,7 @@ const Pool = ({poolId, isEcurve, isNew}) => {
 
     const poolTvlSelector = useMemo(makePoolTVLSelector(poolId), [poolId])
     const tvl = useSelector(poolTvlSelector)
+    const {apy: feesApy, volume: dailyVolume} = useSelector(poolFeesApySelector(poolId))
 
     usePoolLoader(poolId)
 
@@ -53,9 +54,15 @@ const Pool = ({poolId, isEcurve, isNew}) => {
                 </div>
             </div>
             <div className="column col-apy success">
-                <PoolAPY poolId={poolId}/>
+                <PoolAPY poolId={poolId} moreAPYs={isEcurve ? [{text: 'vECRV', value: feesApy}] : []}/>
             </div>
-            <div className="column col-tvl">{isEcurve ? numeral(tvl).format('0,0.[000000]$') : ''}</div>
+            {isEcurve && (
+                <>
+                    <div className="column col-tvl">{isEcurve ? numeral(tvl).format('0.00a') : ''}</div>
+                    <div className="column col-volume">{isEcurve ? numeral(dailyVolume).format('0.00a') : ''}</div>
+                </>
+            )}
+
             <div className="column col-actions">
                 <div className="button small" onClick={onStakeClick}>Stake {lpTokenSymbol}</div>
                 {!isEcurve && (
@@ -97,7 +104,6 @@ const DADPool = ({poolId}) => {
                     </div>
                 </div>
             </div>
-            <div className="column col-tvl"/>
             <div className="column col-actions">
                 <div className="button small" onClick={onLockClick}>Lock DAD</div>
                 <div className="button small">
@@ -148,9 +154,16 @@ export const Pools = () => {
                     <div className="column col-apy">
                         <div className="header-text">Pool APY</div>
                     </div>
-                    <div className="column col-tvl">
-                        <div className="header-text">{isEcurve ? 'TVL' : ''}</div>
-                    </div>
+                    {isEcurve && (
+                      <>
+                          <div className="column col-tvl">
+                              <div className="header-text">{isEcurve ? 'TVL' : ''}</div>
+                          </div>
+                          <div className="column col-volume">
+                              <div className="header-text">{isEcurve ? '24H Volume' : ''}</div>
+                          </div>
+                      </>
+                    )}
                     <div className="column col-actions"/>
                 </div>
                 {_.map(group, ({id: poolId, isNew}) => {

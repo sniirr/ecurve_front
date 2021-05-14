@@ -45,15 +45,19 @@
     justify-content: center;
 
     &.col-info {
-      width: 170px;
+      width: 160px;
     }
 
     &.col-apy {
-      width: 210px;
+      width: 230px;
 
-      .apy-sbs:first-child {
-        margin-right: 20px;
+      .apy-sbs:not(:last-child) {
+        margin-right: 18px;
       }
+    }
+
+    &.col-tvl, &.col-volume {
+      width: 95px;
     }
 
     &.col-actions {
