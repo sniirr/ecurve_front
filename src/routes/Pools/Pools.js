@@ -54,7 +54,8 @@ const Pool = ({poolId, isEcurve, isNew}) => {
                 </div>
             </div>
             <div className="column col-apy success">
-                <PoolAPY poolId={poolId} moreAPYs={isEcurve ? [{text: 'vECRV', value: feesApy}] : []}/>
+                <PoolAPY poolId={poolId}/>
+                {/*<PoolAPY poolId={poolId} moreAPYs={isEcurve ? [{text: 'vECRV', value: feesApy}] : []}/>*/}
             </div>
             {isEcurve && (
                 <>
@@ -98,8 +99,8 @@ const DADPool = ({poolId}) => {
             </div>
             <div className="column col-apy success">
                 <div className="apys">
-                    <div className="apy-sbs">
-                        <div className="text">Max</div>
+                    <div className="mining-apy">
+                        <div className="text">ECRV Mining</div>
                         <div className="num">{maxApy.toFixed(2)}%</div>
                     </div>
                 </div>

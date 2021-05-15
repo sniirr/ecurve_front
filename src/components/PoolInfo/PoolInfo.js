@@ -45,7 +45,6 @@ const PoolInfo = ({poolId}) => {
     const {name: poolName, tokens} = POOLS[poolId]
     const poolBalances = useSelector(poolInfoSelector(poolId, 'balances'))
     const {apy: feesApy, volume: dailyVolume} = useSelector(poolFeesApySelector(poolId))
-    //  FEES APY {feesApy.toFixed(2)}%
 
     const poolTvlSelector = useMemo(makePoolTVLSelector(poolId), [poolId])
     const tvl = useSelector(poolTvlSelector)
@@ -74,24 +73,24 @@ const PoolInfo = ({poolId}) => {
                     <div className="token-info pool-tvl sbs">
                         <div>
                             <div className="text-small" title='Total value locked'>TVL</div>
-                            <div className="num">{numeral(tvl).format('0,0.[000000]')}</div>
+                            <div className="num">{numeral(tvl).format('0.00a')}</div>
                         </div>
                         <div>
                             <div className="text-small">24H Volume</div>
                             <div className="num">
-                                {numeral(dailyVolume).format('0.0a')}
+                                {numeral(dailyVolume).format('0.00a')}
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="pool-apy">
                     <div>
-                        <div className="text-small">Liquidity Mining APY</div>
+                        <div className="text-small" style={{fontWeight: 'bold'}}>Annualized Yields</div>
                         <PoolAPY poolId={poolId}/>
                     </div>
                     <div className="fees-apy sbs">
                         <div>
-                            <div className="text-small">vECRV APY</div>
+                            <div className="text-small">vECRV</div>
                             <div className="num">{feesApy.toFixed(2)}%</div>
                         </div>
                         <div>
