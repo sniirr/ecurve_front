@@ -33,6 +33,42 @@ input {
   }
 }
 
+.info-icon {
+  width: 16px;
+  height: 16px;
+  border: solid 1px white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-left: 8px;
+
+  .fa-info {
+    height: 10px;
+  }
+}
+
+.tooltip {
+  background-color: #eee !important;
+  color: $brand-dark !important;
+  border: solid 1px $brand-dark !important;
+  padding-bottom: 20px !important;
+  opacity: 1 !important;
+
+  h4 {
+    text-decoration: underline;
+  }
+
+  &.place-top {
+    &:after {
+      border-top-color: #eee !important;
+      border-top-style: solid !important;
+      border-top-width: 6px !important;
+    }
+  }
+}
+
 .loading {
   position: absolute;
   top: 50%;

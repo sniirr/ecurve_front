@@ -50,7 +50,6 @@ export const POOLS = {
         poolContract: CONTRACTS.curveUSNPool,
         tokens: ["USN", "TRIPOOL"],
         lpTokenSymbol: 'USNPOOL',
-        isNew: true,
     },
     'DADGOV': {
         id: 'DADGOV',

@@ -152,8 +152,9 @@ export const makePoolTVLSelector = poolId => () => createSelector(
 export const poolFeesApySelector = poolId => state => {
     const {totalvcrv} = _.get(state, 'ecrv', {totalvcrv: 0})
     const {fee} = poolInfoSelector(poolId, 'stats')(state)
+    const poolTvl = makePoolTVLSelector(poolId)()(state)
     const ecrv_usdt_price = tokenPriceSelector(MAIN_TOKEN)(state)
-    if (!(ecrv_usdt_price > 0 && totalvcrv > 0 && _.get(fee, 'adminPart') > 0)) return {apy: 0, volume: 0}
+    if (!(ecrv_usdt_price > 0 && totalvcrv > 0 && _.get(fee, 'adminPart') > 0)) return {apy: 0, volume: 0, lpFeesApy: 0}
 
     const {last_24h_fees} = poolInfoSelector(poolId, 'feeStats')(state)
 
@@ -161,7 +162,8 @@ export const poolFeesApySelector = poolId => state => {
 
     return {
         apy: 365 * 100 * last_24h_fees * 1000000 / total_vcrv_in_usdt,
-        volume: last_24h_fees * 100 / fee.adminPart
+        volume: last_24h_fees * 100 / fee.adminPart,
+        lpFeesApy: last_24h_fees * 100 * 365 / poolTvl
     }
 }
 

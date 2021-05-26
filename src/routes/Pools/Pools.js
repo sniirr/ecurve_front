@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import usePoolLoader from "hooks/usePoolLoader";
 import './Pools.scss'
 import config from 'config'
-import PoolAPY from "components/PoolAPY";
+import PoolAPY, {DADLockingAPY, LPFeesAPY} from "components/PoolAPY";
 import {makePoolTVLSelector, poolFeesApySelector} from "modules/pools";
 import logo from 'images/ecurve-logo.png'
 import defiboxLogo from 'images/defi-box.png'
@@ -25,7 +25,7 @@ const Pool = ({poolId, isEcurve, isNew}) => {
 
     const poolTvlSelector = useMemo(makePoolTVLSelector(poolId), [poolId])
     const tvl = useSelector(poolTvlSelector)
-    const {apy: feesApy, volume: dailyVolume} = useSelector(poolFeesApySelector(poolId))
+    const {lpFeesApy, volume: dailyVolume} = useSelector(poolFeesApySelector(poolId))
 
     usePoolLoader(poolId)
 
@@ -54,8 +54,7 @@ const Pool = ({poolId, isEcurve, isNew}) => {
                 </div>
             </div>
             <div className="column col-apy success">
-                <PoolAPY poolId={poolId}/>
-                {/*<PoolAPY poolId={poolId} moreAPYs={isEcurve ? [{text: 'vECRV', value: feesApy}] : []}/>*/}
+                <PoolAPY poolId={poolId} moreAPYs={isEcurve ? [<LPFeesAPY poolId={poolId} value={lpFeesApy}/>] : []}/>
             </div>
             {isEcurve && (
                 <>
@@ -99,10 +98,7 @@ const DADPool = ({poolId}) => {
             </div>
             <div className="column col-apy success">
                 <div className="apys">
-                    <div className="mining-apy">
-                        <div className="text">ECRV Mining</div>
-                        <div className="num">{maxApy.toFixed(2)}%</div>
-                    </div>
+                    <DADLockingAPY value={maxApy}/>
                 </div>
             </div>
             <div className="column col-actions">

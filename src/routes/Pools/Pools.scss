@@ -45,11 +45,11 @@
     justify-content: center;
 
     &.col-info {
-      width: 170px;
+      width: 160px;
     }
 
     &.col-apy {
-      width: 190px;
+      width: 250px;
 
       .apy-sbs {
         svg {
@@ -61,10 +61,18 @@
           margin-right: 20px;
         }
       }
+
+      .mining-apy:not(:last-child) {
+        margin-right: 0 !important;
+      }
+
+      .separator {
+        margin: 0 10px 2px;
+      }
     }
 
     &.col-tvl, &.col-volume {
-      width: 110px;
+      width: 85px;
     }
 
     &.col-actions {
@@ -104,7 +112,7 @@
 
   .pool-list-item {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-self: flex-start;
 
     &:not(:last-child) {

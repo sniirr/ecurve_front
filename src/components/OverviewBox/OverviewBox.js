@@ -9,6 +9,7 @@ import Countdown from "react-countdown";
 import {amountToAsset, dayJS} from "utils";
 import {pricesSelector} from "modules/prices";
 import {ECRVAggStatsSelector} from 'modules/pools'
+import {AdminFeesAPY, DADLockingAPY} from "components/PoolAPY";
 
 const {MAIN_TOKEN} = config
 
@@ -84,14 +85,8 @@ const OverviewBox = () => {
                             </div>
                         </div>
                         <div className="bottom-row sbs">
-                            <div>
-                                <div className="text-small">vECRV APY</div>
-                                <div className="num">{vECRVApy.toFixed(2)}%</div>
-                            </div>
-                            <div>
-                                <div className="text-small">DAD Locking Max APY</div>
-                                <div className="num">{dadMaxApy.toFixed(2)}%</div>
-                            </div>
+                            <AdminFeesAPY value={vECRVApy} title="vECRV APY"/>
+                            <DADLockingAPY value={dadMaxApy}/>
                         </div>
                     </div>
                 </div>

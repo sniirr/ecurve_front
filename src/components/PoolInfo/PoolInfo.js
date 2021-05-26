@@ -7,11 +7,11 @@ import TokenSymbol from "components/TokenSymbol";
 import config from 'config'
 import {poolFeesApySelector, poolInfoSelector, makePoolTVLSelector} from 'modules/pools'
 import './PoolInfo.scss'
-import PoolAPY from 'components/PoolAPY'
+import PoolAPY, {LPFeesAPY} from 'components/PoolAPY'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCaretDown, faCaretRight} from '@fortawesome/free-solid-svg-icons'
 import {selectPool} from "store/uiReducer";
-import useOnClickOutside from "hooks/useClickOutside";
+import useOnClickOutside from "hooks/useClickOutside"
 
 const {POOLS} = config
 
@@ -44,7 +44,7 @@ const PoolInfo = ({poolId}) => {
 
     const {name: poolName, tokens} = POOLS[poolId]
     const poolBalances = useSelector(poolInfoSelector(poolId, 'balances'))
-    const {apy: feesApy, volume: dailyVolume} = useSelector(poolFeesApySelector(poolId))
+    const {volume: dailyVolume, lpFeesApy} = useSelector(poolFeesApySelector(poolId))
 
     const poolTvlSelector = useMemo(makePoolTVLSelector(poolId), [poolId])
     const tvl = useSelector(poolTvlSelector)
@@ -85,18 +85,13 @@ const PoolInfo = ({poolId}) => {
                 </div>
                 <div className="pool-apy">
                     <div>
-                        <div className="text-small" style={{fontWeight: 'bold'}}>Annualized Yields</div>
+                        <div className="text-small yield-title">
+                            <span>Annualized Yields</span>
+                        </div>
                         <PoolAPY poolId={poolId}/>
                     </div>
                     <div className="fees-apy sbs">
-                        <div>
-                            <div className="text-small">vECRV</div>
-                            <div className="num">{feesApy.toFixed(2)}%</div>
-                        </div>
-                        <div>
-                            {/*<div className="text-small">LP FEES APY</div>*/}
-                            {/*<div className="num">{feesApy.toFixed(2)}%</div>*/}
-                        </div>
+                        <LPFeesAPY value={lpFeesApy} poolId={poolId}/>
                     </div>
                 </div>
             </div>

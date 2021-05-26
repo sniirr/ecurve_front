@@ -34,6 +34,7 @@
     "react-scripts": "4.0.2",
     "react-spinners": "^0.10.6",
     "react-toastify": "^7.0.3",
+    "react-tooltip": "^4.2.19",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.9",
     "redux-logger": "^3.0.6",
