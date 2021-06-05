@@ -55,7 +55,7 @@ const ClaimBox = () => {
                             {_.size(claimable.adminFees) > 0 ? _.map(claimable.adminFees, (value, sym) => (
                                 <><span className="claim-amount">{amountToAsset(value, sym, false, true)}</span> {sym}</>
                             )) : (
-                                <><span className="claim-amount">0</span> LP Tokens</>
+                                <><span className="claim-amount">0</span> TRIPOOL</>
                             )}
                         </div>
                     </div>

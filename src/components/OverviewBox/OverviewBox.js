@@ -86,7 +86,7 @@ const OverviewBox = () => {
                         </div>
                         <div className="bottom-row sbs">
                             <AdminFeesAPY value={vECRVApy} title="vECRV APY"/>
-                            <DADLockingAPY value={dadMaxApy}/>
+                            <DADLockingAPY value={dadMaxApy} title="DAD Locking Max APY"/>
                         </div>
                     </div>
                 </div>

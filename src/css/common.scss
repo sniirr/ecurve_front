@@ -60,6 +60,10 @@ input {
     text-decoration: underline;
   }
 
+  .text-small {
+    margin-top: 6px;
+  }
+
   &.place-top {
     &:after {
       border-top-color: #eee !important;
