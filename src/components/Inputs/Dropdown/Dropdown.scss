@@ -1,0 +1,35 @@
+@import "css/vars";
+
+.dropdown {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  .caret {
+    width: 20px;
+    text-align: center;
+  }
+
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% - 4px);
+    right: -10px;
+    background-color: $brand-dark;
+    z-index: 10;
+
+    .dropdown-item {
+      padding: 12px 36px;
+
+      &:not(:last-child) {
+        border-bottom: solid 1px white;
+      }
+    }
+  }
+
+  &.is-visible {
+    .dropdown-menu {
+      display: block;
+    }
+  }
+}

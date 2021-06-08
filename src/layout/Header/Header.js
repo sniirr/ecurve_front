@@ -4,7 +4,10 @@ import {getTestTokens} from "modules/wallet";
 import {useDispatch, useSelector} from "react-redux";
 import logo from 'images/ecurve-logo.png'
 import './Header.scss';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faBars} from '@fortawesome/free-solid-svg-icons'
 import config from 'config'
+import Dropdown from "components/Inputs/Dropdown";
 
 const {ENVIRONMENT} = config
 
@@ -23,29 +26,41 @@ function Header({ual}) {
         )
     }
 
+    const logout = () => {
+        ual.logout()
+        dispatch({type: 'RESET_STATE'})
+    }
+
+    const menuItems = [{link: 'https://dappaccountdao.gitbook.io/dappaccountdao/ecurve', name: 'About'}]
+    if (isLoggedIn) {
+        menuItems.push({name: 'Logout', onClick: logout})
+    }
+
     return (
         <header>
             <div className="logo">
                 <img src={logo} alt="eCurve"/>
                 <span className="logo-inner">e</span>Curve
             </div>
-            {isLoggedIn ? (
-                <div className="account">
-                    {ENVIRONMENT !== 'production' && <div className="link" onClick={() => dispatch(getTestTokens(activeUser))}>Get test tokens</div>}
-                    <div className="username">{activeUser.accountName}</div>
-                    <div className="logout" onClick={() => {
-                        ual.logout()
-                        dispatch({type: 'RESET_STATE'})
-                    }}>Logout
-                    </div>
-                    {renderNetMarker()}
+            <div className="account">
+                {isLoggedIn ? (
+                    <>
+                        {ENVIRONMENT !== 'production' && <div className="link" onClick={() => dispatch(getTestTokens(activeUser))}>Get test tokens</div>}
+                        <div className="username">{activeUser.accountName}</div>
+                        {renderNetMarker()}
+                    </>
+                ) : (
+                    <>
+                        <div className="login" onClick={ual.showModal}>Login</div>
+                        {renderNetMarker()}
+                    </>
+                )}
+                <div className="header-menu">
+                    <Dropdown id="header-menu" items={menuItems}>
+                        <FontAwesomeIcon icon={faBars}/>
+                    </Dropdown>
                 </div>
-            ) : (
-                <div className="account">
-                    <div className="login" onClick={ual.showModal}>Login</div>
-                    {renderNetMarker()}
-                </div>
-            )}
+            </div>
         </header>
     );
 }

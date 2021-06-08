@@ -1,4 +1,4 @@
-import React, {useState, useRef, useMemo} from 'react'
+import React, {useMemo} from 'react'
 import _ from 'lodash'
 import {useDispatch, useSelector} from "react-redux";
 import numeral from 'numeral'
@@ -8,35 +8,22 @@ import config from 'config'
 import {poolFeesApySelector, poolInfoSelector, makePoolTVLSelector} from 'modules/pools'
 import './PoolInfo.scss'
 import PoolAPY, {LPFeesAPY} from 'components/PoolAPY'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faCaretDown, faCaretRight} from '@fortawesome/free-solid-svg-icons'
 import {selectPool} from "store/uiReducer";
-import useOnClickOutside from "hooks/useClickOutside"
+import Dropdown from 'components/Inputs/Dropdown'
 
 const {POOLS} = config
 
 const PoolSelect = ({poolId}) => {
 
     const dispatch = useDispatch()
-    const ref = useRef(null)
-    const [menuVisible, setMenuVisible] = useState(false)
-
-    useOnClickOutside(ref, () => setMenuVisible(false))
 
     const pools = _.filter(POOLS, p => p.operator === 'eCurve' && p.id !== poolId)
 
     return (
-        <div ref={ref} className={classNames("pool-title", {'menu-visible': menuVisible})} onClick={() => setMenuVisible(!menuVisible)}>
-            <div>More pools</div>
-            <div className="caret">
-                <FontAwesomeIcon icon={menuVisible ? faCaretDown : faCaretRight}/>
-            </div>
-            <div className="pool-select">
-                {_.map(pools, ({id, name}) => (
-                    <div key={`pool-select-opt-${id}`} className="item" onClick={() => dispatch(selectPool(id))}>{name}</div>
-                ))}
-            </div>
-        </div>
+        <Dropdown id="pools-select" withCaret={true} items={pools}
+                  onItemClick={({id}) => dispatch(selectPool(id))}>
+            More pools
+        </Dropdown>
     )
 }
 

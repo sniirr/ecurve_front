@@ -25,10 +25,6 @@ header {
     display: flex;
     align-items: center;
 
-    div {
-      margin-left: 40px;
-    }
-
     .net-marker {
       background-color: $brand-mid;
       color: white;
@@ -37,6 +33,40 @@ header {
 
     .login, .logout {
       cursor: pointer;
+    }
+
+    .header-menu {
+      position: relative;
+      margin-left: 40px;
+
+      svg {
+        width: unset !important;
+        height: 1.5em;
+        cursor: pointer;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      .dropdown {
+        text-align: left;
+
+        .dropdown-menu {
+          width: 100px;
+          top: calc(100% + 8px);
+          right: -5px;
+          background-color: #eee;
+          color: $brand-dark;
+          border: $brand-dark 1px solid;
+          border-radius: 4px;
+
+          .dropdown-item {
+            border-color: $brand-dark;
+            padding: 12px;
+          }
+        }
+      }
     }
   }
 }

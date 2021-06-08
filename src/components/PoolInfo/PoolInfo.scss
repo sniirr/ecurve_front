@@ -5,46 +5,12 @@
   .top-section-title {
     position: relative;
 
-    .pool-title {
+    .dropdown {
       position: absolute;
-      cursor: pointer;
       height: 100%;
       top: 4px;
       right: 10px;
       font-size: .6em;
-      display: flex;
-      align-items: center;
-
-      .pool-name {
-        margin-right: 5px;
-      }
-
-      .caret {
-        width: 20px;
-        text-align: center;
-      }
-
-      .pool-select {
-        display: none;
-        position: absolute;
-        top: calc(100% - 4px);
-        right: -10px;
-        background-color: $brand-dark;
-
-        .item {
-          padding: 12px 36px;
-
-          &:not(:last-child) {
-            border-bottom: solid 1px white;
-          }
-        }
-      }
-
-      &.menu-visible {
-        .pool-select {
-          display: block;
-        }
-      }
     }
   }
 
