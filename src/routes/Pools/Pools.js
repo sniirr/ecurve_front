@@ -17,7 +17,7 @@ import {selectPool} from "store/uiReducer";
 
 const {POOLS} = config
 
-const Pool = ({poolId, isEcurve, isNew}) => {
+const Pool = ({poolId, isEcurve, isNew, button = {}}) => {
 
     const dispatch = useDispatch()
     let history = useHistory();
@@ -65,11 +65,10 @@ const Pool = ({poolId, isEcurve, isNew}) => {
 
             <div className="column col-actions">
                 <div className="button small" onClick={onStakeClick}>Stake {lpTokenSymbol}</div>
-                {!isEcurve && (
+                {!_.isEmpty(button) && (
                     <div className="button small">
-                        <a target="_blank" rel="noopener noreferrer"
-                           href={`https://defibox.io/pool-market-details/${pairId}`}>
-                            View on Defibox
+                        <a target="_blank" rel="noopener noreferrer" href={button.href}>
+                            {button.text}
                         </a>
                     </div>
                 )}
@@ -119,11 +118,14 @@ const DADPool = ({poolId}) => {
     )
 }
 
-const GROUP_ORDER = ['eCurve', 'Defibox', 'DAD']
+const GROUP_ORDER = ['eCurve', 'DAD', 'Defibox']
 
 export const Pools = () => {
 
-    const groups = _.groupBy(POOLS, p => p.operator || 'eCurve')
+    const groups = _.groupBy(POOLS, p => {
+        if (p.operator === 'Hegeos') return 'DAD'
+        return p.operator || 'eCurve'
+    })
 
     const getGroupParams = groupName => {
         switch (groupName) {
@@ -163,12 +165,28 @@ export const Pools = () => {
                     )}
                     <div className="column col-actions"/>
                 </div>
-                {_.map(group, ({id: poolId, isNew}) => {
+                {_.map(group, ({id: poolId, operator, isNew, pairId}) => {
                     const key = `pool-item-${poolId}`
-                    return poolId === 'DADGOV' ? (
+                    if (poolId === 'DADGOV') return (
                         <DADPool key={key} poolId={poolId}/>
-                    ) : (
-                        <Pool key={key} poolId={poolId} isEcurve={isEcurve} isNew={isNew}/>
+                    )
+
+                    let button = {}
+                    if (operator === 'Defibox') {
+                        button = {
+                            href: `https://defibox.io/pool-market-details/${pairId}`,
+                            text: 'View on Defibox'
+                        }
+                    }
+                    else if (poolId === POOLS.EHEGIC.id) {
+                        button = {
+                            href: `https://hegeos.io`,
+                            text: 'View on Hegeos'
+                        }
+                    }
+
+                    return (
+                        <Pool key={key} poolId={poolId} isEcurve={isEcurve} isNew={isNew} button={button}/>
                     )
                 })}
             </div>

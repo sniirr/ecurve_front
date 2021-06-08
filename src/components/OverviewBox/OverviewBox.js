@@ -22,9 +22,7 @@ const OverviewBox = () => {
     const {currround, currround_amount, lastupdate, totalSupply} = useSelector(eCRVStatsSelector)
     const prices = useSelector(pricesSelector)
     const {maxApy: dadMaxApy} = useSelector(maxDADApySelector)
-    const {apy: vECRVApy, volume} = useSelector(ECRVAggStatsSelector)
-    console.log({vECRVApy, volume})
-
+    const {apy: vECRVApy} = useSelector(ECRVAggStatsSelector)
 
     useEffect(() => {
         dispatch(fetchEcrvStats())

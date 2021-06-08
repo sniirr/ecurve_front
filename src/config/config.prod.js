@@ -61,6 +61,14 @@ export const POOLS = {
         pairId: '588',
         poolMiningWeight: 0.15,
     },
+    'EHEGIC': {
+        id: 'EHEGIC',
+        name: 'Hegeos',
+        operator: 'Hegeos',
+        poolContract: 'dposithegeos',
+        lpTokenSymbol: 'EHEGIC',
+        isNew: true,
+    },
     'BOXAVG': {
         id: 'BOXAVG',
         name: 'EOS/USDC',
@@ -99,6 +107,13 @@ export const POOLS = {
 export const LP_TOKENS = ['TRIPOOL']
 
 export const TOKENS = {
+    EHEGIC: {
+        symbol: 'EHEGIC',
+        contract: CONTRACTS.dadUsdTokens,
+        precision: 4,
+        stakeContract: 'dposithegeos',
+        stakeTable: 'stake',
+    },
     BOXAVG: {
         symbol: 'BOXAVG',
         contract: 'lptoken.defi',

@@ -30,6 +30,7 @@ export const fetchTokenPrices = () => async dispatch => {
         dispatch({
             type: 'SET_TOKEN_PRICES',
             payload: {
+                EOS: eos_usdt_price,
                 [MAIN_TOKEN]: ecrv_eos_price * eos_usdt_price,
                 [DAD_TOKEN]: dad_eos_price * eos_usdt_price,
             }

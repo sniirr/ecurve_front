@@ -6,7 +6,7 @@ import config from 'config'
 import {useLocation} from "react-router-dom"
 import './StakeAndLock.scss'
 
-const {POOLS, DAD_TOKEN} = config
+const {POOLS} = config
 
 export default () => {
     let location = useLocation();
@@ -23,7 +23,7 @@ export default () => {
     return (
         <>
             <StakeAndLockECRV/>
-            {_.map(POOLS, (p, poolId) => p.operator !== DAD_TOKEN && (
+            {_.map(POOLS, (p, poolId) => p.id !== 'DADGOV' && (
                 <StakeLPToken key={`pool-stake-lp-${poolId}`} poolId={poolId}/>
             ))}
         </>

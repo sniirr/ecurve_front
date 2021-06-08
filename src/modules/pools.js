@@ -85,6 +85,36 @@ export const fetchDefiboxPoolData = poolId => async dispatch => {
     }
 }
 
+export const fetchHegeosPoolData = () => async (dispatch, getState) => {
+    const {poolContract, id: poolId} = POOLS.EHEGIC
+
+    try {
+        const data = await Promise.all([
+            fetchOne({code: 'ehegicpool11', scope: 'ehegicpool11', table: 'tokenstat1'}),
+            fetchOne({code: poolContract, scope: poolContract, table: 'totalstake'})
+        ])
+
+        const {totaldeposit: totalEos} = _.get(data, [0], {})
+        const {balance: totalLPStake} = _.get(data, [1], {})
+
+        const totalStake = parseFloat(totalLPStake)
+        const lpValueInEos = parseFloat(totalEos) / totalStake
+        const eosPrice = tokenPriceSelector('EOS')(getState())
+
+        dispatch({
+            type: 'SET_POOL_STATS',
+            payload: {
+                poolId,
+                totalSupply: totalStake,
+                totalStake: totalStake,
+                price: lpValueInEos * eosPrice,
+            }
+        })
+    } catch (e) {
+
+    }
+}
+
 export const fetchPoolData = poolId => async (dispatch, getState) => {
     const apiKey = `pool-stats-${poolId}`
 

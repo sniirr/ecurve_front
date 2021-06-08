@@ -2,11 +2,19 @@ import {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import _ from 'lodash'
 import {fetchAccountPoolBalances} from "modules/balances";
-import {fetchDefiboxPoolData, fetchPoolData} from "modules/pools";
+import {fetchDefiboxPoolData, fetchHegeosPoolData, fetchPoolData} from "modules/pools";
 import useOnLogin from "./useOnLogin";
 import config from 'config'
+import {tokenPriceSelector} from "modules/prices";
 
 const {POOLS} = config
+
+const getFetchPoolData = ({id: poolId, operator}) => {
+    if (operator === 'Defibox') {
+        return fetchDefiboxPoolData
+    }
+    return fetchPoolData
+}
 
 function usePoolLoader(poolId) {
 
@@ -16,14 +24,25 @@ function usePoolLoader(poolId) {
 
     const accountName = activeUser?.accountName
 
-    const is3rdPartyPool = _.get(POOLS, [poolId, 'operator']) !== 'eCurve'
+    const eosPrice = useSelector(tokenPriceSelector('EOS'))
+
+    const isECurvePool = _.get(POOLS, [poolId, 'operator']) === 'eCurve'
 
     useEffect(() => {
-        dispatch(is3rdPartyPool ? fetchDefiboxPoolData(poolId) : fetchPoolData(poolId))
+        if (poolId !== POOLS.EHEGIC.id) {
+            dispatch(getFetchPoolData(POOLS[poolId])(poolId))
+        }
     }, [poolId])
 
+    // specific hook for Hegeos pool, it requires eosPrice to be available
+    useEffect(() => {
+        if (poolId === POOLS.EHEGIC.id && _.isNumber(eosPrice)) {
+            dispatch(fetchHegeosPoolData())
+        }
+    }, [eosPrice])
+
     useOnLogin(() => {
-        if (!is3rdPartyPool) {
+        if (isECurvePool) {
             dispatch(fetchAccountPoolBalances(accountName, poolId))
         }
     })
