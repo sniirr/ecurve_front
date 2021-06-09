@@ -6,6 +6,16 @@
     min-height: 420px;
   }
 
+  &.pool {
+    .section-header {
+      margin-bottom: 30px;
+
+      .apy {
+        font-size: .925em;
+      }
+    }
+  }
+
   h4 {
     margin-top: 0;
   }
@@ -32,8 +42,22 @@
 
     .boost-info {
 
-      .info:not(:last-child) {
-        margin-bottom: 25px;
+      .current-stake {
+        margin-left: 5px;
+        word-spacing: -5px;
+      }
+
+      .info {
+        font-size: .8em;
+
+        &.warning {
+          color: $error;
+          font-size: .725em;
+        }
+
+        &:not(:last-child) {
+          margin-bottom: 20px;
+        }
       }
 
       svg {

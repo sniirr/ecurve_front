@@ -98,11 +98,6 @@ export const makeBoostSelector = (poolId, overrides = {}) => () => {
             if (!_.isNaN(overrides.stakedAmount) && overrides.stakedAmount !== 0) {
                 user_weight += overrides.stakedAmount
                 total_weight += overrides.stakedAmount
-                // subtract previous user_weight
-                // total_weight -= user_weight
-                // // calc and add new user_weight
-                // user_weight += overrides.stakedAmount * 3600 * 1000000 // Math.pow(10, precision)
-                // total_weight += user_weight
             }
 
             if (user_weight === 0) {
@@ -120,10 +115,15 @@ export const makeBoostSelector = (poolId, overrides = {}) => () => {
 
             const ecrv_for_max_boost = min_veCRV / lockTimeInSeconds
 
+            const userVEcrvRatio = user_veCRV / total_veCRV
+            const stakeForMaxBoost = totalStake * userVEcrvRatio
+
             return {
                 boost: boost < 2.5 ? boost : 2.5,
                 min_veCRV,
                 ecrv_for_max_boost,
+                userVEcrvRatio: user_veCRV / total_veCRV,
+                stakeForMaxBoost,
             }
         }
     )

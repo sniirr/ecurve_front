@@ -62,7 +62,7 @@ export const fetchDefiboxPoolData = poolId => async dispatch => {
             fetchOne({code: poolContract, scope: poolContract, table: 'totalstake'})
         ])
 
-        const {liquidity_token, count0, count1, symbol0} = _.get(data, [0, 'data', 'data', 0], {})
+        const {liquidity_token, count0, count1, symbol0, symbol1} = _.get(data, [0, 'data', 'data', 0], {})
         const {balance: totalStake} = _.get(data, [1], {})
 
         const balances = [count0, count1]
@@ -78,6 +78,10 @@ export const fetchDefiboxPoolData = poolId => async dispatch => {
                 totalSupply: liquidity_token,
                 totalStake: parseFloat(totalStake),
                 price: sumPoolUsd / liquidity_token,
+                lpTokenValue: [
+                    {symbol: symbol0, value: count0 / liquidity_token},
+                    {symbol: symbol1, value: count1 / liquidity_token},
+                ],
             }
         })
     } catch (e) {
@@ -108,6 +112,7 @@ export const fetchHegeosPoolData = () => async (dispatch, getState) => {
                 totalSupply: totalStake,
                 totalStake: totalStake,
                 price: lpValueInEos * eosPrice,
+                lpTokenValue: [{symbol: 'EOS', value: lpValueInEos}]
             }
         })
     } catch (e) {
