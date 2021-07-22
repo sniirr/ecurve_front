@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React, {Fragment, useMemo} from 'react'
 import _ from 'lodash'
 import {useSelector} from "react-redux";
 import {makePoolMiningApySelector} from "modules/pools";
@@ -84,10 +84,10 @@ const PoolAPY = ({poolId, moreAPYs = []}) => {
                 </div>
             </div>
             {_.map(moreAPYs, (APYComp, i) => (
-                <>
+                <Fragment key={`pool-apy-${poolId}-${i}`}>
                     <div className="separator"> + </div>
                     {APYComp}
-                </>
+                </Fragment>
             ))}
             <Tooltip id={id}>
                 <h4>ECRV Mining APY</h4>

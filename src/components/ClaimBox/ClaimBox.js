@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import {claim} from "modules/wallet"
 import {useDispatch, useSelector} from "react-redux"
 import _ from 'lodash'
@@ -53,7 +53,7 @@ const ClaimBox = () => {
                         <div className="claim-row">
                             Admin Fees:
                             {_.size(claimable.adminFees) > 0 ? _.map(claimable.adminFees, (value, sym) => (
-                                <><span className="claim-amount">{amountToAsset(value, sym, false, true)}</span> {sym}</>
+                                <Fragment key={`admin-fee-entry-${sym}`}><span className="claim-amount">{amountToAsset(value, sym, false, true)}</span> {sym}</Fragment>
                             )) : (
                                 <><span className="claim-amount">0</span> TRIPOOL</>
                             )}

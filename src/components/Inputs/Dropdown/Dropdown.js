@@ -23,15 +23,16 @@ const Dropdown = ({id, className, items, onItemClick, withCaret, children}) => {
             </div>)}
             <div className="dropdown-menu">
                 {_.map(items, ({name, link, ...itemProps}, i) => {
+                    const key = `dropdown-menu-opt-${id}-${i}`
                     const Item = (
-                        <div key={`dropdown-menu-opt-${id}-${i}`}
+                        <div key={key}
                              className="dropdown-item"
                              onClick={() => _.isFunction(onItemClick) && onItemClick(itemProps)}
                              {...itemProps}>{name}</div>
                     )
 
                     return _.isEmpty(link) ? Item : (
-                        <a href={link} target="_blank" rel="noopener noreferrer">{Item}</a>
+                        <a key={`${key}-a`} href={link} target="_blank" rel="noopener noreferrer">{Item}</a>
                     )
                 })}
             </div>

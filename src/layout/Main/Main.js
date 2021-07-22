@@ -22,7 +22,7 @@ const Main = ({poolId, isLoggedIn, ual}) => {
         if (showBanner) return (
             <div className="bifrost-border">
                 <Banner>
-                    Use <a href="https://bifrost.fi" target="_blank" rel="noopener noreferrer">Bifrost.fi</a> to bridge USDC and DAI from Ethereum
+                    Use <a href="https://bifrost.dappfronts.io/?symbol=usdc" target="_blank" rel="noopener noreferrer">Bifrost</a> to bridge USDC and DAI from Ethereum
                 </Banner>
             </div>
         )
@@ -41,7 +41,6 @@ const Main = ({poolId, isLoggedIn, ual}) => {
                 return <ClaimBox/>
             default:
                 return <OverviewBox/>
-                // return <PoolInfo poolId={poolId}/>
         }
     }
 

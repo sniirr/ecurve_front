@@ -143,7 +143,7 @@ export const Pools = () => {
         const isEcurve = groupName === 'eCurve'
         const [groupLogo, groupTitle] = getGroupParams(groupName)
         return (
-            <div className="section pools">
+            <div key={`pool-group-${_.kebabCase(groupName)}`} className="section pools">
                 <div className="section-header">
                     <img src={groupLogo} alt=""/>
                     <h3>{groupTitle} Pools</h3>

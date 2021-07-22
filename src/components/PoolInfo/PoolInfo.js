@@ -17,7 +17,10 @@ const PoolSelect = ({poolId}) => {
 
     const dispatch = useDispatch()
 
-    const pools = _.filter(POOLS, p => p.operator === 'eCurve' && p.id !== poolId)
+    const pools = _.map(
+        _.filter(POOLS, p => p.operator === 'eCurve' && p.id !== poolId),
+        p => _.pick(p, ['id', 'name'])
+    )
 
     return (
         <Dropdown id="pools-select" withCaret={true} items={pools}
