@@ -12,6 +12,8 @@ exports.handler = async (event) => {
             pool_id: item.pool_id,
             last_24h_fees: item.last_24h_fees,
             total_fees: item.total_fees,
+            tvl: item.tvl,
+            last_24h_volume: item.volume,
         }
     })
 };

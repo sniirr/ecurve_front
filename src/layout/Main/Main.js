@@ -13,6 +13,23 @@ const Main = ({poolId, isLoggedIn, ual}) => {
     const showBanner = _.includes(['/', '/exchange', '/deposit', '/withdraw'], location.pathname)
 
     const renderBanner = () => {
+        return (
+            <>
+                {showBanner && (
+                    <div className="bifrost-border">
+                        <Banner>
+                            Use <a href="https://bifrost.dappfronts.io/?symbol=usdc" target="_blank" rel="noopener noreferrer">Bifrost</a> to bridge USDC and DAI from Ethereum
+                        </Banner>
+                    </div>
+                )}
+                {!isLoggedIn && (
+                    <Banner className="not-logged-in">
+                        Wallet not connected, click <span onClick={ual.showModal}>Login</span> to connect
+                    </Banner>
+                )}
+            </>
+        )
+
         if (!isLoggedIn) return (
             <Banner className="not-logged-in">
                 Wallet not connected, click <span onClick={ual.showModal}>Login</span> to connect

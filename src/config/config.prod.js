@@ -3,7 +3,8 @@ export const ENVIRONMENT = 'production'
 export const CHAIN = {
     chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
     rpcEndpoints: [{
-        host: 'eos.greymass.com',
+        // host: 'eos.greymass.com',
+        host: 'api.main.alohaeos.com',
         port: 443,
         protocol: 'https'
     }]
@@ -51,6 +52,24 @@ export const POOLS = {
         tokens: ["USN", "TRIPOOL"],
         lpTokenSymbol: 'USNPOOL',
     },
+    'EOSDTPL': {
+        id: 'EOSDTPL',
+        name: 'EOSDTPool',
+        operator: 'eCurve',
+        poolContract: 'ecrveosdtpol',
+        tokens: ["EOSDT", "TRIPOOL"],
+        lpTokenSymbol: 'EOSDTPL',
+        isNew: true,
+    },
+    'VIGORPL': {
+        id: 'VIGORPL',
+        name: 'VIGORPool',
+        operator: 'eCurve',
+        poolContract: 'ecrvvigorpol',
+        tokens: ["VIGOR", "TRIPOOL"],
+        lpTokenSymbol: 'VIGORPL',
+        isNew: true,
+    },
     'DADGOV': {
         id: 'DADGOV',
         name: 'DAD Governance',
@@ -67,7 +86,6 @@ export const POOLS = {
         operator: 'Hegeos',
         poolContract: 'dposithegeos',
         lpTokenSymbol: 'EHEGIC',
-        isNew: true,
     },
     'BOXAVG': {
         id: 'BOXAVG',
@@ -180,6 +198,32 @@ export const TOKENS = {
         isLPToken: true,
     },
 
+    EOSDT: {
+        symbol: 'EOSDT',
+        contract: 'eosdtsttoken',
+        precision: 9,
+    },
+    EOSDTPL: {
+        symbol: 'EOSDTPL',
+        contract: CONTRACTS.LPTokens,
+        precision: 9,
+        stakeContract: 'depositlp113',
+        stakeTable: 'stake',
+    },
+
+    VIGOR: {
+        symbol: 'VIGOR',
+        contract: 'vigortoken11',
+        precision: 4,
+    },
+    VIGORPL: {
+        symbol: 'VIGORPL',
+        contract: CONTRACTS.LPTokens,
+        precision: 6,
+        stakeContract: 'depositlp114',
+        stakeTable: 'stake',
+    },
+
     ECRV: {
         symbol: 'ECRV',
         contract: CONTRACTS.curveToken,
@@ -192,7 +236,6 @@ export const TOKENS = {
 
         lockPayload: (lockPeriod, quantity) => ({quantity, maturityinhr: lockPeriod}),
     },
-
 
     DAD: {
         symbol: 'DAD',
