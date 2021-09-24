@@ -73,8 +73,6 @@ async function handleFees(pool_id, fees, balances, {fee, adminfee}) {
             volume: last_24h_fees / adminPart
         }
 
-        // console.log('newRecord', JSON.stringify(newRecord, null, 2))
-
         const updateRes = await ddb.put({
             TableName: 'ecurve_stats',
             Item: newRecord,
@@ -105,40 +103,11 @@ async function processPool (rpc, {pool_id, contract}) {
     console.log('processing pool', pool_id)
     const feesRow = await fetchOne({rpc, contract}, {table: FEES_TABLE})
     const fees = _.get(feesRow, 'fees', [])
-// const feesData = await rpc.get_table_rows({
-    //     json: true,                 // Get the response as json
-    //     limit: 1,                  // Maximum number of rows that we want to get
-    //     reverse: false,             // Optional: Get reversed data
-    //     show_payer: false,          // Optional: Show ram payer
-    //
-    //     code: contract,
-    //     scope: contract,
-    //     table: FEES_TABLE,
-    // })
-
-    // console.log(feesData)
 
     const balancesRow = await fetchOne({rpc, contract}, {table: BALANCES_TABLE})
     const balances = _.get(balancesRow, 'liquidblc', [])
 
-    // const balancesData = await rpc.get_table_rows({
-    //     json: true,                 // Get the response as json
-    //     limit: 1,                  // Maximum number of rows that we want to get
-    //     reverse: false,             // Optional: Get reversed data
-    //     show_payer: false,          // Optional: Show ram payer
-    //
-    //     code: contract,
-    //     scope: contract,
-    //     table: BALANCES_TABLE,
-    // })
-
     const feeConfig = await fetchOne({rpc, contract}, {table: CONFIG_TABLE})
-    // const {fee = 0, adminfee = 0} = configRow || {}
-    // const adminPart = fee * adminfee
-
-
-    // console.log(feesData)
-
 
     if (_.isEmpty(fees) || _.isEmpty(balances)) return false
 
