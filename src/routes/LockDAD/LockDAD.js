@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import StakeForm from 'components/Forms/StakeForm'
 import UnlockForm from "components/Forms/UnlockForm";
 import IncrLockAmountForm from "components/Forms/IncrLockAmountForm";
@@ -13,6 +13,7 @@ import {fetchBalance, balanceSelector} from "modules/balances";
 import useOnLogin from "hooks/useOnLogin";
 import {fetchRewards, maxDADApySelector} from "modules/ecrv";
 import config from 'config'
+import Airdrops from "components/Airdrops";
 
 const {MAIN_TOKEN, LOCK_INTERVALS, TOKENS, DAD_TOKEN} = config
 
@@ -83,25 +84,28 @@ export const StakeAndLockDAD = () => {
     }
 
     return (
-        <div className="section stake-and-lock boost dad">
-            <ApiSuspense apiKey={`fetch-lock-${symbol}`}>
-                <div className="section-header">
-                    <h3>Lock staked DAD to receive {MAIN_TOKEN} rewards</h3>
-                    <div className="apy success">
-                        {hasLocked && accountApy > 0 ? (
-                            <>Your APY {accountApy.toFixed(2)}% | Max APY {maxApy.toFixed(2)}%</>
-                        ) : (
-                            <>DAD Locking Max APY {maxApy.toFixed(2)}%</>
-                        )}
+        <>
+            <Airdrops/>
+            <div className="section stake-and-lock boost dad">
+                <ApiSuspense apiKey={`fetch-lock-${symbol}`}>
+                    <div className="section-header">
+                        <h3>Lock staked DAD to receive {MAIN_TOKEN} rewards</h3>
+                        <div className="apy success">
+                            {hasLocked && accountApy > 0 ? (
+                                <>Your APY {accountApy.toFixed(2)}% | Max APY {maxApy.toFixed(2)}%</>
+                            ) : (
+                                <>DAD Locking Max APY {maxApy.toFixed(2)}%</>
+                            )}
+                        </div>
                     </div>
-                </div>
-                {renderTopContent()}
-                <div className={classNames("stake-unstake", {'wide-right': true})}>
-                    {renderContent()}
-                </div>
-                {renderWarningMessage()}
-            </ApiSuspense>
-        </div>
+                    {renderTopContent()}
+                    <div className={classNames("stake-unstake", {'wide-right': true})}>
+                        {renderContent()}
+                    </div>
+                    {renderWarningMessage()}
+                </ApiSuspense>
+            </div>
+        </>
     );
 }
 

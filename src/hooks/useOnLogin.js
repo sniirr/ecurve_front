@@ -2,7 +2,7 @@ import {useEffect} from 'react'
 import {useSelector} from "react-redux";
 import _ from 'lodash'
 
-function useOnLogin(onLogin) {
+function useOnLogin(onLogin, dependencies = []) {
 
     const activeUser = useSelector(state => _.get(state, 'activeUser'))
 
@@ -12,7 +12,7 @@ function useOnLogin(onLogin) {
         if (!_.isEmpty(accountName)) {
             onLogin()
         }
-    }, [accountName])
+    }, [accountName, ...dependencies])
 }
 
 export default useOnLogin

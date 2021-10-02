@@ -1,0 +1,59 @@
+@import "css/vars";
+
+.center-aligned-spaced-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section.airdrops {
+  .airdrop-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .airdrop-overview {
+      width: 50%;
+      background-color: $success;
+      padding: 10px;
+      line-height: 1.4em;
+
+      .token-symbol {
+        justify-content: flex-start;
+        font-size: 1.4em;
+        margin-bottom: 10px;
+
+        img {
+          width: 30px;
+        }
+      }
+    }
+
+    .sbs {
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+
+      &> div:not(:last-child) {
+        margin-right: 64px;
+      }
+    }
+
+    .airdrop-stats {
+      flex-grow: 2;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-direction: column;
+    }
+
+    .text-small {
+      font-size: .8em !important;
+      margin-bottom: 2px;
+    }
+
+    .num {
+      font-size: 1.1em;
+    }
+  }
+}

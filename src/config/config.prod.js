@@ -28,6 +28,7 @@ export const CONTRACTS = {
     claimCurveLP: 'ecrvclaim111',
     claimCurveDAD: 'dadlockecrv1',
     ecrvAdminFee: 'ecrvadminfee',
+    airdrops: 'dadairdrops1',
 
     dadUsdTokens: 'dadusdtokens',
 

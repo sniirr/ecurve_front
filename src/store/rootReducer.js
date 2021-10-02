@@ -8,6 +8,7 @@ import {pricesReducer} from 'modules/prices'
 import {dadReducer} from 'modules/dad'
 import {useECRVReducer} from 'routes/UseECRV/UseECRV.reducer'
 import {uiReducer} from "./uiReducer";
+import {airdropsReducer} from 'modules/airdrops'
 
 const activeUser = makeReducer({
     SET_ACTIVE_USER: reduceSetFull,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
     dad: dadReducer,
     pools: poolsReducer,
     useECRV: useECRVReducer,
+    airdrops: airdropsReducer,
 });
 
 export default rootReducer;

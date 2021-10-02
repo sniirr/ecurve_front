@@ -5,6 +5,7 @@ import usnImg from './usn.png'
 import eCurveLogo from './ecurve-logo.png'
 import eosdtImg from './eosdt.png'
 import vigorImg from './vigor.png'
+import emanateImg from './emanate.png'
 
 export default {
     DAI: daiImg,
@@ -14,4 +15,5 @@ export default {
     TRIPOOL: eCurveLogo,
     EOSDT: eosdtImg,
     VIGOR: vigorImg,
+    EMT: emanateImg,
 }
