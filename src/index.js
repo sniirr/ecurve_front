@@ -7,7 +7,7 @@ import {makeStore} from 'store';
 import {UALProvider, withUAL} from 'ual-reactjs-renderer'
 import {Scatter} from 'ual-scatter'
 import {Anchor} from 'ual-anchor'
-// import { TokenPocket } from 'ual-token-pocket'
+// import {TokenPocket} from 'ual-token-pocket'
 import config from "config"
 const {CHAIN} = config
 

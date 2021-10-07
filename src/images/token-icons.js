@@ -6,6 +6,7 @@ import eCurveLogo from './ecurve-logo.png'
 import eosdtImg from './eosdt.png'
 import vigorImg from './vigor.png'
 import emanateImg from './emanate.png'
+import dappImg from './dapp.svg'
 
 export default {
     DAI: daiImg,
@@ -16,4 +17,5 @@ export default {
     EOSDT: eosdtImg,
     VIGOR: vigorImg,
     EMT: emanateImg,
+    DAPP: dappImg,
 }

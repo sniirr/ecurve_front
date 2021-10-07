@@ -5,7 +5,7 @@ import {fetchOneByPk, fetchTableData, transact} from "modules/api";
 
 const {CONTRACTS} = config
 
-export const fetchAirdrops = () => async dispatch => {
+export const fetchAirdrops = currentRound => async dispatch => {
     try {
         const [airdropdet, diststat] = await Promise.all([
             fetchTableData({
@@ -20,19 +20,39 @@ export const fetchAirdrops = () => async dispatch => {
             })
         ])
 
-        const data = _.map(airdropdet.rows, ({airdrop_sym, t_amount, r_amount, number_of_rounds, startround}) => {
+        let airdrops = _.map(airdropdet.rows, ({airdrop_sym, t_amount, r_amount, number_of_rounds, startround}) => {
             const {round_distributed} = _.find(diststat.rows, {airdropsym: airdrop_sym})
             const [precision, symbol] = _.split(airdrop_sym, ',')
             return {
                 symbol, precision,
                 airdrop_sym, t_amount, r_amount, number_of_rounds, startround, round_distributed,
-                claimable: 0,
             }
         })
 
+        airdrops = _.map(airdrops, airdrop => {
+            let status = 'Pending'
+            if (airdrop.startround < currentRound) {
+                if (airdrop.round_distributed === airdrop.number_of_rounds) {
+                    status = 'Complete'
+                }
+                else {
+                    status = 'Active'
+                }
+            }
+            return {
+                ...airdrop,
+                status
+            }
+        })
+
+        airdrops = _.orderBy(airdrops, [
+            ({status}) => _.indexOf(['Active', 'Pending', 'Complete'], status),
+            'startround'
+        ], ['asc', 'asc'])
+
         dispatch({
             type: 'SET_AIRDROPS',
-            payload: data,
+            payload: airdrops,
         })
     }
     catch (e) {

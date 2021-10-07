@@ -8,6 +8,8 @@ import {amountToAsset} from "utils";
 import Button from "components/Inputs/Button";
 import numeral from 'numeral'
 import './Airdrops.scss'
+import {eCRVStatsSelector} from "modules/ecrv";
+import classNames from 'classnames'
 
 export const Airdrops = () => {
     const dispatch = useDispatch()
@@ -15,9 +17,13 @@ export const Airdrops = () => {
     const activeUser = useSelector(state => _.get(state, 'activeUser'))
     const {airdrops, claimable} = useSelector(airdropsSelector)
 
+    const {currround} = useSelector(eCRVStatsSelector)
+
     useEffect(() => {
-        dispatch(fetchAirdrops())
-    }, [])
+        if (currround > 0) {
+            dispatch(fetchAirdrops(currround))
+        }
+    }, [currround])
 
     const adCount = _.size(airdrops)
 
@@ -32,12 +38,13 @@ export const Airdrops = () => {
             <div className="section-header">
                 <h3>Airdrops</h3>
             </div>
-            {_.map(airdrops, ({symbol, precision, airdrop_sym, t_amount, r_amount, number_of_rounds, startround, round_distributed}, i) => {
+            {_.map(airdrops, ({symbol, precision, airdrop_sym, t_amount, r_amount, number_of_rounds, startround, round_distributed, status}, i) => {
                 const claimableTokens = _.get(claimable, i, 0)
                 return (
-                    <div key={`airdrop-${i}`} className="airdrop-item">
+                    <div key={`airdrop-${i}`} className={classNames("airdrop-item", _.kebabCase(status))}>
                         <div className="airdrop-overview">
                             <TokenSymbol symbol={symbol}/>
+                            <span className="status-tag">{status}</span>
                             <div>
                                 <span className="text-bold">{amountToAsset(t_amount, symbol, true, true, precision)}</span> will be airdropped over {number_of_rounds} rounds starting round {numeral(startround).format('0,0.[0000]')}
                             </div>

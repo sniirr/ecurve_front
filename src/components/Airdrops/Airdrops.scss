@@ -12,11 +12,18 @@
     align-items: center;
     justify-content: space-between;
 
+    &:not(:last-child) {
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      border-bottom: solid 1px white;
+    }
+
     .airdrop-overview {
-      width: 50%;
-      background-color: $success;
+      width: 52%;
+      border: solid 3px $info;
       padding: 10px;
       line-height: 1.4em;
+      position: relative;
 
       .token-symbol {
         justify-content: flex-start;
@@ -29,13 +36,46 @@
       }
     }
 
+    .status-tag {
+      background-color: $info;
+      padding: 8px 20px;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    &.complete {
+      .airdrop-overview {
+        border-color: $error;
+      }
+
+      .status-tag {
+        background-color: $error;
+      }
+    }
+
+    &.active {
+      .airdrop-overview {
+        border-color: $success;
+      }
+
+      .status-tag {
+        background-color: $success;
+      }
+    }
+
     .sbs {
       &:not(:last-child) {
         margin-bottom: 20px;
       }
 
       &> div:not(:last-child) {
-        margin-right: 64px;
+        margin-right: 30px;
+        width: 150px;
+      }
+
+      &> div:last-child {
+        width: 109px;
       }
     }
 
