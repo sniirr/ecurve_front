@@ -12,10 +12,10 @@ import {selectedPoolSelector} from "store/uiReducer";
 const {MAIN_TOKEN, DAD_TOKEN} = config
 
 const MENU_ITEMS = [
-    {text: 'Dashboard', path: '/'},
-    {text: 'Exchange', path: '/exchange', poolOnly: true},
-    {text: 'Deposit', path: '/deposit', poolOnly: true},
-    {text: 'Withdraw', path: '/withdraw', poolOnly: true},
+    // {text: 'Dashboard', path: '/'},
+    // {text: 'Exchange', path: '/exchange', poolOnly: true},
+    // {text: 'Deposit', path: '/deposit', poolOnly: true},
+    // {text: 'Withdraw', path: '/withdraw', poolOnly: true},
     {text: `Use ${MAIN_TOKEN}`, path: '/use-ecrv'},
     {text: `Lock ${DAD_TOKEN}`, path: '/lock-dad'},
 ]
@@ -36,11 +36,11 @@ const Menu = () => {
                 ))}
             </div>
             <div className="menu-right">
-                {_.map(_.takeRight(MENU_ITEMS, 2), ({text, path}, i) => (
-                    <div key={`menu-item-${_.kebabCase(text)}`} className="menu-item">
-                        <NavLink to={path} exact>{text}</NavLink>
-                    </div>
-                ))}
+                {/*{_.map(_.takeRight(MENU_ITEMS, 2), ({text, path}, i) => (*/}
+                {/*    <div key={`menu-item-${_.kebabCase(text)}`} className="menu-item">*/}
+                {/*        <NavLink to={path} exact>{text}</NavLink>*/}
+                {/*    </div>*/}
+                {/*))}*/}
                 <div className="menu-item get-dad">
                     <div className="button fancy">
                         <a target="_blank" rel="noopener noreferrer" href="https://defibox.io/pool-market-details/588">Buy DAD</a>

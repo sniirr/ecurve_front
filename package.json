@@ -20,7 +20,7 @@
     "dayjs": "^1.10.4",
     "eosjs": "^21.0.3",
     "lodash": "^4.17.21",
-    "node-sass": "^5.0.0",
+    "node-sass": "^6.0.1",
     "numeral": "^2.0.6",
     "rc-slider": "^9.7.1",
     "react": "^17.0.1",

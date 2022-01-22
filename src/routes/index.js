@@ -6,28 +6,29 @@ import LockDAD from './LockDAD'
 import UseECRV from './UseECRV'
 import Pools from './Pools'
 import Page from "layout/Page"
-import {Switch, Route} from "react-router-dom"
+import {Switch, Route, Redirect} from "react-router-dom"
 
 const Routes = () => (
     <Switch>
-        <Route exact path="/">
-            <Page><Pools/></Page>
-        </Route>
-        <Route exact path="/exchange">
-            <Page><Exchange/></Page>
-        </Route>
-        <Route path="/deposit">
-            <Page><Deposit/></Page>
-        </Route>
-        <Route path="/withdraw">
-            <Page><Withdraw/></Page>
-        </Route>
+        {/*<Route exact path="/">*/}
+        {/*    <Page><Pools/></Page>*/}
+        {/*</Route>*/}
+        {/*<Route exact path="/exchange">*/}
+        {/*    <Page><Exchange/></Page>*/}
+        {/*</Route>*/}
+        {/*<Route path="/deposit">*/}
+        {/*    <Page><Deposit/></Page>*/}
+        {/*</Route>*/}
+        {/*<Route path="/withdraw">*/}
+        {/*    <Page><Withdraw/></Page>*/}
+        {/*</Route>*/}
         <Route path="/use-ecrv">
             <Page><UseECRV/></Page>
         </Route>
         <Route path="/lock-dad">
             <Page><LockDAD/></Page>
         </Route>
+        <Route path="/" render={() => <Redirect to="/use-ecrv" />}/>
     </Switch>
 )
 

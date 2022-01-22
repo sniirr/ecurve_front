@@ -5,13 +5,13 @@ import reportWebVitals from './reportWebVitals';
 import {Provider} from 'react-redux';
 import {makeStore} from 'store';
 import {UALProvider, withUAL} from 'ual-reactjs-renderer'
-import {Scatter} from 'ual-scatter'
+// import {Scatter} from 'ual-scatter'
 import {Anchor} from 'ual-anchor'
 // import {TokenPocket} from 'ual-token-pocket'
 import config from "config"
 const {CHAIN} = config
 
-const scatter = new Scatter([CHAIN], {appName: 'ecurve'})
+// const scatter = new Scatter([CHAIN], {appName: 'ecurve'})
 const anchor = new Anchor([CHAIN], {appName: 'ecurve'})
 // const tokenPocket = new TokenPocket([CHAIN], {appName: 'ecurve'})
 
@@ -22,7 +22,7 @@ const UALConsumer = withUAL(App)
 ReactDOM.render(
     <Provider store={store}>
         <React.StrictMode>
-            <UALProvider chains={[CHAIN]} authenticators={[anchor, scatter]} appName={'ecurve'}>
+            <UALProvider chains={[CHAIN]} authenticators={[anchor]} appName={'ecurve'}>
                 <UALConsumer/>
             </UALProvider>
         </React.StrictMode>
